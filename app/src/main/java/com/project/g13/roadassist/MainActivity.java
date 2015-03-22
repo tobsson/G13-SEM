@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
         plnRtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, MapsActivity.class));
+                startActivity(new Intent(MainActivity.this, Plan_Route.class));
             }
         });
         vwRtBtn.setOnClickListener(new View.OnClickListener() {
