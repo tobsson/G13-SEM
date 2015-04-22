@@ -21,6 +21,14 @@
         android:layout_height="fill_parent">
 
         <Button
+            android:layout_width="152dp"
+            android:layout_height="72dp"
+            android:text="Statistics"
+            android:id="@+id/statsBtn"
+            android:layout_row="12"
+            android:layout_column="0" />
+
+        <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
