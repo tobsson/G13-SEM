@@ -20,6 +20,7 @@ public class MainActivity extends Activity {
 
         Button plnRtBtn = (Button)findViewById(R.id.plnRtBtn);
         Button vwRtBtn = (Button)findViewById(R.id.vwRtBtn);
+        Button statsBtn = (Button)findViewById(R.id.statsBtn);
 
         plnRtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,6 +32,12 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, MapsActivity.class));
+            }
+        });
+        statsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, StatisticsSimple.class));
             }
         });
     }
