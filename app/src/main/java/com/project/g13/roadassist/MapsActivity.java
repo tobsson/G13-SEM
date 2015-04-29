@@ -1,72 +1,170 @@
 package com.project.g13.roadassist;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.skobbler.ngx.map.SKAnnotation;
+import com.skobbler.ngx.map.SKCoordinateRegion;
+import com.skobbler.ngx.map.SKMapCustomPOI;
+import com.skobbler.ngx.map.SKMapPOI;
+import com.skobbler.ngx.map.SKMapSurfaceListener;
+import com.skobbler.ngx.map.SKMapSurfaceView;
+import com.skobbler.ngx.map.SKMapViewHolder;
+import com.skobbler.ngx.map.SKPOICluster;
+import com.skobbler.ngx.map.SKScreenPoint;
 
-public class MapsActivity extends FragmentActivity {
 
-    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+import java.io.File;
+
+public class MapsActivity extends Activity implements SKMapSurfaceListener {
+
+    /**
+     * Surface view for displaying the map
+     */
+    private SKMapSurfaceView mapView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        setUpMapIfNeeded();
+        SKMapViewHolder mapHolder = (SKMapViewHolder)
+                findViewById(R.id.map_surface_holder);
+        mapView = mapHolder.getMapSurfaceView();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mapView.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setUpMapIfNeeded();
+        mapView.onResume();
     }
 
-    /**
-     * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
-     * installed) and the map has not already been instantiated.. This will ensure that we only ever
-     * call {@link #setUpMap()} once when {@link #mMap} is not null.
-     * <p/>
-     * If it isn't installed {@link com.google.android.gms.maps.SupportMapFragment} (and
-     * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
-     * install/update the Google Play services APK on their device.
-     * <p/>
-     * A user can return to this FragmentActivity after following the prompt and correctly
-     * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
-     * have been completely destroyed during this process (it is likely that it would only be
-     * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
-     * method in {@link #onResume()} to guarantee that it will be called.
-     */
-    private void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
-        if (mMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
-            // Check if we were successful in obtaining the map.
-            if (mMap != null) {
-                setUpMap();
-            }
-        }
+
+    @Override
+    public void onActionPan() {
+
     }
 
-    /**
-     * This is where we can add markers or lines, add listeners or move the camera. In this case, we
-     * just add a marker near Africa.
-     * <p/>
-     * This should only be called once and when we are sure that {@link #mMap} is not null.
-     */
-    private void setUpMap() {
-        if(null != mMap){
+    @Override
+    public void onActionZoom() {
 
-            mMap.setMyLocationEnabled(true);
-            mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-           /* mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(57.70887000, 11.97456000))
-                    .title("Marker")
-                    .draggable(true));*/
-        }
-    }}
+    }
+
+    @Override
+    public void onSurfaceCreated() {
+        //insert your code here
+    }
+
+    @Override
+    public void onScreenOrientationChanged() {
+
+    }
+
+    @Override
+    public void onMapRegionChanged(SKCoordinateRegion skCoordinateRegion) {
+
+    }
+
+    @Override
+    public void onMapRegionChangeStarted(SKCoordinateRegion skCoordinateRegion) {
+
+    }
+
+    @Override
+    public void onMapRegionChangeEnded(SKCoordinateRegion skCoordinateRegion) {
+
+    }
+
+    @Override
+    public void onDoubleTap(SKScreenPoint skScreenPoint) {
+
+    }
+
+    @Override
+    public void onSingleTap(SKScreenPoint skScreenPoint) {
+
+    }
+
+    @Override
+    public void onRotateMap() {
+
+    }
+
+    @Override
+    public void onLongPress(SKScreenPoint skScreenPoint) {
+
+    }
+
+    @Override
+    public void onInternetConnectionNeeded() {
+
+    }
+
+    @Override
+    public void onMapActionDown(SKScreenPoint skScreenPoint) {
+
+    }
+
+    @Override
+    public void onMapActionUp(SKScreenPoint skScreenPoint) {
+
+    }
+
+    @Override
+    public void onPOIClusterSelected(SKPOICluster skpoiCluster) {
+
+    }
+
+    @Override
+    public void onMapPOISelected(SKMapPOI skMapPOI) {
+
+    }
+
+    @Override
+    public void onAnnotationSelected(SKAnnotation skAnnotation) {
+
+    }
+
+    @Override
+    public void onCustomPOISelected(SKMapCustomPOI skMapCustomPOI) {
+
+    }
+
+    @Override
+    public void onCompassSelected() {
+
+    }
+
+    @Override
+    public void onCurrentPositionSelected() {
+
+    }
+
+    @Override
+    public void onObjectSelected(int i) {
+
+    }
+
+    @Override
+    public void onInternationalisationCalled(int i) {
+
+    }
+
+    @Override
+    public void onBoundingBoxImageRendered(int i) {
+
+    }
+
+    @Override
+    public void onGLInitializationError(String s) {
+
+    }
+
+}
