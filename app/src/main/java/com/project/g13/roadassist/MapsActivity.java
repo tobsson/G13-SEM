@@ -1,7 +1,11 @@
 package com.project.g13.roadassist;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.skobbler.ngx.map.SKAnnotation;
@@ -25,14 +29,28 @@ public class MapsActivity extends Activity implements SKMapSurfaceListener {
     private SKMapSurfaceView mapView;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         SKMapViewHolder mapHolder = (SKMapViewHolder)
                 findViewById(R.id.map_surface_holder);
         mapView = mapHolder.getMapSurfaceView();
+        mapView.setMapSurfaceListener(this);
         Toast.makeText(getApplicationContext(), "Loading Map...", Toast.LENGTH_SHORT).show();
+
+       /*
+        Button navBtn = (Button)findViewById(R.id.navBtn);
+        navBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "You clicked the button...", Toast.LENGTH_SHORT).show();
+            }
+        });
+        */
+
     }
 
     @Override
@@ -60,7 +78,8 @@ public class MapsActivity extends Activity implements SKMapSurfaceListener {
 
     @Override
     public void onSurfaceCreated() {
-
+        //System.out.print("Surface created");
+        Toast.makeText(getApplicationContext(), "Map loaded! Yeey!", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -91,7 +110,7 @@ public class MapsActivity extends Activity implements SKMapSurfaceListener {
 
     @Override
     public void onSingleTap(SKScreenPoint skScreenPoint) {
-
+    Toast.makeText(getApplicationContext(), "You clicked the map! Yeey!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
