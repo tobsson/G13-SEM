@@ -4,99 +4,78 @@ package com.project.g13.roadassist;
  * Created by tobs on 2015-04-27.
  */
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ListAdapter;
-import android.widget.SimpleAdapter;
+import android.widget.ArrayAdapter;
 
-import org.apache.http.NameValuePair;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * Background Async Task to Load all product by making HTTP Request
  * */
-public class MySQL_List extends AsyncTask<String, String, String> {
+public class MySQL_List extends AsyncTask<String, Void, String> {
 
     /**
-     * getting All products from url
+     * Getting all names on drivers
      * */
     protected String doInBackground(String... args) {
-        // Building Parameters
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        // getting JSON string from URL
-        JSONObject json = StatisticsSimple.jParser.makeHttpRequest(StatisticsSimple.url_all_drivers, "GET", params);
+        String result = "";
+        InputStream is = null;
+        JSONArray jArray;
 
-        // Check your log cat for JSON reponse
-        Log.d("All Products: ", json.toString());
-
+        //http post
         try {
-            // Checking for SUCCESS TAG
-            int success = json.getInt(StatisticsSimple.TAG_SUCCESS);
-
-            if (success == 1) {
-                // products found
-                // Getting Array of Products
-                StatisticsSimple.products = json.getJSONArray(StatisticsSimple.TAG_DUSERNAME);
-
-                // looping through All Products
-                for (int i = 0; i < StatisticsSimple.products.length(); i++) {
-                    JSONObject c = StatisticsSimple.products.getJSONObject(i);
-
-                    // Storing each json item in variable
-                    String dpassword = c.getString(StatisticsSimple.TAG_DPASSWORD);
-                    String firstname = c.getString(StatisticsSimple.TAG_DNAMES);
-                    String surname = c.getString(StatisticsSimple.TAG_DSURNAME);
-                    String musername = c.getString(StatisticsSimple.TAG_MUSERNAME);
-
-                    // creating new HashMap
-                    HashMap<String, String> map = new HashMap<String, String>();
-
-                    // adding each child node to HashMap key => value
-                    map.put(StatisticsSimple.TAG_DPASSWORD, dpassword);
-                    map.put(StatisticsSimple.TAG_DNAMES, firstname);
-                    map.put(StatisticsSimple.TAG_DSURNAME, surname);
-                    map.put(StatisticsSimple.TAG_MUSERNAME, musername);
-
-                    // adding HashList to ArrayList
-                    StatisticsSimple.driversList.add(map);
-                }
-            } else {
-                    //Nothing found
-                    //TO-DO
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost("http://group13.comxa.com/driver_names.php");
+            HttpResponse response = httpclient.execute(httppost);
+            HttpEntity entity = response.getEntity();
+            is = entity.getContent();
+        } catch (Exception e) {
+            Log.e("log_tag", "Error in http connection " + e.toString());
+        }
+        //convert response to string
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
+            is.close();
+
+            result = sb.toString();
+        } catch (Exception e) {
+            Log.e("log_tag", "Error converting result " + e.toString());
         }
 
-        return null;
-    }
-
-    /**
-     * After completing background task Dismiss the progress dialog
-     * **/
-    protected void onPostExecute(String file_url) {
-        // updating UI from Background Thread
-        runOnUiThread(new Runnable() {
-            public void run() {
-                /**
-                 * Updating parsed JSON data into ListView
-                 * */
-                ListAdapter adapter = new SimpleAdapter(
-                        StatisticsSimple.this, driversList,
-                        R.layout.list_item, new String[] { TAG_PID,
-                        TAG_NAME},
-                        new int[] { R.id.pid, R.id.name });
-                // updating listview
-                StatisticsSimple.setListAdapter(adapter);
+        //parse json data
+        try {
+            jArray = new JSONArray(result);
+            for (int i = 0; i < jArray.length(); i++) {
+                JSONObject json_data = jArray.getJSONObject(i);
+                Log.i("log_tag", "First Name: " + json_data.getInt("Dname"));
             }
-        });
-
+        } catch (JSONException e) {
+            Log.e("log_tag", "Error parsing data " + e.toString());
+        }
+        return result;
     }
+    protected void onPostExecute(String result) {
 
-}
+        StatisticsSimple.getAdapter();
+        adapter = (this.android.R.layout.simple_list_item_1, android.R.id.text1, result);
+    }
+});
+        }
+        }
