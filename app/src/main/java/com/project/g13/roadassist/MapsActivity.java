@@ -2,6 +2,7 @@ package com.project.g13.roadassist;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.skobbler.ngx.map.SKAnnotation;
 import com.skobbler.ngx.map.SKCoordinateRegion;
@@ -31,7 +32,7 @@ public class MapsActivity extends Activity implements SKMapSurfaceListener {
         SKMapViewHolder mapHolder = (SKMapViewHolder)
                 findViewById(R.id.map_surface_holder);
         mapView = mapHolder.getMapSurfaceView();
-
+        Toast.makeText(getApplicationContext(), "Loading Map...", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -59,7 +60,8 @@ public class MapsActivity extends Activity implements SKMapSurfaceListener {
 
     @Override
     public void onSurfaceCreated() {
-        //insert your code here
+
+
     }
 
     @Override
@@ -166,5 +168,8 @@ public class MapsActivity extends Activity implements SKMapSurfaceListener {
     public void onGLInitializationError(String s) {
 
     }
+
+
+
 
 }

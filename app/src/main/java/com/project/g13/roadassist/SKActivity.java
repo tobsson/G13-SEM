@@ -69,4 +69,10 @@ public class SKActivity extends Activity implements SKPrepareMapTextureListener 
 
         SKMaps.getInstance().initializeSKMaps(this, initMapSettings, "8d2d10e08df1f0f199fe3090f418f7298a25629722b1b5d15093880b1e35abc1");
     }
+
+
+
+
+
+
 }
