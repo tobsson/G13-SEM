@@ -3,7 +3,9 @@ package com.project.g13.roadassist;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.app.LoaderManager;
+import android.app.ProgressDialog;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -18,18 +20,48 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.echo.holographlibrary.Line;
 import com.echo.holographlibrary.LineGraph;
 import com.echo.holographlibrary.LinePoint;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 
 /**
  * Created by tobs on 2015-04-20.
  */
-public class StatisticsSimple extends Activity {
+public class StatisticsSimple extends ListActivity {
     ListView listView ;
+
+    // Progress Dialog
+    ProgressDialog pDialog;
+
+    // Creating JSON Parser object
+    JSONParser jParser = new JSONParser();
+
+    ArrayList<HashMap<String, String>> driversList;
+
+    // url to get all products list
+    static String url_all_drivers = "http://group13.comxa.com/all_drivers.php";
+
+    // JSON Node names
+    static final String TAG_SUCCESS = "success";
+    static final String TAG_DNAMES = "Dname";
+    static final String TAG_DUSERNAME = "Dusername";
+    static final String TAG_DPASSWORD = "Dpassword";
+    static final String TAG_DSURNAME = "Dsurname";
+    static final String TAG_MUSERNAME = "Musername";
+
+
+    // products JSONArray
+    JSONArray products = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +98,16 @@ public class StatisticsSimple extends Activity {
         li.setTextColor(Color.RED);
         li.setTextSize(50);
 
+
         // Get ListView object from xml
         listView = (ListView) findViewById(R.id.list);
+
+        // Hashmap for ListView
+        driversList = new ArrayList<HashMap<String, String>>();
+
+        // Loading products in Background Thread
+        new MySQL_List().execute();
+
 
         // Defined Array values to show in ListView
         String[] values = new String[] { "Android List View",
@@ -94,25 +134,6 @@ public class StatisticsSimple extends Activity {
         listView.setAdapter(adapter);
 
         // ListView Item Click Listener
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-                // ListView Clicked item index
-                int itemPosition     = position;
-
-                // ListView Clicked item value
-                String  itemValue    = (String) listView.getItemAtPosition(position);
-
-                // Show Alert
-                Toast.makeText(getApplicationContext(),
-                        "Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_LONG)
-                        .show();
-
-            }
-
-        });
     }
 }
