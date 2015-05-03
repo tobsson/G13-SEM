@@ -9,6 +9,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.skobbler.ngx.SKPrepareMapTextureListener;
+import com.skobbler.ngx.SKPrepareMapTextureThread;
+import com.skobbler.ngx.util.SKLogging;
+
+import java.io.File;
+
 public class MainActivity extends Activity {
 
 
@@ -18,7 +24,14 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
 
-        Button plnRtBtn = (Button)findViewById(R.id.plnRtBtn);
+
+
+
+
+
+
+
+    Button plnRtBtn = (Button)findViewById(R.id.plnRtBtn);
         Button vwRtBtn = (Button)findViewById(R.id.vwRtBtn);
         Button statsBtn = (Button)findViewById(R.id.statsBtn);
 
@@ -69,4 +82,7 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
 }
