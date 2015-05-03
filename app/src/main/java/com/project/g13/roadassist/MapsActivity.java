@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.skobbler.ngx.*;
+import com.skobbler.ngx.SKCoordinate;
+import com.skobbler.ngx.SKMaps;
 import com.skobbler.ngx.map.SKAnnotation;
 import com.skobbler.ngx.map.SKCoordinateRegion;
 import com.skobbler.ngx.map.SKMapCustomPOI;
@@ -17,11 +20,17 @@ import com.skobbler.ngx.map.SKMapSurfaceView;
 import com.skobbler.ngx.map.SKMapViewHolder;
 import com.skobbler.ngx.map.SKPOICluster;
 import com.skobbler.ngx.map.SKScreenPoint;
+import com.skobbler.ngx.navigation.SKAdvisorSettings;
+import com.skobbler.ngx.routing.SKRouteInfo;
+import com.skobbler.ngx.routing.SKRouteJsonAnswer;
+import com.skobbler.ngx.routing.SKRouteListener;
+import com.skobbler.ngx.routing.SKRouteManager;
+import com.skobbler.ngx.routing.SKRouteSettings;
 
 
 import java.io.File;
 
-public class MapsActivity extends Activity implements SKMapSurfaceListener {
+public class MapsActivity extends Activity implements SKMapSurfaceListener, SKRouteListener {
 
     /**
      * Surface view for displaying the map
@@ -40,6 +49,13 @@ public class MapsActivity extends Activity implements SKMapSurfaceListener {
         mapView = mapHolder.getMapSurfaceView();
         mapView.setMapSurfaceListener(this);
         Toast.makeText(getApplicationContext(), "Loading Map...", Toast.LENGTH_SHORT).show();
+
+        /**
+         * Method to launch route calculation, I set predefined route inside the method for test
+         * this crashes the app atm by a nullpointer exception from the method calculateRoute() method
+         * located inside the SKMaps library. Uncomment the line below to see the error.
+         */
+        //launchRouteCalculation();
 
        /*
         Button navBtn = (Button)findViewById(R.id.navBtn);
@@ -65,6 +81,27 @@ public class MapsActivity extends Activity implements SKMapSurfaceListener {
         mapView.onResume();
     }
 
+    private void launchRouteCalculation() {
+        // get a route settings object and populate it with the desired properties
+        SKRouteSettings route = new SKRouteSettings();
+        // set start and destination points
+        route.setStartCoordinate(new SKCoordinate(57.708220, 11.935218));
+        route.setDestinationCoordinate(new SKCoordinate(57.709699, 11.943752));
+        // set the number of routes to be calculated
+        route.setNoOfRoutes(1);
+        // set the route mode
+        route.setRouteMode(SKRouteSettings.SKRouteMode.CAR_FASTEST);
+        // set whether the route should be shown on the map after it's computed
+        route.setRouteExposed(true);
+        // set the route listener to be notified of route calculation
+        // events
+        SKRouteManager.getInstance().setRouteListener(this);
+        //Apparently you have to set advisorsettings before calculating route
+        SKRouteManager.getInstance().setAudioAdvisorSettings(new SKAdvisorSettings());
+        // pass the route to the calculation routine
+        SKRouteManager.getInstance().calculateRoute(route);
+    }
+
 
     @Override
     public void onActionPan() {
@@ -79,8 +116,12 @@ public class MapsActivity extends Activity implements SKMapSurfaceListener {
     @Override
     public void onSurfaceCreated() {
         //System.out.print("Surface created");
-        Toast.makeText(getApplicationContext(), "Map loaded! Yeey!", Toast.LENGTH_SHORT).show();
-
+        if(SKMaps.getInstance().isSKMapsInitialized()){
+            Toast.makeText(getApplicationContext(), "SKMaps initialized!", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "SKMaps is NOT initialized!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -189,6 +230,28 @@ public class MapsActivity extends Activity implements SKMapSurfaceListener {
     }
 
 
+    @Override
+    public void onRouteCalculationCompleted(SKRouteInfo skRouteInfo) {
+        Toast.makeText(getApplicationContext(), "Route Calculation completed!", Toast.LENGTH_SHORT).show();
+    }
 
+    @Override
+    public void onRouteCalculationFailed(SKRoutingErrorCode skRoutingErrorCode) {
+        Toast.makeText(getApplicationContext(), "Route Calculation failed!", Toast.LENGTH_SHORT).show();
+    }
 
+    @Override
+    public void onAllRoutesCompleted() {
+
+    }
+
+    @Override
+    public void onServerLikeRouteCalculationCompleted(SKRouteJsonAnswer skRouteJsonAnswer) {
+
+    }
+
+    @Override
+    public void onOnlineRouteComputationHanging(int i) {
+
+    }
 }
