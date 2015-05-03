@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/HoloGraphLibrary" />
             <option value="$PROJECT_DIR$/HoloGraphLibrarySample" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/sdktools" />
           </set>
         </option>
       </GradleProjectSettings>
