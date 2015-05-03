@@ -94,18 +94,6 @@ public class StatisticsSimple extends ListActivity {
 
         // Loading products in Background Thread
         new MySQL_List().execute();
-        /**
-        MySQL_List mysql = new MySQL_List();
-
-        //String[] values = mysql.result;
-        //List<String> values = new ArrayList<String>();
-        //values = mysql.driverslist;
-
-        List<String> values = new ArrayList<String>();
-        values.add("foo");
-        values.add("bar");
-        **/
-
         }
 
 
@@ -157,8 +145,6 @@ public class StatisticsSimple extends ListActivity {
             } catch (JSONException e) {
                 Log.e("MySQL_List", "Error parsing data " + e.toString());
             }
-
-            //parse json data to ArrayList
 
             return result;
         }
