@@ -46,10 +46,11 @@ public class SKActivity extends Activity implements SKPrepareMapTextureListener 
     @Override
     public void onMapTexturesPrepared(boolean b) {
         if(b){
+            Toast.makeText(SKActivity.this, "Map resources are prepared", Toast.LENGTH_SHORT).show();
             initializeLibrary();
             startActivity(new Intent(SKActivity.this, MainActivity.class));
         }else{
-            Toast.makeText(SKActivity.this, "Map resources are not prepared", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SKActivity.this, "Map resources are NOT prepared", Toast.LENGTH_SHORT).show();
 
     }
 

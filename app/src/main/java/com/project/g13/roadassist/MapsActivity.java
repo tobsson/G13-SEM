@@ -39,6 +39,7 @@ public class MapsActivity extends Activity implements SKMapSurfaceListener, SKRo
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -50,12 +51,14 @@ public class MapsActivity extends Activity implements SKMapSurfaceListener, SKRo
         mapView.setMapSurfaceListener(this);
         Toast.makeText(getApplicationContext(), "Loading Map...", Toast.LENGTH_SHORT).show();
 
+
+
         /**
          * Method to launch route calculation, I set predefined route inside the method for test
          * this crashes the app atm by a nullpointer exception from the method calculateRoute() method
          * located inside the SKMaps library. Uncomment the line below to see the error.
          */
-        //launchRouteCalculation();
+        launchRouteCalculation();
 
        /*
         Button navBtn = (Button)findViewById(R.id.navBtn);
@@ -99,7 +102,27 @@ public class MapsActivity extends Activity implements SKMapSurfaceListener, SKRo
         //Apparently you have to set advisorsettings before calculating route
         SKRouteManager.getInstance().setAudioAdvisorSettings(new SKAdvisorSettings());
         // pass the route to the calculation routine
-        SKRouteManager.getInstance().calculateRoute(route);
+
+        /**
+         * Test if the route object is null or not.
+         */
+        if(route==null){
+            Toast.makeText(getApplicationContext(), "Route is null!", Toast.LENGTH_SHORT).show();
+
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Route is not null! yeeey!", Toast.LENGTH_SHORT).show();
+            /**
+             * Try catch block only to make the app not crash
+             */
+            try {
+                SKRouteManager.getInstance().calculateRoute(route);
+            }
+            catch (NullPointerException npe) {
+            }
+
+
+        }
     }
 
 
