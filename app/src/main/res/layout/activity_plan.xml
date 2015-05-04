@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPostalAddress"
         android:ems="10"
-        android:id="@+id/editText2"
+        android:id="@+id/destination"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/textPlnView" />
 
@@ -29,9 +29,9 @@
         android:id="@+id/switch1"
         android:checked="false"
         android:layout_alignTop="@+id/textARSView"
-        android:layout_toEndOf="@+id/editText2" />
+        android:layout_toEndOf="@+id/destination" />
 
-    <TextView
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -49,4 +49,12 @@
         android:layout_alignStart="@+id/editText2"
         android:layout_toStartOf="@+id/switch1"
         android:layout_alignEnd="@+id/editText2" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="check text"
+        android:id="@+id/button"
+        android:layout_above="@+id/textARSView"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

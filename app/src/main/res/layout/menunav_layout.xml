@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:columnCount="2"
+        android:rowCount="3"
+        android:id="@+id/gridLayout"></GridLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RESTAURANT"
+        android:id="@+id/restaurantBtn"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/gridLayout"
+        android:layout_above="@+id/returnBtn"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GAS STATION"
+        android:id="@+id/gasBtn"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/gridLayout"
+        android:layout_above="@+id/returnBtn" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="REST-STOP"
+        android:id="@+id/restStopBtn"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/gridLayout"
+        android:layout_below="@+id/gridLayout" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SLEEP"
+        android:id="@+id/sleepBtn"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/gasBtn"
+        android:layout_toEndOf="@+id/gridLayout"
+        android:layout_below="@+id/gridLayout" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EXIT"
+        android:id="@+id/returnBtn"
+        android:layout_above="@+id/gridLayout"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:textColor="#F00"
+        android:textSize="40dp" />
+</RelativeLayout>
