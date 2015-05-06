@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
     Button plnRtBtn = (Button)findViewById(R.id.plnRtBtn);
         Button vwRtBtn = (Button)findViewById(R.id.vwRtBtn);
         Button statsBtn = (Button)findViewById(R.id.statsBtn);
+        Button stats2Btn = (Button)findViewById(R.id.stats2);
 
         plnRtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +52,12 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, StatisticsSimple.class));
+            }
+        });
+        stats2Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, StatisticsTestActivity.class));
             }
         });
     }

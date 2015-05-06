@@ -29,6 +29,15 @@
             android:layout_column="0" />
 
         <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stats2 Test"
+            android:id="@+id/stats2"
+            android:layout_row="12"
+            android:layout_column="12"
+            android:singleLine="true" />
+
+        <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

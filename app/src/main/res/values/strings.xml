@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">RoadAssist</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_stats2">Stats2</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_plan">Plan</string>
     <string name="title_menuNav">Options Menu</string>
