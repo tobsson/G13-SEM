@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/G13-SEM.iml" filepath="$PROJECT_DIR$/G13-SEM.iml" />
       <module fileurl="file://$PROJECT_DIR$/HoloGraphLibrary/HoloGraphLibrary.iml" filepath="$PROJECT_DIR$/HoloGraphLibrary/HoloGraphLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/HoloGraphLibrarySample/HoloGraphLibrarySample.iml" filepath="$PROJECT_DIR$/HoloGraphLibrarySample/HoloGraphLibrarySample.iml" />
       <module fileurl="file://$PROJECT_DIR$/RoadAssist.iml" filepath="$PROJECT_DIR$/RoadAssist.iml" />
@@ -11,4 +10,3 @@
     </modules>
   </component>
 </project>
-

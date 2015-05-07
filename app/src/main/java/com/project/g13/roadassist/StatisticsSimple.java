@@ -90,78 +90,48 @@ public class StatisticsSimple extends ListActivity {
 
 
         // Get ListView object from xml
-        listView = (ListView) findViewById(android.R.id.list);
+        this.listView = (ListView) this.findViewById(android.R.id.list);
 
         // Loading products in Background Thread
-        new MySQL_List().execute();
+        new GetAllDriversTask().execute(new ApiConnector());
+
         }
 
 
-    class MySQL_List extends AsyncTask<String, Void, String> {
-        JSONObject jsonObject;
-        ArrayList<String> driverslist = new ArrayList<String>();
-        /**
-         * Getting all names on drivers
-         */
-        protected String doInBackground(String... args) {
-            String result = "";
-            InputStream is = null;
-            JSONArray jArray = null;
-            HttpResponse response = null;
-            Log.d("MySQL_List", "Do In Background");
-
-            //http post
-            try {
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost("http://group13.comxa.com/all_drivers2.php");
-                response = httpclient.execute(httppost);
-                Log.d("MySQL_List", "HTTP Part Done");
-            } catch (Exception e) {
-                Log.e("MySQL_List", "Error in http connection " + e.toString());
-            }
-
-            //parse json data
-            try {
-                String jsonString = EntityUtils.toString(response.getEntity());
-                Log.d("MySQL_List First Print",jsonString);
-                //jsonObject = new JSONObject(jsonString);
-                //Log.d("MySQL_List Second Print", jsonObject.toString());
-                jArray = new JSONArray(jsonString);
-                Log.d("MySQL_List Second Print", jArray.toString());
-                if (jArray != null) {
-                    int len = jArray.length();
-                    for (int i = 0; i < len; i++) {
-                        try {
-                            driverslist.add(jArray.get(i).toString());
-                            Log.d("MySQL_List LineArray", jArray.get(i).toString());
-                        } catch (JSONException e) {
-                            Log.e("MySQL_List", "Error converting to ArrayList " + e.toString());
-                        }
+    //Async task for getting data from the mysql database
+    private class GetAllDriversTask extends AsyncTask<ApiConnector,Long,ArrayList>
+    {
+        @Override
+        protected ArrayList doInBackground(ApiConnector... params) {
+            ArrayList<String> driversList = new ArrayList<String>();
+            // it is executed on Background thread
+            JSONArray jsonArray = params[0].GetAllDrivers();
+            if (jsonArray != null) {
+                int len = jsonArray.length();
+                for (int i = 0; i < len; i++) {
+                    try {
+                        driversList.add(jsonArray.get(i).toString());
+                        Log.d("MySQL_List LineArray", jsonArray.get(i).toString());
+                    } catch (JSONException e) {
+                        Log.e("MySQL_List", "Error converting to ArrayList " + e.toString());
                     }
                 }
-            } catch (IOException e) {
-                Log.e("MySQL_List", "Error converting response to string " + e.toString());
 
-            } catch (JSONException e) {
-                Log.e("MySQL_List", "Error parsing data " + e.toString());
             }
-
-            return result;
+            return driversList;
         }
+        @Override
+        protected void onPostExecute(ArrayList driversList) {
 
-        protected void onPostExecute(String result) {
+            //Updates the adapter with the values from the arraylist
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(StatisticsSimple.this,
+                    android.R.layout.simple_list_item_1, android.R.id.text1, driversList);
 
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    List<String> values = new ArrayList<String>();
-                    values = driverslist;
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(StatisticsSimple.this,
-                            android.R.layout.simple_list_item_1, android.R.id.text1, values);
+            // Assign adapter to ListView, updates the listview with this info
+            listView.setAdapter(adapter);
 
-                    // Assign adapter to ListView
-                    listView.setAdapter(adapter);
-                }
-            });
-            }
+
         }
+    }
+
 }
