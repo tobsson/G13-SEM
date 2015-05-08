@@ -35,6 +35,7 @@ public class MainActivity extends Activity {
         Button vwRtBtn = (Button)findViewById(R.id.vwRtBtn);
         Button statsBtn = (Button)findViewById(R.id.statsBtn);
         Button stats2Btn = (Button)findViewById(R.id.stats2);
+        Button displaySpeedBtn = (Button)findViewById(R.id.speedBtn);
 
         plnRtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,10 +55,10 @@ public class MainActivity extends Activity {
                 startActivity(new Intent(MainActivity.this, StatisticsSimple.class));
             }
         });
-        stats2Btn.setOnClickListener(new View.OnClickListener() {
+        displaySpeedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, StatisticsTestActivity.class));
+                startActivity(new Intent(MainActivity.this, UpdateValues.class));
             }
         });
     }
