@@ -26,7 +26,8 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" >
+            android:label="@string/title_activity_maps"
+            android:theme="@style/Theme.AppCompat.Light">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,7 +36,9 @@
         </activity>
         <activity
             android:name=".Plan_Route"
-            android:label="@string/title_activity_plan" >
+            android:label="@string/title_activity_plan"
+            android:parentActivityName="com.project.g13.roadassist.MainActivity"
+            android:theme="@style/Theme.AppCompat.Light" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,7 +59,8 @@
         </service>
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_main"
+            android:theme="@style/Theme.AppCompat.Light" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -85,7 +89,8 @@
         <activity
             android:name=".StatisticsSimple"
             android:label="@string/title_activity_statisticssimple"
-            android:theme="@android:style/Theme.Material.Light" >
+            android:parentActivityName="com.project.g13.roadassist.MainActivity"
+            android:theme="@style/Theme.AppCompat.Light" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

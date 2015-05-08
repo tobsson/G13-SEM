@@ -18,33 +18,35 @@ import com.swedspot.vil.policy.AutomotiveCertificate;
 /**
  * Created by tobs on 2015-05-07.
  */
+/**
 public class AgaValues {
     Float speed = null;
 
     public Float truckSpeed() {
 
         AutomotiveFactory.createAutomotiveManagerInstance(
-
                 new AutomotiveCertificate(new byte[0]),
                 new AutomotiveListener() {
                     @Override
-                    public void receive(final AutomotiveSignal automotiveSignal) {
-                        speed = ((SCSFloat) automotiveSignal.getData()).getFloatValue()
-                        Log.d("AgaValues", "FMS_WHEEL_BASED_SPEED: " + ((SCSFloat) automotiveSignal.getData()).getFloatValue());
-                    }
-
-
-                    @Override
-                    public void timeout(int i) {
+                    public void receive (final AutomotiveSignal automotiveSignal) {
+                        ds.post( new Runnable() { // Post the result back to the View/UI thread
+                            public void run() {
+                                ds.setText(String.format("%.1f km/h", ((SCSFloat) automotiveSignal.getData()).getFloatValue()));
+                            }
+                        });
                     }
 
                     @Override
-                    public void notAllowed(int i) {
-                    }
-                }).register(AutomotiveSignalId.FMS_WHEEL_BASED_SPEED);
+                    public void timeout (int i) { }
+
+                    @Override
+                    public void notAllowed (int i) { }
+                }
+        ).register(AutomotiveSignalId.FMS_WHEEL_BASED_SPEED); // Register for the speed signal
         return speed;
 
     }
 
 }
 
+**/

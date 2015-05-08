@@ -2,18 +2,13 @@ package com.project.g13.roadassist;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.skobbler.ngx.SKPrepareMapTextureListener;
-import com.skobbler.ngx.SKPrepareMapTextureThread;
-import com.skobbler.ngx.util.SKLogging;
-
-import java.io.File;
 
 public class MainActivity extends Activity {
 
@@ -24,14 +19,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
 
-
-
-
-
-
-
-
-    Button plnRtBtn = (Button)findViewById(R.id.plnRtBtn);
+        Button plnRtBtn = (Button)findViewById(R.id.plnRtBtn);
         Button vwRtBtn = (Button)findViewById(R.id.vwRtBtn);
         Button statsBtn = (Button)findViewById(R.id.statsBtn);
 
@@ -53,36 +41,44 @@ public class MainActivity extends Activity {
                 startActivity(new Intent(MainActivity.this, StatisticsSimple.class));
             }
         });
+
     }
-
-
-    public void click(View view) {
-    }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_main_actions, menu);
+
+        return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                openSearch();
+                return true;
+            case R.id.action_map:
+                //composeMessage();
+                return true;
+            case R.id.action_help:
+                //composeMessage();
+                return true;
+            case R.id.action_settings:
+                //composeMessage();
+                return true;
+            case R.id.action_about:
+                //composeMessage();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
+    private void openSearch() {
+        Intent i = new Intent(MainActivity.this, Plan_Route.class);
+        startActivity(i);
+    }
 
 
 }
