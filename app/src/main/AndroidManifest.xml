@@ -15,8 +15,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:label="@string/app_name">
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -26,8 +25,7 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"
-            android:theme="@style/Theme.AppCompat.Light">
+            android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,8 +35,7 @@
         <activity
             android:name=".Plan_Route"
             android:label="@string/title_activity_plan"
-            android:parentActivityName="com.project.g13.roadassist.MainActivity"
-            android:theme="@style/Theme.AppCompat.Light" >
+            android:parentActivityName="com.project.g13.roadassist.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -59,8 +56,7 @@
         </service>
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/Theme.AppCompat.Light" >
+            android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -89,8 +85,40 @@
         <activity
             android:name=".StatisticsSimple"
             android:label="@string/title_activity_statisticssimple"
-            android:parentActivityName="com.project.g13.roadassist.MainActivity"
-            android:theme="@style/Theme.AppCompat.Light" >
+            android:parentActivityName="com.project.g13.roadassist.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Help"
+            android:label="@string/title_activity_help"
+            android:parentActivityName="com.project.g13.roadassist.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".About"
+            android:label="@string/title_activity_about"
+            android:parentActivityName="com.project.g13.roadassist.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Settings"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName="com.project.g13.roadassist.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

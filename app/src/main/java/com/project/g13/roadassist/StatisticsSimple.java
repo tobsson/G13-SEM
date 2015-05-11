@@ -3,12 +3,15 @@ package com.project.g13.roadassist;
 import android.app.ActionBar;
 import android.app.ListActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -26,18 +29,12 @@ import java.util.ArrayList;
 /**
  * Created by tobs on 2015-04-20.
  */
-public class StatisticsSimple extends ListActivity {
+public class StatisticsSimple extends ActionBarActivity {
     private ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statisticssimple);
-
-        // get action bar
-        ActionBar actionBar = getActionBar();
-
-        // Enabling Up / Back navigation
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         Line l = new Line();
         LinePoint p = new LinePoint();
@@ -84,13 +81,57 @@ public class StatisticsSimple extends ListActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                openSearch();
+                return true;
+            case R.id.action_map:
+                //composeMessage();
+                return true;
+            case R.id.action_help:
+                openHelp();
+                return true;
+            case R.id.action_settings:
+                openSettings();
+                return true;
+            case R.id.action_about:
+                openAbout();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void openSearch() {
+        Intent i = new Intent(StatisticsSimple.this, Plan_Route.class);
+        startActivity(i);
+    }
+
+    private void openHelp() {
+        Intent i = new Intent(StatisticsSimple.this, Help.class);
+        startActivity(i);
+    }
+
+    private void openAbout() {
+        Intent i = new Intent(StatisticsSimple.this, About.class);
+        startActivity(i);
+    }
+
+    private void openSettings() {
+        Intent i = new Intent(StatisticsSimple.this, Settings.class);
+        startActivity(i);
+    }
+
     //Async task for getting data from the mysql database
     private class GetAllDriversTask extends AsyncTask<ApiConnector,Long,ArrayList>
     {
         @Override
         protected ArrayList doInBackground(ApiConnector... params) {
             ArrayList<String> driversList = new ArrayList<String>();
-            // it is executed on Background thread
+            // Put values in a JSONArray
             JSONArray jsonArray = params[0].GetAllDrivers();
             if (jsonArray != null) {
                 int len = jsonArray.length();

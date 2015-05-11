@@ -13,6 +13,26 @@
     <string name="SKMaps_API_Key">8d2d10e08df1f0f199fe3090f418f7298a25629722b1b5d15093880b1e35abc1</string>
     <string name="title_activity_sk">SKMAPS</string>
 
+    <!-- activity_help -->
+    <string name="HelpInfo">This application is designed to help truck drivers find stops along a
+        pre defined road without unnecessary manual input.
+        \n\nStart a new route by pressing plan route in the main window. Add a destination or several.
+        \n\nWhen the map with navigation is visible press on the screen to bring up options for rest stops.</string>
+    <string name="title_activity_help">Help</string>
+
+    <!-- activity_about -->
+    <string name="AboutInfo">This application was created as a project for the SE&amp;M program on
+        Gothenburg University to promote safe driving among truck drivers. This is a first year project.  </string>
+    <string name="title_activity_about">About</string>
+
+    <!-- activity_settings -->
+    <string name="title_activity_settings">Settings</string>
+    <string-array name="settings_languages">
+        <item>English</item>
+        <item>Swedish</item>
+        <item>Greek</item>
+    </string-array>
+
     <!-- activity_main_actions -->
     <string name="action_search">Search</string>
     <string name="action_map">View Map</string>
