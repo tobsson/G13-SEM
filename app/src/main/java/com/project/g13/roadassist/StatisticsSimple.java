@@ -8,12 +8,16 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.swedspot.automotiveapi.AutomotiveSignal;
+import android.swedspot.automotiveapi.AutomotiveSignalId;
+import android.swedspot.scs.data.SCSFloat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +25,13 @@ import org.json.JSONException;
 import com.echo.holographlibrary.Line;
 import com.echo.holographlibrary.LineGraph;
 import com.echo.holographlibrary.LinePoint;
+import com.swedspot.automotiveapi.AutomotiveFactory;
+import com.swedspot.automotiveapi.AutomotiveListener;
+import com.swedspot.vil.distraction.DriverDistractionLevel;
+import com.swedspot.vil.distraction.DriverDistractionListener;
+import com.swedspot.vil.distraction.LightMode;
+import com.swedspot.vil.distraction.StealthMode;
+import com.swedspot.vil.policy.AutomotiveCertificate;
 
 import java.util.ArrayList;
 
@@ -65,15 +76,59 @@ public class StatisticsSimple extends ActionBarActivity {
         li.setTextColor(Color.RED);
         li.setTextSize(50);
 
-
         // Get ListView object from xml
         this.listView = (ListView) this.findViewById(android.R.id.list);
 
         // Loading products in Background Thread
         new GetAllDriversTask().execute(new ApiConnector());
 
-        }
+        // Get a reference to the text field
+        final TextView ds = (TextView)findViewById(R.id.textView);
 
+        new AsyncTask() {
+            @Override
+            protected Object doInBackground (Object... objects) {
+                AutomotiveFactory.createAutomotiveManagerInstance(
+                        new AutomotiveCertificate(new byte[0]),
+                        new AutomotiveListener() {
+                            @Override
+                            public void receive (final AutomotiveSignal automotiveSignal) {
+                                ds.post( new Runnable() { // Post the result back to the View/UI thread
+                                    public void run() {
+                                        ds.setText(String.format("%.1f km/h", ((SCSFloat) automotiveSignal.getData()).getFloatValue()));
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void timeout (int i) { }
+
+                            @Override
+                            public void notAllowed (int i) { }
+                        },
+                        new DriverDistractionListener() {
+                            @Override
+                            public void levelChanged(final DriverDistractionLevel driverDistractionLevel) {
+                                ds.post(new Runnable() { // Post the result back to the View/UI thread
+                                    public void run() {
+                                        ds.setTextSize(driverDistractionLevel.getLevel() * 10.0F + 12.0F);
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void lightModeChanged(LightMode lightMode) { }
+
+                            @Override
+                            public void stealthModeChanged(StealthMode stealthMode) { }
+                        }
+                ).register(AutomotiveSignalId.FMS_WHEEL_BASED_SPEED); // Register for the speed signal
+                return null;
+            }
+        }.execute();
+
+        }
+/**
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -124,7 +179,7 @@ public class StatisticsSimple extends ActionBarActivity {
         Intent i = new Intent(StatisticsSimple.this, Settings.class);
         startActivity(i);
     }
-
+**/
     //Async task for getting data from the mysql database
     private class GetAllDriversTask extends AsyncTask<ApiConnector,Long,ArrayList>
     {

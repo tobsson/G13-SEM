@@ -28,8 +28,8 @@ public class AgaValues {
                 new AutomotiveCertificate(new byte[0]),
                 new AutomotiveListener() {
                     @Override
-                    public void receive (final AutomotiveSignal automotiveSignal) {
-                        ds.post( new Runnable() { // Post the result back to the View/UI thread
+                    public void receive(final AutomotiveSignal automotiveSignal) {
+                        ds.post(new Runnable() { // Post the result back to the View/UI thread
                             public void run() {
                                 ds.setText(String.format("%.1f km/h", ((SCSFloat) automotiveSignal.getData()).getFloatValue()));
                             }
@@ -37,16 +37,33 @@ public class AgaValues {
                     }
 
                     @Override
-                    public void timeout (int i) { }
+                    public void timeout(int i) {
+                    }
 
                     @Override
-                    public void notAllowed (int i) { }
+                    public void notAllowed(int i) {
+                    }
+                },
+                new DriverDistractionListener() {
+                    @Override
+                    public void levelChanged(final DriverDistractionLevel driverDistractionLevel) {
+                        ds.post(new Runnable() { // Post the result back to the View/UI thread
+                            public void run() {
+                                ds.setTextSize(driverDistractionLevel.getLevel() * 10.0F + 12.0F);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void lightModeChanged(LightMode lightMode) {
+                    }
+
+                    @Override
+                    public void stealthModeChanged(StealthMode stealthMode) {
+                    }
                 }
         ).register(AutomotiveSignalId.FMS_WHEEL_BASED_SPEED); // Register for the speed signal
         return speed;
-
     }
-
 }
-
-**/
+ **/
