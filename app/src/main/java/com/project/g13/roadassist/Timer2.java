@@ -6,7 +6,7 @@ import android.util.Log;
 /**
  * Created by Christosgialias on 2015-05-07.
  */
-public class Timer {
+public class Timer2 {
 
     private String speedString;
 
