@@ -42,6 +42,7 @@ import java.util.ArrayList;
  */
 public class StatisticsSimple extends ActionBarActivity {
     private ListView listView;
+    private TextView ds;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,8 +83,24 @@ public class StatisticsSimple extends ActionBarActivity {
         // Loading products in Background Thread
         new GetAllDriversTask().execute(new ApiConnector());
 
+        //new UpdateSpeed().execute();
+
         // Get a reference to the text field
-        final TextView ds = (TextView)findViewById(R.id.textView);
+        ds = (TextView)findViewById(R.id.textView);
+/**
+        new AsyncTask() {
+            protected Object doInBackground(Object... objects) {
+                AgaValues av = new AgaValues();
+                final Float speed;
+                speed = av.truckSpeed();
+                return speed;
+            }
+            @Override
+            protected void onPostExecute(Float speed){
+                ds.setText(String.valueOf(speed));
+            }
+        }.execute();
+**/
 
         new AsyncTask() {
             @Override
@@ -103,17 +120,17 @@ public class StatisticsSimple extends ActionBarActivity {
                             @Override
                             public void timeout (int i) { }
 
-                            @Override
-                            public void notAllowed (int i) { }
-                        },
-                        new DriverDistractionListener() {
-                            @Override
-                            public void levelChanged(final DriverDistractionLevel driverDistractionLevel) {
-                                ds.post(new Runnable() { // Post the result back to the View/UI thread
-                                    public void run() {
-                                        ds.setTextSize(driverDistractionLevel.getLevel() * 10.0F + 12.0F);
-                                    }
-                                });
+                                @Override
+                                public void notAllowed (int i) { }
+                            },
+                                    new DriverDistractionListener() {
+                                @Override
+                                public void levelChanged(final DriverDistractionLevel driverDistractionLevel) {
+                                    ds.post(new Runnable() { // Post the result back to the View/UI thread
+                                        public void run() {
+                                            ds.setTextSize(driverDistractionLevel.getLevel() * 10.0F + 12.0F);
+                                        }
+                                    });
                             }
 
                             @Override
@@ -215,5 +232,64 @@ public class StatisticsSimple extends ActionBarActivity {
 
         }
     }
+/**
+    private class UpdateSpeed extends AsyncTask<AgaValues, Void, Float> {
+        @Override
+        protected Float doInBackground(AgaValues... params) {
+            Float speed = params[0].truckSpeed();
+            Log.i("StatisticsSimple", "Speed Value: " + speed.toString());
+            return speed;
+        }
+        @Override
+        protected void onPostExecute (Float speed) {
+            ds.setText(String.valueOf(speed));
+        }
+    }
 
+    private class UpdateSpeed extends AsyncTask<Void,Void,Float>{
+    public Float speed;
+    @Override
+    protected Float doInBackground(Void... test) {
+
+        AutomotiveFactory.createAutomotiveManagerInstance(
+                new AutomotiveCertificate(new byte[0]),
+                new AutomotiveListener() {
+                    @Override
+                    public void receive(final AutomotiveSignal automotiveSignal) {
+                        speed =((SCSFloat) automotiveSignal.getData()).getFloatValue();
+                        Log.i("StatisticsSimple", "Speed Value: " + speed.toString());
+                    }
+
+                    @Override
+                    public void timeout(int i) {
+                    }
+
+                    @Override
+                    public void notAllowed(int i) {
+                    }
+                },
+                new DriverDistractionListener() {
+                    @Override
+                    public void levelChanged(final DriverDistractionLevel driverDistractionLevel) {
+
+                    }
+
+                    @Override
+                    public void lightModeChanged(LightMode lightMode) {
+                    }
+
+                    @Override
+                    public void stealthModeChanged(StealthMode stealthMode) {
+                    }
+                }
+        ).register(AutomotiveSignalId.FMS_WHEEL_BASED_SPEED); // Register for the speed signal
+        return speed;
+    }
+        @Override
+        protected void onPostExecute (Float speed) {
+            ds.setText(String.valueOf(speed));
+            Log.i("onPostExecute", "Speed Value: " + speed.toString());
+        }
+    }
+ **/
 }

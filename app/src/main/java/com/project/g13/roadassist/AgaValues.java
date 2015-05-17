@@ -18,9 +18,9 @@ import com.swedspot.vil.policy.AutomotiveCertificate;
 /**
  * Created by tobs on 2015-05-07.
  */
-/**
+
 public class AgaValues {
-    Float speed = null;
+    Float speed = 42f;
 
     public Float truckSpeed() {
 
@@ -29,11 +29,8 @@ public class AgaValues {
                 new AutomotiveListener() {
                     @Override
                     public void receive(final AutomotiveSignal automotiveSignal) {
-                        ds.post(new Runnable() { // Post the result back to the View/UI thread
-                            public void run() {
-                                ds.setText(String.format("%.1f km/h", ((SCSFloat) automotiveSignal.getData()).getFloatValue()));
-                            }
-                        });
+                        speed =((SCSFloat) automotiveSignal.getData()).getFloatValue();
+                        Log.i("AgaValues", "Speed Value: " + speed.toString());
                     }
 
                     @Override
@@ -47,11 +44,7 @@ public class AgaValues {
                 new DriverDistractionListener() {
                     @Override
                     public void levelChanged(final DriverDistractionLevel driverDistractionLevel) {
-                        ds.post(new Runnable() { // Post the result back to the View/UI thread
-                            public void run() {
-                                ds.setTextSize(driverDistractionLevel.getLevel() * 10.0F + 12.0F);
-                            }
-                        });
+
                     }
 
                     @Override
@@ -65,5 +58,5 @@ public class AgaValues {
         ).register(AutomotiveSignalId.FMS_WHEEL_BASED_SPEED); // Register for the speed signal
         return speed;
     }
+
 }
- **/
