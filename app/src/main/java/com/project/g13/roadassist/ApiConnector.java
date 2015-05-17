@@ -59,10 +59,10 @@ public class ApiConnector {
             try {
                 String entityResponse = EntityUtils.toString(httpEntity);
 
-                Log.e("Entity Response  : ", entityResponse);
+                Log.d("Entity Response  : ", entityResponse);
 
                 jsonArray = new JSONArray(entityResponse);
-                Log.e("ApiConnector",  jsonArray.toString());
+                Log.d("ApiConnector",  jsonArray.toString());
             } catch (JSONException e) {
                 Log.e("ApiConnector", "Error in converting string to jsonArray 1 " + e.toString());
             } catch (IOException e) {
@@ -116,7 +116,7 @@ public class ApiConnector {
             try {
                 String entityResponse = EntityUtils.toString(httpEntity);
 
-                Log.e("Entity Response  : ", entityResponse);
+                Log.d("Entity Response  : ", entityResponse);
 
                 jsonArray = new JSONArray(entityResponse);
 

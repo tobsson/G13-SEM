@@ -83,10 +83,12 @@ public class StatisticsSimple extends ActionBarActivity {
         // Loading products in Background Thread
         new GetAllDriversTask().execute(new ApiConnector());
 
+        SaveValues values = new SaveValues();
+        values.run();
         //new UpdateSpeed().execute();
 
         // Get a reference to the text field
-        ds = (TextView)findViewById(R.id.textView);
+        //ds = (TextView)findViewById(R.id.textView);
 /**
         new AsyncTask() {
             protected Object doInBackground(Object... objects) {
@@ -102,6 +104,7 @@ public class StatisticsSimple extends ActionBarActivity {
         }.execute();
 **/
 
+      /**
         new AsyncTask() {
             @Override
             protected Object doInBackground (Object... objects) {
@@ -143,7 +146,7 @@ public class StatisticsSimple extends ActionBarActivity {
                 return null;
             }
         }.execute();
-
+**/
         }
 /**
     @Override
