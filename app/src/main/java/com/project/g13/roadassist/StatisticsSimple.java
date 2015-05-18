@@ -15,7 +15,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -44,6 +46,7 @@ import java.util.ArrayList;
 public class StatisticsSimple extends ActionBarActivity {
     private ListView listView;
     private TextView ds;
+    private Button postButton;
 
     private static final String LOG_TAG = "StatisticsSimple";
 
@@ -81,6 +84,16 @@ public class StatisticsSimple extends ActionBarActivity {
         li.setTextColor(Color.RED);
         li.setTextSize(50);
 
+        postButton = (Button) findViewById(R.id.postData);
+
+        postButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         // Get ListView object from xml
         this.listView = (ListView) this.findViewById(android.R.id.list);
 
@@ -89,6 +102,7 @@ public class StatisticsSimple extends ActionBarActivity {
 
         SaveValues values = new SaveValues();
         values.run();
+        values.myTask();
 
         //new UpdateSpeed().execute();
 /**
@@ -268,6 +282,7 @@ public class StatisticsSimple extends ActionBarActivity {
 
         }
     }
+
 /**
     private class UpdateSpeed extends AsyncTask<AgaValues, Void, Float> {
         @Override

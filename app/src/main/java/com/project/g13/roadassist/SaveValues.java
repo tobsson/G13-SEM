@@ -16,6 +16,18 @@ import com.swedspot.vil.distraction.LightMode;
 import com.swedspot.vil.distraction.StealthMode;
 import com.swedspot.vil.policy.AutomotiveCertificate;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by tobs on 2015-05-17.
  */
@@ -23,7 +35,9 @@ public class SaveValues implements Runnable {
     int speed;
     int fuel;
     int overSpeed;
+    int overSpeedTimes = 0;
     int brakeSwitch;
+    int brakeSwitchTimes = 0;
     int dLevel;
 
 
@@ -49,21 +63,23 @@ public class SaveValues implements Runnable {
                             //Check the data for what it contains and set a value on the appropriate variable
                             if (automotiveSignal.getSignalId() == 320) {
                                 float tmpSpeed = ((SCSFloat) automotiveSignal.getData()).getFloatValue();
-                                int speed = (int) tmpSpeed;
-                                Log.i(LOG_TAG, "Speed Value: " + speed);
+                                speed = (int) tmpSpeed;
+                                //Log.i(LOG_TAG, "Speed Value: " + speed);
                             }
                             if (automotiveSignal.getSignalId() == 325) {
                                 float tmpFuel = ((SCSFloat) automotiveSignal.getData()).getFloatValue();
-                                int fuel = (int) tmpFuel;
-                                Log.i(LOG_TAG, "Fuel Level: " + fuel);
+                                fuel = (int) tmpFuel;
+                                //Log.i(LOG_TAG, "Fuel Level: " + fuel);
                             }
                             if (automotiveSignal.getSignalId() == 285) {
                                 overSpeed = ((Uint8) automotiveSignal.getData()).getIntValue();
-                                Log.e(LOG_TAG, "OverSpeed: " + overSpeed);
+                                overSpeedTimes++;
+                                //Log.i(LOG_TAG, "OverSpeed: " + overSpeed);
                             }
                             if (automotiveSignal.getSignalId() == 317) {
                                 brakeSwitch = ((Uint8) automotiveSignal.getData()).getIntValue();
-                                Log.e(LOG_TAG, "BrakeSwitch: " + brakeSwitch);
+                                brakeSwitchTimes++;
+                                //Log.i(LOG_TAG, "BrakeSwitch: " + brakeSwitch);
                             }
                         }
 
@@ -95,4 +111,71 @@ public class SaveValues implements Runnable {
 
         }
 
+    public int getSpeed(){
+        return speed;
+    }
+
+    public int getFuel(){
+        return fuel;
+    }
+
+    public int getOverSpeed() {
+        return overSpeed;
+    }
+
+    public int getOverSpeedTimes() {
+        return overSpeedTimes;
+    }
+
+    public int getBrakeSwitch() {
+        return brakeSwitch;
+    }
+
+    public int getBrakeSwitchTimes() {
+        return brakeSwitchTimes;
+    }
+
+    public int getdLevel() {
+        return dLevel;
+    }
+
+    public void myTask(){
+
+        Timer timer = new Timer();
+        TimerTask doTask = new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    Log.i("Timer", "Speed Value: " + speed);
+                    Log.i("Timer", "Fuel Level: " + fuel);
+                }catch (Exception e){
+
+                }
+            }
+        };
+     timer.schedule(doTask, 0, 5000);
+    }
+
+
+/**
+    public void postData(){
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httppost = new HttpPost("http://xxxxxxx.com/postdata.php");
+
+        String tmpSpeed = "";
+        try {
+            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
+            nameValuePairs.add(new BasicNameValuePair("Time", ""));
+            nameValuePairs.add(new BasicNameValuePair("Cspeed", tmpSpeed.valueOf(speed)));
+            nameValuePairs.add(new BasicNameValuePair("", city));
+            nameValuePairs.add(new BasicNameValuePair("Comment", comment));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            HttpResponse response = httpclient.execute(httppost);
+        }
+        catch(Exception e)
+        {
+            Log.e("log_tag", "Error:  "+e.toString());
+        }
+    }
+ **/
 }
