@@ -34,13 +34,6 @@
         android:text="Previous Rides:"
         android:id="@+id/textView" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Post Data"
-        android:id="@+id/postData"
-        android:layout_gravity="right" />
-
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

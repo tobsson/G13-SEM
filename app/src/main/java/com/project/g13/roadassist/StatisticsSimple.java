@@ -84,16 +84,6 @@ public class StatisticsSimple extends ActionBarActivity {
         li.setTextColor(Color.RED);
         li.setTextSize(50);
 
-        postButton = (Button) findViewById(R.id.postData);
-
-        postButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
         // Get ListView object from xml
         this.listView = (ListView) this.findViewById(android.R.id.list);
 

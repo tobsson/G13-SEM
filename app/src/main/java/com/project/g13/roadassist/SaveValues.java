@@ -39,6 +39,7 @@ public class SaveValues implements Runnable {
     int brakeSwitch;
     int brakeSwitchTimes = 0;
     int dLevel;
+    int time = 0;
 
 
     //@SuppressWarnings("unused")
@@ -73,12 +74,16 @@ public class SaveValues implements Runnable {
                             }
                             if (automotiveSignal.getSignalId() == 285) {
                                 overSpeed = ((Uint8) automotiveSignal.getData()).getIntValue();
-                                overSpeedTimes++;
+                                if(overSpeed == 1) {
+                                    overSpeedTimes++;
+                                }
                                 //Log.i(LOG_TAG, "OverSpeed: " + overSpeed);
                             }
                             if (automotiveSignal.getSignalId() == 317) {
                                 brakeSwitch = ((Uint8) automotiveSignal.getData()).getIntValue();
-                                brakeSwitchTimes++;
+                                if(brakeSwitch == 1) {
+                                    brakeSwitchTimes++;
+                                }
                                 //Log.i(LOG_TAG, "BrakeSwitch: " + brakeSwitch);
                             }
                         }
@@ -146,36 +151,43 @@ public class SaveValues implements Runnable {
             @Override
             public void run() {
                 try {
-                    Log.i("Timer", "Speed Value: " + speed);
-                    Log.i("Timer", "Fuel Level: " + fuel);
+                    postData();
+                    Log.d("Timer", "Running");
                 }catch (Exception e){
 
                 }
             }
         };
-     timer.schedule(doTask, 0, 5000);
+     timer.schedule(doTask, 0, 5000); //Time between runs in milliseconds. 1000 is 1 second.
     }
 
 
-/**
+
     public void postData(){
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost("http://xxxxxxx.com/postdata.php");
+        HttpPost httppost = new HttpPost("http://group13.comxa.com/postToTrip.php");
 
-        String tmpSpeed = "";
+        int tid = 2;
+
         try {
+            String tmpTime = Integer.toString(time);
+            String tmpSpeed = Integer.toString(speed);
+            String tmpdLevel = Integer.toString(dLevel);
+            String tmpTid = Integer.toString(tid);
             ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
-            nameValuePairs.add(new BasicNameValuePair("Time", ""));
-            nameValuePairs.add(new BasicNameValuePair("Cspeed", tmpSpeed.valueOf(speed)));
-            nameValuePairs.add(new BasicNameValuePair("", city));
-            nameValuePairs.add(new BasicNameValuePair("Comment", comment));
+            nameValuePairs.add(new BasicNameValuePair("Time", tmpTime));
+            nameValuePairs.add(new BasicNameValuePair("CSpeed", tmpSpeed));
+            nameValuePairs.add(new BasicNameValuePair("distLevel", tmpdLevel));
+            nameValuePairs.add(new BasicNameValuePair("TID", tmpTid));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-            HttpResponse response = httpclient.execute(httppost);
+            httpclient.execute(httppost);
+            Log.d(LOG_TAG, "postData run" + ", time: " + tmpTime + ", CSpeed: " + tmpSpeed + ", TID: " + tmpTid);
+            time += 5;
         }
         catch(Exception e)
         {
-            Log.e("log_tag", "Error:  "+e.toString());
+            Log.e(LOG_TAG, "postData Error:  "+e.toString());
         }
     }
- **/
+
 }
