@@ -27,6 +27,7 @@ import com.echo.holographlibrary.LineGraph;
 import com.echo.holographlibrary.LinePoint;
 import com.swedspot.automotiveapi.AutomotiveFactory;
 import com.swedspot.automotiveapi.AutomotiveListener;
+import com.swedspot.automotiveapi.AutomotiveManager;
 import com.swedspot.vil.distraction.DriverDistractionLevel;
 import com.swedspot.vil.distraction.DriverDistractionListener;
 import com.swedspot.vil.distraction.LightMode;
@@ -43,6 +44,9 @@ import java.util.ArrayList;
 public class StatisticsSimple extends ActionBarActivity {
     private ListView listView;
     private TextView ds;
+
+    private static final String LOG_TAG = "StatisticsSimple";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +89,36 @@ public class StatisticsSimple extends ActionBarActivity {
 
         SaveValues values = new SaveValues();
         values.run();
+
         //new UpdateSpeed().execute();
+/**
+        final AutomotiveManager api = AutomotiveFactory.createAutomotiveManagerInstance(new AutomotiveCertificate(new byte[0]),
+                new AutomotiveListener() {
+                    @Override
+                    public void receive(final AutomotiveSignal automotiveSignal) {}
+
+                    @Override
+                    public void timeout(int i) {}
+
+                    @Override
+                    public void notAllowed(int i) {}
+                },
+                new DriverDistractionListener() {
+                    @Override
+                    public void levelChanged(final DriverDistractionLevel driverDistractionLevel) {}
+
+                    @Override
+                    public void lightModeChanged(LightMode lightMode) {}
+
+                    @Override
+                    public void stealthModeChanged(StealthMode stealthMode) {}
+                }
+        );
+
+        api.requestValue(AutomotiveSignalId.FMS_WHEEL_BASED_SPEED);​
+
+        float speed = ((SCSFloat) api.automotiveSignal.getData());
+**/
 
         // Get a reference to the text field
         //ds = (TextView)findViewById(R.id.textView);
@@ -213,9 +246,9 @@ public class StatisticsSimple extends ActionBarActivity {
                 for (int i = 0; i < len; i++) {
                     try {
                         driversList.add(jsonArray.get(i).toString());
-                        Log.d("MySQL_List LineArray", jsonArray.get(i).toString());
+                        Log.d("LOG_TAG", jsonArray.get(i).toString());
                     } catch (JSONException e) {
-                        Log.e("MySQL_List", "Error converting to ArrayList " + e.toString());
+                        Log.e("LOG_TAG", "Error converting to ArrayList " + e.toString());
                     }
                 }
 

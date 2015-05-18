@@ -2,7 +2,10 @@ package com.project.g13.roadassist;
 
 import android.swedspot.automotiveapi.AutomotiveSignal;
 import android.swedspot.automotiveapi.AutomotiveSignalId;
+import android.swedspot.scs.data.SCSData;
 import android.swedspot.scs.data.SCSFloat;
+import android.swedspot.scs.data.SCSInteger;
+import android.swedspot.scs.data.Uint8;
 import android.util.Log;
 
 import com.swedspot.automotiveapi.AutomotiveFactory;
@@ -17,8 +20,12 @@ import com.swedspot.vil.policy.AutomotiveCertificate;
  * Created by tobs on 2015-05-17.
  */
 public class SaveValues implements Runnable {
-    float speed;
+    int speed;
+    int fuel;
+    int overSpeed;
+    int brakeSwitch;
     int dLevel;
+
 
     //@SuppressWarnings("unused")
     private static final String LOG_TAG = "SaveValues";
@@ -31,14 +38,33 @@ public class SaveValues implements Runnable {
             // Moves the current Thread into the background
             android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
+            //Register the Automotive API
             AutomotiveFactory.createAutomotiveManagerInstance(
                     new AutomotiveCertificate(new byte[0]),
                     new AutomotiveListener() {
                         @Override
                         public void receive(final AutomotiveSignal automotiveSignal) {
-                            speed =((SCSFloat) automotiveSignal.getData()).getFloatValue() / 3f;
-                            //int speed = (int) data.getFloatValue();
-                            Log.i(LOG_TAG, "Speed Value: " + speed);
+
+                            //SCSData data = automotiveSignal.getData();
+                            //Check the data for what it contains and set a value on the appropriate variable
+                            if (automotiveSignal.getSignalId() == 320) {
+                                float tmpSpeed = ((SCSFloat) automotiveSignal.getData()).getFloatValue();
+                                int speed = (int) tmpSpeed;
+                                Log.i(LOG_TAG, "Speed Value: " + speed);
+                            }
+                            if (automotiveSignal.getSignalId() == 325) {
+                                float tmpFuel = ((SCSFloat) automotiveSignal.getData()).getFloatValue();
+                                int fuel = (int) tmpFuel;
+                                Log.i(LOG_TAG, "Fuel Level: " + fuel);
+                            }
+                            if (automotiveSignal.getSignalId() == 285) {
+                                overSpeed = ((Uint8) automotiveSignal.getData()).getIntValue();
+                                Log.e(LOG_TAG, "OverSpeed: " + overSpeed);
+                            }
+                            if (automotiveSignal.getSignalId() == 317) {
+                                brakeSwitch = ((Uint8) automotiveSignal.getData()).getIntValue();
+                                Log.e(LOG_TAG, "BrakeSwitch: " + brakeSwitch);
+                            }
                         }
 
                         @Override
@@ -64,7 +90,9 @@ public class SaveValues implements Runnable {
                         public void stealthModeChanged(StealthMode stealthMode) {
                         }
                     }
-            ).register(AutomotiveSignalId.FMS_WHEEL_BASED_SPEED); // Register for the speed signal
+            ).register(AutomotiveSignalId.FMS_WHEEL_BASED_SPEED, AutomotiveSignalId.FMS_FUEL_LEVEL_1,
+                    AutomotiveSignalId.FMS_VEHICLE_OVERSPEED, AutomotiveSignalId.FMS_BRAKE_SWITCH); // Register for the signals
 
         }
+
 }

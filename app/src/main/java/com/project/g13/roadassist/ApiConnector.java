@@ -18,6 +18,8 @@ import java.io.IOException;
  */
 public class ApiConnector {
 
+    private static final String LOG_TAG = "ApiConnector";
+
     public JSONArray GetAllDrivers()
     {
         // URL for getting all customers
@@ -38,17 +40,17 @@ public class ApiConnector {
 
             httpEntity = httpResponse.getEntity();
 
-            Log.d("ApiConnector", "HTTP Part Done");
+            Log.d(LOG_TAG, "HTTP Part Done");
 
         } catch (ClientProtocolException e) {
 
             // Signals error in http protocol
-            Log.e("ApiConnector", "Error in http connection 1 " + e.toString());
+            Log.e(LOG_TAG, "Error in http connection 1 " + e.toString());
 
             //Log Errors Here
 
         } catch (IOException e) {
-            Log.e("ApiConnector", "Error in http connection 2 " + e.toString());
+            Log.e(LOG_TAG, "Error in http connection 2 " + e.toString());
         }
 
 
@@ -59,14 +61,14 @@ public class ApiConnector {
             try {
                 String entityResponse = EntityUtils.toString(httpEntity);
 
-                Log.d("Entity Response  : ", entityResponse);
+                Log.d(LOG_TAG, "Entity Response  : " + entityResponse);
 
                 jsonArray = new JSONArray(entityResponse);
-                Log.d("ApiConnector",  jsonArray.toString());
+                Log.d(LOG_TAG,  jsonArray.toString());
             } catch (JSONException e) {
-                Log.e("ApiConnector", "Error in converting string to jsonArray 1 " + e.toString());
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 1 " + e.toString());
             } catch (IOException e) {
-                Log.e("ApiConnector", "Error in converting string to jsonArray 2 " + e.toString());
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 2 " + e.toString());
             }
         }
 

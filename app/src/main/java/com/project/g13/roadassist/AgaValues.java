@@ -20,7 +20,9 @@ import com.swedspot.vil.policy.AutomotiveCertificate;
  */
 
 public class AgaValues {
-    Float speed = 42f;
+    float speed;
+    int dLevel;
+    private static final String LOG_TAG = "AgaValues";
 
     public Float truckSpeed() {
 
@@ -30,7 +32,7 @@ public class AgaValues {
                     @Override
                     public void receive(final AutomotiveSignal automotiveSignal) {
                         speed =((SCSFloat) automotiveSignal.getData()).getFloatValue();
-                        Log.i("AgaValues", "Speed Value: " + speed.toString());
+                        Log.i(LOG_TAG, "Speed Value: " + speed);
                     }
 
                     @Override
@@ -44,7 +46,8 @@ public class AgaValues {
                 new DriverDistractionListener() {
                     @Override
                     public void levelChanged(final DriverDistractionLevel driverDistractionLevel) {
-
+                        dLevel = driverDistractionLevel.getLevel();
+                        Log.i(LOG_TAG, "Distraction Value: " + dLevel);
                     }
 
                     @Override
