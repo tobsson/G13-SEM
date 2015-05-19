@@ -8,19 +8,34 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.swedspot.automotiveapi.AutomotiveSignal;
+import android.swedspot.automotiveapi.AutomotiveSignalId;
+import android.swedspot.scs.data.SCSFloat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.echo.holographlibrary.Line;
 import com.echo.holographlibrary.LineGraph;
 import com.echo.holographlibrary.LinePoint;
+import com.swedspot.automotiveapi.AutomotiveFactory;
+import com.swedspot.automotiveapi.AutomotiveListener;
+import com.swedspot.automotiveapi.AutomotiveManager;
+import com.swedspot.vil.distraction.DriverDistractionLevel;
+import com.swedspot.vil.distraction.DriverDistractionListener;
+import com.swedspot.vil.distraction.LightMode;
+import com.swedspot.vil.distraction.StealthMode;
+import com.swedspot.vil.policy.AutomotiveCertificate;
 
 import java.util.ArrayList;
 
@@ -31,6 +46,11 @@ import java.util.ArrayList;
  */
 public class StatisticsSimple extends ActionBarActivity {
     private ListView listView;
+    private TextView ds;
+    private Button postButton;
+
+    private static final String LOG_TAG = "StatisticsSimple";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,87 +85,39 @@ public class StatisticsSimple extends ActionBarActivity {
         li.setTextColor(Color.RED);
         li.setTextSize(50);
 
-
         // Get ListView object from xml
         this.listView = (ListView) this.findViewById(android.R.id.list);
 
         // Loading products in Background Thread
-        new GetAllDriversTask().execute(new ApiConnector());
-
+        new getTripTask().execute(new ApiConnector());
         }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.activity_main_actions, menu);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                openSearch();
-                return true;
-            case R.id.action_map:
-                //composeMessage();
-                return true;
-            case R.id.action_help:
-                openHelp();
-                return true;
-            case R.id.action_settings:
-                openSettings();
-                return true;
-            case R.id.action_about:
-                openAbout();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void openSearch() {
-        Intent i = new Intent(StatisticsSimple.this, Plan_Route.class);
-        startActivity(i);
-    }
-
-    private void openHelp() {
-        Intent i = new Intent(StatisticsSimple.this, Help.class);
-        startActivity(i);
-    }
-
-    private void openAbout() {
-        Intent i = new Intent(StatisticsSimple.this, About.class);
-        startActivity(i);
-    }
-
-    private void openSettings() {
-        Intent i = new Intent(StatisticsSimple.this, Settings.class);
-        startActivity(i);
-    }
 
     //Async task for getting data from the mysql database
-    private class GetAllDriversTask extends AsyncTask<ApiConnector,Long,ArrayList>
+    private class getTripTask extends AsyncTask<ApiConnector,Long,ArrayList>
     {
         @Override
         protected ArrayList doInBackground(ApiConnector... params) {
-            ArrayList<String> driversList = new ArrayList<String>();
+            ArrayList<String> tripList = new ArrayList<String>();
             // Put values in a JSONArray
-            JSONArray jsonArray = params[0].GetAllDrivers();
+            JSONArray jsonArray = params[0].GetTripData("Nick");
+
             if (jsonArray != null) {
-                int len = jsonArray.length();
-                for (int i = 0; i < len; i++) {
+                String s  = "";
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject json = null;
                     try {
-                        driversList.add(jsonArray.get(i).toString());
-                        Log.d("MySQL_List LineArray", jsonArray.get(i).toString());
+                        json = jsonArray.getJSONObject(i);
+                        s = json.getString("TID");
+                        tripList.add(s);
+                        Log.d(LOG_TAG, jsonArray.get(i).toString());
                     } catch (JSONException e) {
-                        Log.e("MySQL_List", "Error converting to ArrayList " + e.toString());
+                        Log.e("LOG_TAG", "Error converting to ArrayList " + e.toString());
                     }
                 }
 
             }
-            return driversList;
+            return tripList;
         }
         @Override
         protected void onPostExecute(ArrayList driversList) {

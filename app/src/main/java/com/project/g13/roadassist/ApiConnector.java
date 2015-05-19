@@ -4,22 +4,30 @@ import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by tobs on 2015-05-07.
  */
 public class ApiConnector {
 
-    public JSONArray GetAllDrivers()
-    {
+    @SuppressWarnings("unused")
+    private static final String LOG_TAG = "ApiConnector";
+
+    public JSONArray GetAllDrivers() {
         // URL for getting all customers
         String url = "http://group13.comxa.com/all_drivers2.php";
 
@@ -38,17 +46,17 @@ public class ApiConnector {
 
             httpEntity = httpResponse.getEntity();
 
-            Log.d("ApiConnector", "HTTP Part Done");
+            Log.d(LOG_TAG, "HTTP Part Done");
 
         } catch (ClientProtocolException e) {
 
             // Signals error in http protocol
-            Log.e("ApiConnector", "Error in http connection 1 " + e.toString());
+            Log.e(LOG_TAG, "Error in http connection 1 " + e.toString());
 
             //Log Errors Here
 
         } catch (IOException e) {
-            Log.e("ApiConnector", "Error in http connection 2 " + e.toString());
+            Log.e(LOG_TAG, "Error in http connection 2 " + e.toString());
         }
 
 
@@ -59,14 +67,14 @@ public class ApiConnector {
             try {
                 String entityResponse = EntityUtils.toString(httpEntity);
 
-                Log.e("Entity Response  : ", entityResponse);
+                Log.d(LOG_TAG, "Entity Response  : " + entityResponse);
 
                 jsonArray = new JSONArray(entityResponse);
-                Log.e("ApiConnector",  jsonArray.toString());
+                Log.d(LOG_TAG,  jsonArray.toString());
             } catch (JSONException e) {
-                Log.e("ApiConnector", "Error in converting string to jsonArray 1 " + e.toString());
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 1 " + e.toString());
             } catch (IOException e) {
-                Log.e("ApiConnector", "Error in converting string to jsonArray 2 " + e.toString());
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 2 " + e.toString());
             }
         }
 
@@ -74,36 +82,36 @@ public class ApiConnector {
 
 
     }
+    
+    public JSONArray GetTripData(String s) {
 
-    public JSONArray GetCustomerDetails(int CustomerID)
-    {
-        // URL for getting all customers
-        String url = "http://192.168.0.2/php/getCustomer.php?CustomerID="+CustomerID;
-
-        // Get HttpResponse Object from url.
-        // Get HttpEntity from Http Response Object
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httppost = new HttpPost("http://group13.comxa.com/getTripData.php");
 
         HttpEntity httpEntity = null;
 
         try
         {
+            //ArrayList with post values for the graphtable
+            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+            nameValuePairs.add(new BasicNameValuePair("Dname", s));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-            DefaultHttpClient httpClient = new DefaultHttpClient();  // Default HttpClient
-            HttpGet httpGet = new HttpGet(url);
-
-            HttpResponse httpResponse = httpClient.execute(httpGet);
+            //Send data to the website and php code
+            HttpResponse httpResponse = httpclient.execute(httppost);
 
             httpEntity = httpResponse.getEntity();
+            Log.d(LOG_TAG, "HTTP Part Done");
 
         } catch (ClientProtocolException e) {
 
             // Signals error in http protocol
-            e.printStackTrace();
+            Log.e(LOG_TAG, "Error in http connection 1 " + e.toString());
 
             //Log Errors Here
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, "Error in http connection 2 " + e.toString());
         }
 
 
@@ -114,71 +122,14 @@ public class ApiConnector {
             try {
                 String entityResponse = EntityUtils.toString(httpEntity);
 
-                Log.e("Entity Response  : ", entityResponse);
+                Log.d(LOG_TAG, "Entity Response  : " + entityResponse);
 
                 jsonArray = new JSONArray(entityResponse);
-
+                Log.d(LOG_TAG,  jsonArray.toString());
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 1 " + e.toString());
             } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return jsonArray;
-    }
-
-
-
-
-    public JSONArray getTrips(String Dusername)
-    {
-        // URL for getting all customers
-        String url = "http://group13.comxa.com/getTrips.php?Dusername="+Dusername;
-
-        // Get HttpResponse Object from url.
-        // Get HttpEntity from Http Response Object
-
-        HttpEntity httpEntity = null;
-
-        try
-        {
-
-            DefaultHttpClient httpClient = new DefaultHttpClient();  // Default HttpClient
-            HttpGet httpGet = new HttpGet(url);
-
-            HttpResponse httpResponse = httpClient.execute(httpGet);
-
-            httpEntity = httpResponse.getEntity();
-
-            Log.d("ApiConnector", "HTTP Part Done");
-
-        } catch (ClientProtocolException e) {
-
-            // Signals error in http protocol
-            Log.e("ApiConnector", "Error in http connection 1 " + e.toString());
-
-            //Log Errors Here
-
-        } catch (IOException e) {
-            Log.e("ApiConnector", "Error in http connection 2 " + e.toString());
-        }
-
-
-        // Convert HttpEntity into JSON Array
-        JSONArray jsonArray = null;
-
-        if (httpEntity != null) {
-            try {
-                String entityResponse = EntityUtils.toString(httpEntity);
-
-                Log.e("Entity Response  : ", entityResponse);
-
-                jsonArray = new JSONArray(entityResponse);
-                Log.e("ApiConnector",  jsonArray.toString());
-            } catch (JSONException e) {
-                Log.e("ApiConnector", "Error in converting string to jsonArray 1 " + e.toString());
-            } catch (IOException e) {
-                Log.e("ApiConnector", "Error in converting string to jsonArray 2 " + e.toString());
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 2 " + e.toString());
             }
         }
 
@@ -186,8 +137,6 @@ public class ApiConnector {
 
 
     }
-
-
 
 
 }
