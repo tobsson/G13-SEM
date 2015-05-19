@@ -1,8 +1,10 @@
 package com.project.g13.roadassist;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.ListActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -16,10 +18,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,8 +50,6 @@ import java.util.ArrayList;
  */
 public class StatisticsSimple extends ActionBarActivity {
     private ListView listView;
-    private TextView ds;
-    private Button postButton;
 
     private static final String LOG_TAG = "StatisticsSimple";
 
@@ -88,19 +90,42 @@ public class StatisticsSimple extends ActionBarActivity {
         // Get ListView object from xml
         this.listView = (ListView) this.findViewById(android.R.id.list);
 
+        // ListView Item Click Listener
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+
+                //Find the value of clicked item
+                String val = (String) parent.getItemAtPosition(position);
+                Log.d(LOG_TAG, "Value is " + val);
+
+                //Open a new activity and send the value of the clicked itema
+                Intent i = new Intent(getApplicationContext(), DetailedStatistics.class);
+                i.putExtra("lTID", val);
+                startActivity(i);
+
+            }
+
+        });
+
         // Loading products in Background Thread
         new getTripTask().execute(new ApiConnector());
         }
 
 
+
+
     //Async task for getting data from the mysql database
     private class getTripTask extends AsyncTask<ApiConnector,Long,ArrayList>
     {
+
         @Override
         protected ArrayList doInBackground(ApiConnector... params) {
             ArrayList<String> tripList = new ArrayList<String>();
             // Put values in a JSONArray
-            JSONArray jsonArray = params[0].GetTripData("Nick");
+            JSONArray jsonArray = params[0].GetTripData("Eric");
 
             if (jsonArray != null) {
                 String s  = "";
