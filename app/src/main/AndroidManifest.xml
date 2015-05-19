@@ -35,15 +35,24 @@
         </activity>
 
         <activity
-            android:name=".StatisticsNew"
-            android:label="StatisticsNew" >
+        android:name=".History"
+        android:label="History" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+    </activity>
+
+        <activity
+            android:name=".CurrentStatistics"
+            android:label="Statistics" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Plan_Route"
             android:label="@string/title_activity_plan" >
