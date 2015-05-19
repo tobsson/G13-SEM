@@ -33,6 +33,9 @@
         <item>Greek</item>
     </string-array>
 
+    <!-- activity_detailedstats -->
+    <string name="title_activity_detailedstats">Detailed Statistics</string>
+
     <!-- activity_main_actions -->
     <string name="action_search">Search</string>
     <string name="action_map">View Map</string>
