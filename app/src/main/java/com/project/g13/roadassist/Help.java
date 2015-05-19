@@ -7,40 +7,17 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
-
-public class MainActivity extends ActionBarActivity {
-
+/**
+ * Created by tobs on 2015-05-11.
+ */
+public class Help extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_help);
 
-        Button plnRtBtn = (Button)findViewById(R.id.plnRtBtn);
-        Button vwRtBtn = (Button)findViewById(R.id.vwRtBtn);
-        Button statsBtn = (Button)findViewById(R.id.statsBtn);
-
-        plnRtBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Plan_Route.class));
-            }
-        });
-        vwRtBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ChatMain.class));
-            }
-        });
-        statsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, StatisticsSimple.class));
-            }
-        });
 
     }
 
@@ -76,24 +53,22 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void openSearch() {
-        Intent i = new Intent(MainActivity.this, Plan_Route.class);
+        Intent i = new Intent(Help.this, Plan_Route.class);
         startActivity(i);
     }
 
     private void openHelp() {
-        Intent i = new Intent(MainActivity.this, Help.class);
+        Intent i = new Intent(Help.this, Help.class);
         startActivity(i);
     }
 
     private void openAbout() {
-        Intent i = new Intent(MainActivity.this, About.class);
+        Intent i = new Intent(Help.this, About.class);
         startActivity(i);
     }
 
     private void openSettings() {
-        Intent i = new Intent(MainActivity.this, Settings.class);
+        Intent i = new Intent(Help.this, Settings.class);
         startActivity(i);
     }
-
-
 }
