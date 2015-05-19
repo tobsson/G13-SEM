@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
         vwRtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ChatMain.class));
+                //startActivity(new Intent(MainActivity.this, ChatMain.class));
             }
         });
         statsBtn.setOnClickListener(new View.OnClickListener() {
