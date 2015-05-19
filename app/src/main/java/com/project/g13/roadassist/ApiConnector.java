@@ -102,8 +102,6 @@ public class ApiConnector {
 
             //Log Errors Here
 
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -126,9 +124,69 @@ public class ApiConnector {
                 e.printStackTrace();
             }
         }
-
         return jsonArray;
     }
+
+
+
+
+    public JSONArray getTrips(String Dusername)
+    {
+        // URL for getting all customers
+        String url = "http://group13.comxa.com/getTrips.php?Dusername="+Dusername;
+
+        // Get HttpResponse Object from url.
+        // Get HttpEntity from Http Response Object
+
+        HttpEntity httpEntity = null;
+
+        try
+        {
+
+            DefaultHttpClient httpClient = new DefaultHttpClient();  // Default HttpClient
+            HttpGet httpGet = new HttpGet(url);
+
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+
+            httpEntity = httpResponse.getEntity();
+
+            Log.d("ApiConnector", "HTTP Part Done");
+
+        } catch (ClientProtocolException e) {
+
+            // Signals error in http protocol
+            Log.e("ApiConnector", "Error in http connection 1 " + e.toString());
+
+            //Log Errors Here
+
+        } catch (IOException e) {
+            Log.e("ApiConnector", "Error in http connection 2 " + e.toString());
+        }
+
+
+        // Convert HttpEntity into JSON Array
+        JSONArray jsonArray = null;
+
+        if (httpEntity != null) {
+            try {
+                String entityResponse = EntityUtils.toString(httpEntity);
+
+                Log.e("Entity Response  : ", entityResponse);
+
+                jsonArray = new JSONArray(entityResponse);
+                Log.e("ApiConnector",  jsonArray.toString());
+            } catch (JSONException e) {
+                Log.e("ApiConnector", "Error in converting string to jsonArray 1 " + e.toString());
+            } catch (IOException e) {
+                Log.e("ApiConnector", "Error in converting string to jsonArray 2 " + e.toString());
+            }
+        }
+
+        return jsonArray;
+
+
+    }
+
 
 
 
