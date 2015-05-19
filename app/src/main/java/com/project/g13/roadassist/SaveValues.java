@@ -42,7 +42,7 @@ public class SaveValues implements Runnable {
     int time = 0;
 
 
-    //@SuppressWarnings("unused")
+    @SuppressWarnings("unused")
     private static final String LOG_TAG = "SaveValues";
         /*
          * Defines the code to run for this task.
@@ -65,26 +65,22 @@ public class SaveValues implements Runnable {
                             if (automotiveSignal.getSignalId() == 320) {
                                 float tmpSpeed = ((SCSFloat) automotiveSignal.getData()).getFloatValue();
                                 speed = (int) tmpSpeed;
-                                //Log.i(LOG_TAG, "Speed Value: " + speed);
                             }
                             if (automotiveSignal.getSignalId() == 325) {
                                 float tmpFuel = ((SCSFloat) automotiveSignal.getData()).getFloatValue();
                                 fuel = (int) tmpFuel;
-                                //Log.i(LOG_TAG, "Fuel Level: " + fuel);
                             }
                             if (automotiveSignal.getSignalId() == 285) {
                                 overSpeed = ((Uint8) automotiveSignal.getData()).getIntValue();
                                 if(overSpeed == 1) {
                                     overSpeedTimes++;
                                 }
-                                //Log.i(LOG_TAG, "OverSpeed: " + overSpeed);
                             }
                             if (automotiveSignal.getSignalId() == 317) {
                                 brakeSwitch = ((Uint8) automotiveSignal.getData()).getIntValue();
                                 if(brakeSwitch == 1) {
                                     brakeSwitchTimes++;
                                 }
-                                //Log.i(LOG_TAG, "BrakeSwitch: " + brakeSwitch);
                             }
                         }
 
@@ -116,34 +112,7 @@ public class SaveValues implements Runnable {
 
         }
 
-    public int getSpeed(){
-        return speed;
-    }
-
-    public int getFuel(){
-        return fuel;
-    }
-
-    public int getOverSpeed() {
-        return overSpeed;
-    }
-
-    public int getOverSpeedTimes() {
-        return overSpeedTimes;
-    }
-
-    public int getBrakeSwitch() {
-        return brakeSwitch;
-    }
-
-    public int getBrakeSwitchTimes() {
-        return brakeSwitchTimes;
-    }
-
-    public int getdLevel() {
-        return dLevel;
-    }
-
+    //Timer task for running a method in a specified timer interval
     public void myTask(){
 
         Timer timer = new Timer();
@@ -151,10 +120,13 @@ public class SaveValues implements Runnable {
             @Override
             public void run() {
                 try {
-                    postData();
+                    if (speed > 5) {
+                        postData();
+                        Log.d("Timer", "postData executed");
+                    }
                     Log.d("Timer", "Running");
                 }catch (Exception e){
-
+                    Log.e(LOG_TAG, "myTask" + e);
                 }
             }
         };
@@ -162,24 +134,32 @@ public class SaveValues implements Runnable {
     }
 
 
-
+    //Method for posting data to the database with values for graphtables
     public void postData(){
+
         HttpClient httpclient = new DefaultHttpClient();
+
         HttpPost httppost = new HttpPost("http://group13.comxa.com/postToTrip.php");
 
+        //
         int tid = 2;
 
         try {
+            //Create strings from the integer values so they can be used in the arraylist
             String tmpTime = Integer.toString(time);
             String tmpSpeed = Integer.toString(speed);
             String tmpdLevel = Integer.toString(dLevel);
             String tmpTid = Integer.toString(tid);
+
+            //ArrayList with post values for the graphtable
             ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
             nameValuePairs.add(new BasicNameValuePair("Time", tmpTime));
             nameValuePairs.add(new BasicNameValuePair("CSpeed", tmpSpeed));
             nameValuePairs.add(new BasicNameValuePair("distLevel", tmpdLevel));
             nameValuePairs.add(new BasicNameValuePair("TID", tmpTid));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            //Send data to the website and php code
             httpclient.execute(httppost);
             Log.d(LOG_TAG, "postData run" + ", time: " + tmpTime + ", CSpeed: " + tmpSpeed + ", TID: " + tmpTid);
             time += 5;

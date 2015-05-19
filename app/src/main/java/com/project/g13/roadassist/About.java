@@ -28,47 +28,4 @@ public class About extends ActionBarActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                openSearch();
-                return true;
-            case R.id.action_map:
-                //composeMessage();
-                return true;
-            case R.id.action_help:
-                openHelp();
-                return true;
-            case R.id.action_settings:
-                openSettings();
-                return true;
-            case R.id.action_about:
-                openAbout();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void openSearch() {
-        Intent i = new Intent(About.this, Plan_Route.class);
-        startActivity(i);
-    }
-
-    private void openHelp() {
-        Intent i = new Intent(About.this, Help.class);
-        startActivity(i);
-    }
-
-    private void openAbout() {
-        Intent i = new Intent(About.this, About.class);
-        startActivity(i);
-    }
-
-    private void openSettings() {
-        Intent i = new Intent(About.this, Settings.class);
-        startActivity(i);
-    }
 }

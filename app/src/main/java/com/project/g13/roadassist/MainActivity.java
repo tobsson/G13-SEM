@@ -42,6 +42,10 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
+        SaveValues values = new SaveValues();
+        values.run();
+        values.myTask();
+
     }
 
     @Override
