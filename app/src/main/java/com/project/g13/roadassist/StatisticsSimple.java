@@ -125,7 +125,7 @@ public class StatisticsSimple extends ActionBarActivity {
         protected ArrayList doInBackground(ApiConnector... params) {
             ArrayList<String> tripList = new ArrayList<String>();
             // Put values in a JSONArray
-            JSONArray jsonArray = params[0].GetTripData("Eric");
+            JSONArray jsonArray = params[0].GetTripData("Nick");
 
             if (jsonArray != null) {
                 String s  = "";

@@ -31,6 +31,7 @@ dependencies {
     compile 'org.slf4j:slf4j-android:1.7.12'
     compile 'com.android.support:appcompat-v7:21.0.0'
     compile files('libs/Automotive-API-1.2-javadoc.jar')
+    compile files('libs/mpandroidchartlibrary-2-0-7.jar')
 }
 
 repositories {
