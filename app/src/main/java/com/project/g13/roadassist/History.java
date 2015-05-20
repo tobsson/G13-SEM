@@ -59,8 +59,8 @@ public class History extends Activity{
     {
         @Override
         protected ArrayList doInBackground(String... params) {
-            // Put values in a JSONArray
-            ApiConnector connector = new ApiConnector();
+            //Put values in a JSONArray
+ /**           ApiConnector connector = new ApiConnector();
             JSONArray jsonArray = connector.getTrips(params[0]);
             if (jsonArray != null) {
                 String s  = "";
@@ -78,7 +78,7 @@ public class History extends Activity{
                     }
                 }
 
-            }
+            } **/
             return tripsList;
         }
         @Override

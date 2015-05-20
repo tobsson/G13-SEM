@@ -25,7 +25,7 @@ public class CurrentStatistics extends Activity{
         historyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CurrentStatistics.this, History.class));
+               // startActivity(new Intent(CurrentStatistics.this, History.class));
             }
         });
     }
