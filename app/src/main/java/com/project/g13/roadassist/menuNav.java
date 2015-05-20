@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +23,7 @@ import com.google.android.gms.location.LocationServices;
 /**
  * Created by Per on 2015-05-04.
  */
-public class menuNav extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
+public class menuNav extends ActionBarActivity implements ConnectionCallbacks, OnConnectionFailedListener {
 
     // LogCat tag
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -145,18 +146,22 @@ public class menuNav extends Activity implements ConnectionCallbacks, OnConnecti
 
     /**
      * Method to display the location on UI
-     * */
+     **/
+
     private String displayLocation() {
 
 
         String currLoc;
-        Location loc = LocationServices.FusedLocationApi
-                .getLastLocation(mGoogleApiClient);
+        //Location loc = LocationServices.FusedLocationApi
+        //        .getLastLocation(mGoogleApiClient);
 
 
-            double lat = loc.getLatitude();
-            double lng = loc.getLongitude();
-            currLoc = Double.toString(lat) + ", " + Double.toString(lng);
+        //Changed this to be static as it crashes the emulator otherwise.
+        //double lat = loc.getLatitude();
+        //double lng = loc.getLongitude();
+        double lat = 57.706872;
+        double lng = 11.936661;
+        currLoc = Double.toString(lat) + ", " + Double.toString(lng);
 
             return currLoc;
 
@@ -166,7 +171,7 @@ public class menuNav extends Activity implements ConnectionCallbacks, OnConnecti
     public void onConnected(Bundle arg0) {
 
         // Once connected with google api, get the location
-        displayLocation();
+       // displayLocation();
     }
 
     @Override
