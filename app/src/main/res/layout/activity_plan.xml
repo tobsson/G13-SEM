@@ -14,12 +14,15 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="47dp" />
 
-    <EditText
-        android:layout_width="wrap_content"
+    <AutoCompleteTextView
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:inputType="textPostalAddress"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:ems="10"
         android:id="@+id/destination"
+        android:completionThreshold="3"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/textPlnView" />
 
@@ -37,24 +40,24 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Auto Rest-Stop Suggestion"
         android:id="@+id/textARSView"
-        android:layout_centerVertical="true"
-        android:layout_alignEnd="@+id/textPlnView" />
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/textPlnView" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Search..."
         android:id="@+id/plnSrcbutton"
-        android:layout_below="@+id/editText2"
-        android:layout_alignStart="@+id/editText2"
-        android:layout_toStartOf="@+id/switch1"
-        android:layout_alignEnd="@+id/editText2" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/textARSView"
+        android:layout_alignStart="@+id/textPlnView" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="check text"
-        android:id="@+id/button"
-        android:layout_above="@+id/textARSView"
-        android:layout_centerHorizontal="true" />
+        android:text="Add..."
+        android:id="@+id/add_dest_btn"
+        android:layout_below="@+id/destination"
+        android:layout_alignEnd="@+id/switch1" />
+
 </RelativeLayout>
