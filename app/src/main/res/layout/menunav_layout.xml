@@ -44,12 +44,13 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SLEEP"
-        android:id="@+id/sleepBtn"
+        android:text="END ROUTE"
+        android:id="@+id/endRouteBtn"
         android:layout_alignParentBottom="true"
         android:layout_alignEnd="@+id/gasBtn"
         android:layout_toEndOf="@+id/gridLayout"
-        android:layout_below="@+id/gridLayout" />
+        android:layout_below="@+id/gridLayout"
+        android:textColor="#F00" />
 
     <Button
         android:layout_width="wrap_content"

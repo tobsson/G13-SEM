@@ -26,18 +26,18 @@ package com.project.g13.roadassist;
             windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
             chatHead = new ImageView(this);
-            chatHead.setImageResource(R.drawable.face1);
-            chatHead.setAlpha(0);
+            chatHead.setImageResource(R.drawable.overlaymenu);
+            //chatHead.setAlpha(0);
             params= new WindowManager.LayoutParams(
-                    WindowManager.LayoutParams.FILL_PARENT,
-                    WindowManager.LayoutParams.FILL_PARENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT,
                     WindowManager.LayoutParams.TYPE_PHONE,
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     PixelFormat.TRANSLUCENT);
 
-            params.gravity = Gravity.TOP | Gravity.LEFT;
+            params.gravity = Gravity.BOTTOM | Gravity.RIGHT;
             params.x = 0;
-            params.y = 100;
+            params.y = 0;
 
             //this code is for dragging the chat head
             chatHead.setOnTouchListener(new View.OnTouchListener() {

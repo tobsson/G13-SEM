@@ -22,7 +22,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.google.android.gms:play-services:6.5.87'
+    compile 'com.google.android.gms:play-services:7.0.0'
     compile 'com.google.maps.android:android-maps-utils:0.3+'
     compile project(':HoloGraphLibrary')
     compile files('libs/lib.jar')
@@ -31,17 +31,14 @@ dependencies {
     compile 'org.slf4j:slf4j-android:1.7.12'
     compile 'com.android.support:appcompat-v7:21.0.0'
     compile files('libs/Automotive-API-1.2-javadoc.jar')
+    compile files('libs/mpandroidchartlibrary-2-0-7.jar')
 }
 
 repositories {
     mavenCentral()
 }
 
-dependencies {
-    compile ('com.mapbox.mapboxsdk:mapbox-android-sdk:0.7.3@aar'){
-        transitive=true
-    }
-}
+
 
 
 
@@ -54,40 +51,9 @@ repositories {
 configurations {
     drivers
 }
-dependencies {
-    drivers "com.skobbler.ngx:SKMaps:2.4.0"
-    compile files('libs/SKMaps.jar')
-}
+
 
 def assetsPath = "$projectDir/src/main/assets"
 def libsPath = "$projectDir/libs"
 def jniLibsPath = "$projectDir/src/main/jniLibs"
-
-task installSKMaps << {
-    copy {
-        from configurations.drivers
-        into "$buildDir/drivers-down"
-        rename { String fileName -> 'payload.zip' }
-    }
-    copy {
-        from zipTree("$buildDir/drivers-down/payload.zip")
-        into "$buildDir/drivers-down"
-    }
-    delete("$jniLibsPath",
-            "$assetsPath/SKMaps.zip",
-            "$libsPath/SKMaps.jar")
-    copy {
-        from "${buildDir}/drivers-down/jniLibs"
-        into "$jniLibsPath"
-    }
-    copy {
-        from "${buildDir}/drivers-down/SKMaps.zip"
-        into "$assetsPath"
-    }
-    copy {
-        from "${buildDir}/drivers-down/SKMaps.jar"
-        into "$libsPath"
-    }
-    delete("$buildDir/drivers-down")
-}
 
