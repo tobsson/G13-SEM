@@ -146,7 +146,6 @@ public class ApiConnector {
         HttpPost httppost = new HttpPost("http://group13.comxa.com/getGraphDataSpeed.php");
 
         HttpEntity httpEntity = null;
-
         try
         {
             //ArrayList with post values for the graphtable
@@ -290,7 +289,9 @@ public class ApiConnector {
 
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error in http connection 2 " + e.toString());
-        }
+        } catch (NetworkOnMainThreadException e){
+        Log.e(LOG_TAG, "Error in http connection 3 " + e.toString());
+    }
 
 
         // Convert HttpEntity into JSON Array
@@ -335,6 +336,7 @@ public class ApiConnector {
             HttpResponse httpResponse = httpclient.execute(httppost);
 
             httpEntity = httpResponse.getEntity();
+
             Log.d(LOG_TAG, "HTTP Part Done");
 
         } catch (ClientProtocolException e) {

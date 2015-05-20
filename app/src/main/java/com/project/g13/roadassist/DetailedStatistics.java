@@ -47,7 +47,7 @@ public class DetailedStatistics extends ActionBarActivity {
             new getGraphDataDistractionTask().execute(value);
             //brakeCount = parseInt(connector.GetTripDataBrakeswitch(value).toString());
             Log.d(LOG_TAG, "Brake count" + brakeCount);
-            overspeedCount = parseInt(connector.GetTripDataOverspeed(value).toString());
+            //overspeedCount = parseInt(connector.GetTripDataOverspeed(value).toString());
             Log.d(LOG_TAG, "Overspeed count" + overspeedCount);
         }
     }
@@ -81,7 +81,7 @@ public class DetailedStatistics extends ActionBarActivity {
         @Override
         protected void onPostExecute(ArrayList speedTimeList) {
             speedGraphlist = speedTimeList;
-            Log.d(LOG_TAG, speedTimeList.toString());
+            Log.d(LOG_TAG,"DataSpeedTask: " + speedTimeList.toString());
         }
     }
 
@@ -114,7 +114,7 @@ public class DetailedStatistics extends ActionBarActivity {
         @Override
         protected void onPostExecute(ArrayList distractionTimeList) {
             distractionGraphlist = distractionTimeList;
-            Log.d(LOG_TAG, distractionTimeList.toString());
+            Log.d(LOG_TAG, "DataDistractionTask: " + distractionTimeList.toString());
         }
     }
 
