@@ -94,8 +94,12 @@ public class menuNav extends Activity implements ConnectionCallbacks, OnConnecti
         gas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //String request that can be sent to google places api
                String nearbyGas = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+displayLocation()+"&radius=500&types=gasstation&key=AIzaSyD2ZMRZqhQtMtqvIZS37-BlkYIk_U-8bBU";
 
+
+                //TO-DO Get the lat lng for nearest gas-station
                 Uri gmmIntentUri = Uri.parse("google.navigation:q=" +nearbyGas+ "&mode=w");
                 Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 intent.setPackage("com.google.android.apps.maps");
@@ -156,7 +160,7 @@ public class menuNav extends Activity implements ConnectionCallbacks, OnConnecti
 
             double lat = loc.getLatitude();
             double lng = loc.getLongitude();
-            currLoc = Double.toString(lat) + ", " + Double.toString(lng);
+            currLoc = Double.toString(lat) + "," + Double.toString(lng);
 
             return currLoc;
 
