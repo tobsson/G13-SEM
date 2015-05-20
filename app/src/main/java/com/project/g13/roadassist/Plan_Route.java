@@ -67,6 +67,8 @@ public class Plan_Route extends ActionBarActivity implements
     private RelativeLayout plan_layout;
     private static final String LOG_TAG = "PlanRouteActivity";
     private static final int GOOGLE_API_CLIENT_ID = 0;
+
+    //Layout that is used to add new search fields
     private LinearLayout mLayout;
 
 
@@ -85,6 +87,8 @@ public class Plan_Route extends ActionBarActivity implements
         setContentView(R.layout.activity_plan);
         plan_layout = (RelativeLayout) findViewById(R.id.plan);
         mLayout = (LinearLayout) findViewById(R.id.linearLayoutPlan);
+
+        //View for the extra search fields
         AutoCompleteTextView acTextView = new AutoCompleteTextView(this);
 
 
@@ -209,14 +213,20 @@ public class Plan_Route extends ActionBarActivity implements
 
     }
 
+    //Method to create a new destination field
     private AutoCompleteTextView createNewAutoCompleteTextView() {
+        //Create the field and set parameters for the layout
         final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         final AutoCompleteTextView acTextView = new AutoCompleteTextView(this);
+
+        //Apply the layout
         acTextView.setLayoutParams(lparams);
 
+        //Set the autocomplete function on the new field
         acTextView.setThreshold(3);
         acTextView.setOnItemClickListener(mAutocompleteClickListener);
         acTextView.setAdapter(mPlaceArrayAdapter);
+
         return acTextView;
     }
 
