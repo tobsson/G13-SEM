@@ -28,16 +28,6 @@
             android:value="AIzaSyDmyRa6BHGsxhlraBZikucctYEAt_7yioY"/>
 
 
-
-        <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".Plan_Route"
             android:label="@string/title_activity_plan"
