@@ -51,6 +51,7 @@ import static com.google.android.gms.location.LocationServices.FusedLocationApi;
 public class menuNav extends ActionBarActivity implements ConnectionCallbacks, OnConnectionFailedListener {
 
     // LogCat tag
+    private GetValues getVal = new GetValues();
     private static final String TAG = menuNav.class.getSimpleName();
 
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
@@ -129,20 +130,23 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
         endRouteBtnRb.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        endRouteSpring.setEndValue(1f);
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                        endRouteSpring.setEndValue(0f);
-                        endRoute();
-                        SaveValues sv = new SaveValues();
-                        sv.postDataTrip();
-                        return true;
+                if(getVal.getDist() < 3) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            endRouteSpring.setEndValue(1f);
+                            return true;
+                        case MotionEvent.ACTION_UP:
+                            endRouteSpring.setEndValue(0f);
+                            endRoute();
+                            SaveValues sv = new SaveValues();
+                            sv.postDataTrip();
+                            return true;
 
 
+                    }
+
+                    return false;
                 }
-
                 return false;
             }
         });
