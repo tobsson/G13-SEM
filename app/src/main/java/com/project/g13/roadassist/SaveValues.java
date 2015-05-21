@@ -44,7 +44,11 @@ public class SaveValues implements Runnable {
 
 
 
-
+    public boolean isDistLow(){
+        if(dLevel < 3){
+            return true;
+        }return false;
+    }
     @SuppressWarnings("unused")
     private static final String LOG_TAG = "SaveValues";
         /*
