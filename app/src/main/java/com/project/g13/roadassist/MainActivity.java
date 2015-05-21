@@ -22,6 +22,7 @@ public class MainActivity extends ActionBarActivity {
         Button plnRtBtn = (Button)findViewById(R.id.plnRtBtn);
         Button vwRtBtn = (Button)findViewById(R.id.vwRtBtn);
         Button statsBtn = (Button)findViewById(R.id.statsBtn);
+        Button registerBtn = (Button)findViewById(R.id.registerBtn);
 
         plnRtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,6 +42,13 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(new Intent(MainActivity.this, StatisticsSimple.class));
             }
         });
+        registerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, RegisterActivity.class));
+            }
+        });
+
 
         SaveValues values = new SaveValues();
         values.run();

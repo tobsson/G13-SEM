@@ -165,4 +165,6 @@ public class StatisticsSimple extends ActionBarActivity {
         }
     }
 
+
+
 }

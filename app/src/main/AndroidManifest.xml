@@ -40,6 +40,7 @@
         </activity>
 
 
+
         <service android:name=".NavOverlayService" >
         </service>
         <activity
@@ -110,6 +111,17 @@
             android:name=".DetailedStatistics"
             android:label="@string/title_activity_detailedstats"
             android:parentActivityName="com.project.g13.roadassist.StatisticsSimple">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".RegisterActivity"
+            android:label="Registration"
+            android:parentActivityName="com.project.g13.roadassist.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

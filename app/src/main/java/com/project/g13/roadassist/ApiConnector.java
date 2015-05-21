@@ -372,4 +372,40 @@ public class ApiConnector {
 
     }
 
+    public String insertNewUser(String[] credentials) {
+
+
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost("http://group13.comxa.com/insert-db.php");
+            try {
+
+                String usern = credentials[0];
+                String pass = credentials[1];
+                String name = credentials[0];
+                String surname = credentials[1];
+
+                Log.e(LOG_TAG, "usern pass" + usern + " " + pass);
+
+                ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+                nameValuePairs.add(new BasicNameValuePair("Dusername", usern));
+                nameValuePairs.add(new BasicNameValuePair("Dpassword", pass));
+                nameValuePairs.add(new BasicNameValuePair("Dname", name));
+                nameValuePairs.add(new BasicNameValuePair("Dsurname", surname));
+
+                Log.e(LOG_TAG, "value pair" + nameValuePairs.toString());
+                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+                HttpResponse response = httpClient.execute(httpPost);
+
+                HttpEntity entity = response.getEntity();
+
+
+            } catch (ClientProtocolException e) {
+
+            } catch (IOException e) {
+
+            }
+            return "success";
+        }
+
 }
