@@ -141,8 +141,10 @@ public class SaveValues implements Runnable {
 
         HttpPost httppost = new HttpPost("http://group13.comxa.com/postToTrip.php");
 
-        //
-        int tid = 2;
+        //Getting the highest value of TripID (TID)
+        ApiConnector ac = new ApiConnector();
+        int tid = ac.GetMaxTid() + 1;
+        Log.d(LOG_TAG, "Sent TID: " + tid);
 
         try {
             //Create strings from the integer values so they can be used in the arraylist
