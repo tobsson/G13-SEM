@@ -56,7 +56,7 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
         setContentView(R.layout.menunav_layout);
 
 
-        
+
 
         // First we need to check availability of play services
         if (checkPlayServices()) {
