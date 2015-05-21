@@ -139,7 +139,8 @@ public class SaveValues implements Runnable {
 
     //Method for posting data to the database with values for the trip table
     public void postDataTrip(){
-
+        new Thread(new Runnable() {
+            public void run() {
                 HttpClient httpclient = new DefaultHttpClient();
 
                 HttpPost httppost = new HttpPost("http://group13.comxa.com/postToTrip.php");
@@ -174,6 +175,8 @@ public class SaveValues implements Runnable {
                 } catch (Exception e) {
                     Log.e(LOG_TAG, "postDataTrip Error:  " + e.toString());
                 }
+            }
+        });
 
     }
 

@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by tobs on 2015-05-07.
@@ -424,6 +425,16 @@ public class ApiConnector {
 
         return value;
 
+
+    }
+
+    public String getDateTime(){
+
+        Calendar calendar = Calendar.getInstance();
+        String date = calendar.getTime().toString();
+        Log.d(LOG_TAG,"getTime: " + date);
+
+        return date;
 
     }
 }

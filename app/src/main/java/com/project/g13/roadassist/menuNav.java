@@ -136,6 +136,8 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
                     case MotionEvent.ACTION_UP:
                         endRouteSpring.setEndValue(0f);
                         endRoute();
+                        SaveValues sv = new SaveValues();
+                        sv.postDataTrip();
                         return true;
 
 
