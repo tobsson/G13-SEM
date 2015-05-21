@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -47,7 +48,7 @@ import static com.google.android.gms.location.LocationServices.FusedLocationApi;
 /**
  * Created by Per on 2015-05-04.
  */
-public class menuNav extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
+public class menuNav extends ActionBarActivity implements ConnectionCallbacks, OnConnectionFailedListener {
 
     // LogCat tag
     private static final String TAG = menuNav.class.getSimpleName();
@@ -953,12 +954,13 @@ public class menuNav extends Activity implements ConnectionCallbacks, OnConnecti
 
 
         String currLoc;
-        Location loc = FusedLocationApi
+        /*Location loc = FusedLocationApi
                 .getLastLocation(mGoogleApiClient);
-
-
             double lat = loc.getLatitude();
             double lng = loc.getLongitude();
+        */
+        double lat = 57.706872;
+        double lng = 11.936661;
             currLoc = Double.toString(lat) + "," + Double.toString(lng);
 
             return currLoc;
