@@ -41,6 +41,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 
 import static com.google.android.gms.location.LocationServices.FusedLocationApi;
 
@@ -50,6 +51,8 @@ import static com.google.android.gms.location.LocationServices.FusedLocationApi;
  */
 public class menuNav extends ActionBarActivity implements ConnectionCallbacks, OnConnectionFailedListener {
 
+    @SuppressWarnings("unused")
+    private static final String LOG_TAG = "menuNav";
     // LogCat tag
     private static final String TAG = menuNav.class.getSimpleName();
 
@@ -136,8 +139,6 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
                     case MotionEvent.ACTION_UP:
                         endRouteSpring.setEndValue(0f);
                         endRoute();
-                        SaveValues sv = new SaveValues();
-                        sv.postDataTrip();
                         return true;
 
 
@@ -931,13 +932,22 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
                }
            }
        }).start();
-
-
-
    }
 
     private void endRoute(){
+        Log.d("endRoute", "Outside Thread");
+        new Thread(new Runnable() {
+            public void run() {
+                Log.d("endRoute", "Inside Thread");
+                Calendar calendar = Calendar.getInstance();
+                String date = calendar.getTime().toString();
+                Values.setRouteEnd(date);
+                Log.d(LOG_TAG, "Date/Time End: " + date);
 
+                SaveValues sv = new SaveValues();
+                sv.postDataTrip();
+            }
+        }).start();
         startActivity(new Intent(menuNav.this, MainActivity.class));
     }
     private void closeOverLayMenu(){
@@ -947,7 +957,6 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
-
 
     /**
      * Method to display the location on UI

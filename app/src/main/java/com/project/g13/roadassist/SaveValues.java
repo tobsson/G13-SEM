@@ -8,6 +8,7 @@ import android.swedspot.scs.data.SCSFloat;
 import android.swedspot.scs.data.SCSInteger;
 import android.swedspot.scs.data.Uint8;
 import android.util.Log;
+import android.widget.NumberPicker;
 
 import com.swedspot.automotiveapi.AutomotiveFactory;
 import com.swedspot.automotiveapi.AutomotiveListener;
@@ -32,16 +33,16 @@ import java.util.TimerTask;
 /**
  * Created by tobs on 2015-05-17.
  */
+
 public class SaveValues implements Runnable {
     int speed;
     int fuel;
     int overSpeed;
-    int overSpeedTimes = 0;
+    int overSpeed2;
     int brakeSwitch;
-    int brakeSwitchTimes = 0;
+    int brakeSwitch2;
     int dLevel;
     int time = 0;
-
 
 
 
@@ -75,14 +76,28 @@ public class SaveValues implements Runnable {
                             }
                             if (automotiveSignal.getSignalId() == 285) {
                                 overSpeed = ((Uint8) automotiveSignal.getData()).getIntValue();
-                                if(overSpeed == 1) {
-                                    overSpeedTimes++;
+                                if (overSpeed == 1 && overSpeed2 == 1){
+                                    int ost = Values.getOverSpeedTimes();
+                                    ost++;
+                                    Log.d(LOG_TAG, "ost : " + ost);
+                                    Values.setOverSpeedTimes(ost);
+                                    overSpeed2++;
+                                }
+                                if (overSpeed == 0){
+                                    overSpeed2 = 1;
                                 }
                             }
                             if (automotiveSignal.getSignalId() == 317) {
                                 brakeSwitch = ((Uint8) automotiveSignal.getData()).getIntValue();
-                                if(brakeSwitch == 1) {
-                                    brakeSwitchTimes++;
+                                if (brakeSwitch == 1 && brakeSwitch2 == 1){
+                                    int bst = Values.getBrakeSwitchTimes();
+                                    bst += brakeSwitch;
+                                    Log.d(LOG_TAG, "bst: " + bst);
+                                    Values.setBrakeSwitchTimes(bst);
+                                    brakeSwitch2++;
+                                }
+                                if (brakeSwitch == 0){
+                                    brakeSwitch2 = 1;
                                 }
                             }
                         }
@@ -125,9 +140,9 @@ public class SaveValues implements Runnable {
                 try {
                     if (speed > 5) {
                         postDataGraph();
-                        //Log.d("Timer", "postDataGraph executed");
+                        Log.d("Timer", "postDataGraph executed");
                     }
-                    //Log.d("Timer", "Running");
+                    Log.d("Timer", "Running");
                 }catch (Exception e){
                     Log.e(LOG_TAG, "myTask" + e);
                 }
@@ -139,44 +154,46 @@ public class SaveValues implements Runnable {
 
     //Method for posting data to the database with values for the trip table
     public void postDataTrip(){
-        new Thread(new Runnable() {
-            public void run() {
-                HttpClient httpclient = new DefaultHttpClient();
 
-                HttpPost httppost = new HttpPost("http://group13.comxa.com/postToTrip.php");
+            HttpClient httpclient = new DefaultHttpClient();
 
-                //Getting the highest value of TripID (TID)
-                ApiConnector ac = new ApiConnector();
-                int tid = ac.GetMaxTid() + 1;
-                Log.d(LOG_TAG, "Sent TID to Graph: " + tid);
+            HttpPost httppost = new HttpPost("http://group13.comxa.com/postToTrip.php");
 
-
-                try {
-                    //Create strings from the integer values so they can be used in the arraylist
-                    String tmpTid = Integer.toString(tid);
-                    String tmpBrakeSwitch = Integer.toString(brakeSwitchTimes);
-                    String tmpOverSpeed = Integer.toString(overSpeedTimes);
-                    String dUserName = "Nick";
+            //Getting the highest value of TripID (TID)
+            ApiConnector ac = new ApiConnector();
+            int tid = ac.GetMaxTid() + 1;
+            Log.d(LOG_TAG, "Sent TID to Graph: " + tid);
 
 
-                    //ArrayList with post values for the graphtable
-                    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
-                    nameValuePairs.add(new BasicNameValuePair("TID", tmpTid));
-                    nameValuePairs.add(new BasicNameValuePair("BrakeSwitch", tmpBrakeSwitch));
-                    nameValuePairs.add(new BasicNameValuePair("OverSpeed", tmpOverSpeed));
-                    nameValuePairs.add(new BasicNameValuePair("Dusername", dUserName));
-                    httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            try {
+                //Create strings from the integer values so they can be used in the arraylist
+                String tmpTid = Integer.toString(tid);
+                String tmpBrakeSwitch = Integer.toString(Values.getBrakeSwitchTimes());
+                String tmpOverSpeed = Integer.toString(Values.getOverSpeedTimes());
+                String dUserName = "Nick";
+                String start = Values.getRouteStart();
+                String end = Values.getRouteEnd();
 
-                    //Send data to the website and php code
-                    httpclient.execute(httppost);
-                    //Print the values that are sent to the log
-                    Log.d(LOG_TAG, "postDataTrip run" + ", TID: " + tmpTid + ", BrakeSwitch: " + tmpBrakeSwitch
-                            + ", OverSpeed: " + tmpOverSpeed + ", Username: " + dUserName);
-                } catch (Exception e) {
-                    Log.e(LOG_TAG, "postDataTrip Error:  " + e.toString());
-                }
+
+                //ArrayList with post values for the graphtable
+                ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(6);
+                nameValuePairs.add(new BasicNameValuePair("TID", tmpTid));
+                nameValuePairs.add(new BasicNameValuePair("BrakeSwitch", tmpBrakeSwitch));
+                nameValuePairs.add(new BasicNameValuePair("OverSpeed", tmpOverSpeed));
+                nameValuePairs.add(new BasicNameValuePair("Dusername", dUserName));
+                nameValuePairs.add(new BasicNameValuePair("StartRoute", start));
+                nameValuePairs.add(new BasicNameValuePair("EndRoute", end));
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+                //Send data to the website and php code
+                httpclient.execute(httppost);
+                //Print the values that are sent to the log
+                Log.d(LOG_TAG, "postDataTrip run" + ", TID: " + tmpTid + ", BrakeSwitch: " + tmpBrakeSwitch
+                        + ", OverSpeed: " + tmpOverSpeed + ", Username: " + dUserName
+                        + ", StartRoute: " + start + ", EndRoute:" + end);
+            } catch (Exception e) {
+                Log.e(LOG_TAG, "postDataTrip Error:  " + e.toString());
             }
-        });
 
     }
 

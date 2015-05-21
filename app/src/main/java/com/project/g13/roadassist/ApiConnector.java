@@ -424,8 +424,6 @@ public class ApiConnector {
         }
 
         return value;
-
-
     }
 
     public String getDateTime(){

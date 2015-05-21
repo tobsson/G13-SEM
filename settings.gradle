@@ -1,1 +1,1 @@
-include ':app', ':HoloGraphLibrary', ':HoloGraphLibrarySample', ':sdktools'
+include ':app'

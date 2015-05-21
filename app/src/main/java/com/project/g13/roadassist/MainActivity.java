@@ -49,8 +49,6 @@ public class MainActivity extends ActionBarActivity {
         });
 
         new Thread(new SaveValues()).start();
-        SaveValues values = new SaveValues();
-        values.myTask();
 
     }
 
