@@ -70,7 +70,6 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
         }
 
 
-
         restStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +80,10 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
         endRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //Save trip values to database when user press exit in overlay
+                SaveValues av = new SaveValues();
+                av.postDataTrip();
                 startActivity(new Intent(menuNav.this, MainActivity.class));
             }
         });

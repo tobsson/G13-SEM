@@ -385,7 +385,7 @@ public class ApiConnector {
 
             httpEntity = httpResponse.getEntity();
 
-            Log.d(LOG_TAG, "HTTP Part Done");
+            Log.d(LOG_TAG, "HTTP Part Done MAX(tid)");
 
         } catch (ClientProtocolException e) {
             Log.e(LOG_TAG, "Error in http connection 1 " + e.toString());
@@ -411,7 +411,6 @@ public class ApiConnector {
                     try {
                         json = jsonArray.getJSONObject(i);
                         value = json.getInt("MAX(tid)");
-                        Log.d(LOG_TAG, "MAX(tid)" + value);
                     } catch (JSONException e) {
                         Log.e("LOG_TAG", "Error converting to JSONObject " + e.toString());
                     }

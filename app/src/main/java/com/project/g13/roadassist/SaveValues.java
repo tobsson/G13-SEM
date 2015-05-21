@@ -1,5 +1,6 @@
 package com.project.g13.roadassist;
 
+import android.os.AsyncTask;
 import android.swedspot.automotiveapi.AutomotiveSignal;
 import android.swedspot.automotiveapi.AutomotiveSignalId;
 import android.swedspot.scs.data.SCSData;
@@ -40,6 +41,8 @@ public class SaveValues implements Runnable {
     int brakeSwitchTimes = 0;
     int dLevel;
     int time = 0;
+
+
 
 
     @SuppressWarnings("unused")
@@ -121,10 +124,10 @@ public class SaveValues implements Runnable {
             public void run() {
                 try {
                     if (speed > 5) {
-                        postData();
-                        Log.d("Timer", "postData executed");
+                        postDataGraph();
+                        //Log.d("Timer", "postDataGraph executed");
                     }
-                    Log.d("Timer", "Running");
+                    //Log.d("Timer", "Running");
                 }catch (Exception e){
                     Log.e(LOG_TAG, "myTask" + e);
                 }
@@ -134,17 +137,57 @@ public class SaveValues implements Runnable {
     }
 
 
-    //Method for posting data to the database with values for graphtables
-    public void postData(){
+    //Method for posting data to the database with values for the trip table
+    public void postDataTrip(){
+
+                HttpClient httpclient = new DefaultHttpClient();
+
+                HttpPost httppost = new HttpPost("http://group13.comxa.com/postToTrip.php");
+
+                //Getting the highest value of TripID (TID)
+                ApiConnector ac = new ApiConnector();
+                int tid = ac.GetMaxTid() + 1;
+                Log.d(LOG_TAG, "Sent TID to Graph: " + tid);
+
+
+                try {
+                    //Create strings from the integer values so they can be used in the arraylist
+                    String tmpTid = Integer.toString(tid);
+                    String tmpBrakeSwitch = Integer.toString(brakeSwitchTimes);
+                    String tmpOverSpeed = Integer.toString(overSpeedTimes);
+                    String dUserName = "Nick";
+
+
+                    //ArrayList with post values for the graphtable
+                    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
+                    nameValuePairs.add(new BasicNameValuePair("TID", tmpTid));
+                    nameValuePairs.add(new BasicNameValuePair("BrakeSwitch", tmpBrakeSwitch));
+                    nameValuePairs.add(new BasicNameValuePair("OverSpeed", tmpOverSpeed));
+                    nameValuePairs.add(new BasicNameValuePair("Dusername", dUserName));
+                    httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+                    //Send data to the website and php code
+                    httpclient.execute(httppost);
+                    //Print the values that are sent to the log
+                    Log.d(LOG_TAG, "postDataTrip run" + ", TID: " + tmpTid + ", BrakeSwitch: " + tmpBrakeSwitch
+                            + ", OverSpeed: " + tmpOverSpeed + ", Username: " + dUserName);
+                } catch (Exception e) {
+                    Log.e(LOG_TAG, "postDataTrip Error:  " + e.toString());
+                }
+
+    }
+
+    //Method for posting data to the database with values for the graph table
+    public void postDataGraph(){
 
         HttpClient httpclient = new DefaultHttpClient();
 
-        HttpPost httppost = new HttpPost("http://group13.comxa.com/postToTrip.php");
+        HttpPost httppost = new HttpPost("http://group13.comxa.com/postToGraph.php");
 
         //Getting the highest value of TripID (TID)
         ApiConnector ac = new ApiConnector();
         int tid = ac.GetMaxTid() + 1;
-        Log.d(LOG_TAG, "Sent TID: " + tid);
+        //Log.d(LOG_TAG, "Sent TID to Graph: " + tid);
 
         try {
             //Create strings from the integer values so they can be used in the arraylist
@@ -163,12 +206,13 @@ public class SaveValues implements Runnable {
 
             //Send data to the website and php code
             httpclient.execute(httppost);
-            Log.d(LOG_TAG, "postData run" + ", time: " + tmpTime + ", CSpeed: " + tmpSpeed + ", TID: " + tmpTid);
+            //Print the values that are sent to the log
+            Log.d(LOG_TAG, "postDatagraph run" + ", time: " + tmpTime + ", CSpeed: " + tmpSpeed + ", TID: " + tmpTid);
             time += 5;
         }
         catch(Exception e)
         {
-            Log.e(LOG_TAG, "postData Error:  "+e.toString());
+            Log.e(LOG_TAG, "postDataGraph Error:  "+e.toString());
         }
     }
 
