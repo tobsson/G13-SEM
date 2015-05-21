@@ -4,7 +4,12 @@
     android:layout_height="match_parent">
 
     <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chart1"
+        android:id="@+id/speedChart"
+        android:layout_width="wrap_content"
+        android:layout_height="244dp" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/distractionChart"
         android:layout_width="wrap_content"
         android:layout_height="244dp" />
 

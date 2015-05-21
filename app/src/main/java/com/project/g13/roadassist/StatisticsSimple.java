@@ -58,34 +58,7 @@ public class StatisticsSimple extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statisticssimple);
 
-        Line l = new Line();
-        LinePoint p = new LinePoint();
-        p.setX(0);
-        p.setY(5);
-        l.addPoint(p);
-        p = new LinePoint();
-        p.setX(8);
-        p.setY(8);
-        l.addPoint(p);
-        p = new LinePoint();
-        p.setX(10);
-        p.setY(4);
-        l.addPoint(p);
-        p = new LinePoint();
-        p.setX(12);
-        p.setY(1);
-        l.addPoint(p);
-        l.setColor(Color.GREEN);
 
-        LineGraph li = (LineGraph) findViewById(R.id.graph);
-        li.addLine(l);
-        li.setRangeY(0, 10);
-        li.setLineToFill(0);
-        li.showHorizontalGrid(true);
-        li.showMinAndMaxValues(true);
-        li.setGridColor(Color.RED);
-        li.setTextColor(Color.RED);
-        li.setTextSize(50);
 
         // Get ListView object from xml
         this.listView = (ListView) this.findViewById(android.R.id.list);
