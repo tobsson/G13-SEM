@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -67,11 +68,17 @@ public class Plan_Route extends ActionBarActivity implements
     private static final String LOG_TAG = "PlanRouteActivity";
     private static final int GOOGLE_API_CLIENT_ID = 0;
 
+    //Layout that is used to add new search fields
+    private LinearLayout mLayout;
+
 
     private GoogleApiClient mGoogleApiClient;
     private AutoCompleteAdapter mPlaceArrayAdapter;
     private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
-    new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
+            new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
+
+    public Plan_Route() {
+    }
 
 
     @Override
@@ -79,6 +86,10 @@ public class Plan_Route extends ActionBarActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan);
         plan_layout = (RelativeLayout) findViewById(R.id.plan);
+        mLayout = (LinearLayout) findViewById(R.id.linearLayoutPlan);
+
+        //View for the extra search fields
+        AutoCompleteTextView acTextView = new AutoCompleteTextView(this);
 
 
         mGoogleApiClient = new GoogleApiClient.Builder(Plan_Route.this)
@@ -98,7 +109,7 @@ public class Plan_Route extends ActionBarActivity implements
         add_dest = (Button)findViewById(R.id.add_dest_btn);
         startNav = (Button)findViewById(R.id.plnSrcbutton);
 
-       // destText.setAdapter(new AutoCompleteAdapter(this));
+        // destText.setAdapter(new AutoCompleteAdapter(this));
 
 
 
@@ -106,28 +117,18 @@ public class Plan_Route extends ActionBarActivity implements
         destText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 String description = (String) parent.getItemAtPosition(position);
                 Toast.makeText(getApplicationContext(), description, Toast.LENGTH_SHORT).show();
-
-
                // Toast.makeText(getApplicationContext(), "Position clicked: " + position, Toast.LENGTH_SHORT).show();
             }
         });
         */
+
         add_dest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                new Thread(new Runnable() {
-                    public void run() {
-                        // do something
-                        String testAdress = "engelbrektsgatan+4+göteborg";
-                        getLatLongFromAddress(testAdress);
-                    }
-                }).start();
-
-
+                mLayout.addView(createNewAutoCompleteTextView());
+                Log.d(LOG_TAG, "Add AutoCompleteTextView");
             }
         });
 
@@ -183,24 +184,24 @@ public class Plan_Route extends ActionBarActivity implements
                     intent.setPackage("com.google.android.apps.maps");
 
 
-                intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
-                try
-                {
-                    startActivity(intent);
-                   startService(new Intent(getApplication(), NavOverlayService.class));
-                }
-                catch(ActivityNotFoundException ex)
-                {
+                    intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
                     try
                     {
-                        Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                        startActivity(unrestrictedIntent);
+                        startActivity(intent);
+                        startService(new Intent(getApplication(), NavOverlayService.class));
                     }
-                    catch(ActivityNotFoundException innerEx)
+                    catch(ActivityNotFoundException ex)
                     {
-                        Toast.makeText(Plan_Route.this, "Please install a maps application", Toast.LENGTH_LONG).show();
-                    }
-                }}
+                        try
+                        {
+                            Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                            startActivity(unrestrictedIntent);
+                        }
+                        catch(ActivityNotFoundException innerEx)
+                        {
+                            Toast.makeText(Plan_Route.this, "Please install a maps application", Toast.LENGTH_LONG).show();
+                        }
+                    }}
                 else {
                     Toast.makeText(Plan_Route.this, "Please input a destination...", Toast.LENGTH_LONG).show();
                 }
@@ -212,7 +213,22 @@ public class Plan_Route extends ActionBarActivity implements
 
     }
 
+    //Method to create a new destination field
+    private AutoCompleteTextView createNewAutoCompleteTextView() {
+        //Create the field and set parameters for the layout
+        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final AutoCompleteTextView acTextView = new AutoCompleteTextView(this);
 
+        //Apply the layout
+        acTextView.setLayoutParams(lparams);
+
+        //Set the autocomplete function on the new field
+        acTextView.setThreshold(3);
+        acTextView.setOnItemClickListener(mAutocompleteClickListener);
+        acTextView.setAdapter(mPlaceArrayAdapter);
+
+        return acTextView;
+    }
 
     //NEW STUFF
 
@@ -275,7 +291,7 @@ public class Plan_Route extends ActionBarActivity implements
     }
 
 
-   // Method for getting latitude and longtitude from an adress sent to google geocode webservice
+    // Method for getting latitude and longtitude from an adress sent to google geocode webservice
     public static void getLatLongFromAddress(String youraddress) {
 
 
@@ -352,7 +368,7 @@ class AutoCompleteAdapter extends ArrayAdapter<AutoCompleteAdapter.PlaceAutocomp
      * @param filter   Used to specify place types
      */
     public AutoCompleteAdapter(Context context, int resource, LatLngBounds bounds,
-                             AutocompleteFilter filter) {
+                               AutocompleteFilter filter) {
         super(context, resource);
         mBounds = bounds;
         mPlaceFilter = filter;
@@ -475,22 +491,14 @@ class AutoCompleteAdapter extends ArrayAdapter<AutoCompleteAdapter.PlaceAutocomp
 
 
 /*
-
-
     private LayoutInflater mInflater;
     private Geocoder mGeocoder;
     private StringBuilder mSb = new StringBuilder();
-
     public AutoCompleteAdapter(final Context context) {
         super(context, -1);
         mInflater = LayoutInflater.from(context);
         mGeocoder = new Geocoder(context);
     }
-
-
-
-
-
     @Override
     public View getView(final int position, final View convertView, final ViewGroup parent) {
         final TextView tv;
@@ -499,11 +507,9 @@ class AutoCompleteAdapter extends ArrayAdapter<AutoCompleteAdapter.PlaceAutocomp
         } else {
             tv = (TextView) mInflater.inflate(android.R.layout.simple_dropdown_item_1line, parent, false);
         }
-
         tv.setText(createFormattedAddressFromAddress(getItem(position)));
         return tv;
     }
-
     private String createFormattedAddressFromAddress(final Address address) {
         mSb.setLength(0);
         final int addressLineSize = address.getMaxAddressLineIndex();
@@ -515,7 +521,6 @@ class AutoCompleteAdapter extends ArrayAdapter<AutoCompleteAdapter.PlaceAutocomp
         }
         return mSb.toString();
     }
-
     @Override
     public Filter getFilter() {
         Filter myFilter = new Filter() {
@@ -531,14 +536,11 @@ class AutoCompleteAdapter extends ArrayAdapter<AutoCompleteAdapter.PlaceAutocomp
                 if (addressList == null) {
                     addressList = new ArrayList<Address>();
                 }
-
                 final FilterResults filterResults = new FilterResults();
                 filterResults.values = addressList;
                 filterResults.count = addressList.size();
-
                 return filterResults;
             }
-
             @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(final CharSequence contraint, final FilterResults results) {
@@ -552,7 +554,6 @@ class AutoCompleteAdapter extends ArrayAdapter<AutoCompleteAdapter.PlaceAutocomp
                     notifyDataSetInvalidated();
                 }
             }
-
             @Override
             public CharSequence convertResultToString(final Object resultValue) {
                 return resultValue == null ? "" : ((Address) resultValue).getAddressLine(0);
@@ -561,5 +562,4 @@ class AutoCompleteAdapter extends ArrayAdapter<AutoCompleteAdapter.PlaceAutocomp
         return myFilter;
     }
 }
-
 */

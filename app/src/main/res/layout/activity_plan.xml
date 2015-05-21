@@ -4,44 +4,17 @@
     android:layout_height="match_parent"
     android:id="@+id/plan">
 
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Input New Destination"
         android:id="@+id/textPlnView"
+        android:layout_marginTop="53dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="47dp" />
-
-    <AutoCompleteTextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPostalAddress"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:ems="10"
-        android:id="@+id/destination"
-        android:completionThreshold="3"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/textPlnView" />
-
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/switch1"
-        android:checked="false"
-        android:layout_alignTop="@+id/textARSView"
-        android:layout_toEndOf="@+id/destination" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Auto Rest-Stop Suggestion"
-        android:id="@+id/textARSView"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/textPlnView" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -49,15 +22,39 @@
         android:text="Search..."
         android:id="@+id/plnSrcbutton"
         android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/textARSView"
-        android:layout_alignStart="@+id/textPlnView" />
+        android:layout_centerHorizontal="true" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textPlnView"
+        android:layout_above="@+id/plnSrcbutton"
+        android:id="@+id/linearLayoutPlan"
+        android:layout_toStartOf="@+id/add_dest_btn">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPostalAddress"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:ems="10"
+            android:id="@+id/destination"
+            android:completionThreshold="3"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/textPlnView" />
+
+    </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add..."
         android:id="@+id/add_dest_btn"
-        android:layout_below="@+id/destination"
-        android:layout_alignEnd="@+id/switch1" />
+        android:layout_gravity="right"
+        android:layout_alignTop="@+id/linearLayoutPlan"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
