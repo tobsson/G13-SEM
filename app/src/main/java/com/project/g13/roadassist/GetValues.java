@@ -6,8 +6,8 @@ import android.util.Log;
  * Created by nti on 2015-05-21.
  */
 public class GetValues {
-    ins distLevel;
-
+    int distLevel;
+    
     public int getDist(){
         AutomotiveFactory.createAutomotiveManagerInstance(
                 new AutomotiveCertificate(new byte[0]),
