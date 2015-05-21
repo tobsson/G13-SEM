@@ -1,4 +1,4 @@
-apply plugin: 'com.android.library'
+/**apply plugin: 'com.android.library'
 
 buildscript {
     repositories {
@@ -42,4 +42,4 @@ android {
 dependencies {
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.intellij:annotations:+@jar'
-}
+} **/

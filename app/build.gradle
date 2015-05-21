@@ -24,7 +24,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.google.android.gms:play-services:7.0.0'
     compile 'com.google.maps.android:android-maps-utils:0.3+'
-    compile project(':HoloGraphLibrary')
+    //compile project(':HoloGraphLibrary')
     compile files('libs/lib.jar')
     compile files('libs/SDP-1.1.jar')
     compile files('libs/VIL-1.1.jar')

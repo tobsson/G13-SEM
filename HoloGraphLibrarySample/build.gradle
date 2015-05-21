@@ -1,4 +1,4 @@
-buildscript {
+/** buildscript {
     repositories {
         mavenCentral()
     }
@@ -43,5 +43,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:support-v4:21.0.3'
     compile project(':HoloGraphLibrary')
-}
+} **/
 
