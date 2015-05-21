@@ -482,4 +482,55 @@ public class ApiConnector {
 
     }
 
+    public JSONArray logIn(String username) {
+
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httppost = new HttpPost("http://group13.comxa.com/login.php");
+
+        HttpEntity httpEntity = null;
+
+        try {
+            //ArrayList with post values for the graphtable
+            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+            nameValuePairs.add(new BasicNameValuePair("username", username));
+            Log.e(LOG_TAG, "value pair " + nameValuePairs.toString());
+
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            HttpResponse httpResponse = httpclient.execute(httppost);
+
+            httpEntity = httpResponse.getEntity();
+            Log.d(LOG_TAG, "HTTP Part Done");
+
+        } catch (ClientProtocolException e) {
+
+            // Signals error in http protocol
+            Log.e(LOG_TAG, "Error in http connection 1 " + e.toString());
+
+            //Log Errors Here
+
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Error in http connection 2 " + e.toString());
+        }
+
+
+        // Convert HttpEntity into JSON Array
+        JSONArray jsonArray = null;
+
+        if (httpEntity != null) {
+            try {
+                String entityResponse = EntityUtils.toString(httpEntity);
+
+                Log.d(LOG_TAG, "Entity Response  : " + entityResponse);
+
+                jsonArray = new JSONArray(entityResponse);
+                Log.d(LOG_TAG, jsonArray.toString());
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 1 " + e.toString());
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 2 " + e.toString());
+            }
+        }
+        return jsonArray;
+    }
 }

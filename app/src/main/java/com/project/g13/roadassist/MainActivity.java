@@ -23,6 +23,7 @@ public class MainActivity extends ActionBarActivity {
         Button vwRtBtn = (Button)findViewById(R.id.vwRtBtn);
         Button statsBtn = (Button)findViewById(R.id.statsBtn);
         Button registerBtn = (Button)findViewById(R.id.registerBtn);
+        Button loginBtn = (Button)findViewById(R.id.loginBtn);
 
         plnRtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +47,12 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, RegisterActivity.class));
+            }
+        });
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, LogIn.class));
             }
         });
 

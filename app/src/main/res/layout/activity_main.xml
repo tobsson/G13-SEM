@@ -21,6 +21,14 @@
         android:layout_height="fill_parent">
 
         <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Log In"
+            android:id="@+id/loginBtn"
+            android:layout_row="13"
+            android:layout_column="12" />
+
+        <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="183dp"
             android:layout_height="wrap_content"
