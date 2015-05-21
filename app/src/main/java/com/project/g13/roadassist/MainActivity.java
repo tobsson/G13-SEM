@@ -29,6 +29,7 @@ public class MainActivity extends ActionBarActivity {
         Button vwRtBtn = (Button)findViewById(R.id.vwRtBtn);
         Button statsBtn = (Button)findViewById(R.id.statsBtn);
 
+
         plnRtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,6 +54,9 @@ public class MainActivity extends ActionBarActivity {
         values.myTask();
 
     }
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

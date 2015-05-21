@@ -59,6 +59,8 @@ public class Plan_Route extends ActionBarActivity implements
         GoogleApiClient.ConnectionCallbacks {
 
 
+    //Variable storing the current route when "Search.." is pressed, everytime search is pressed
+
     private Button startNav;
     private Button button;
     private Button add_dest;
