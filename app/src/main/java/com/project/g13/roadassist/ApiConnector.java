@@ -16,6 +16,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -106,12 +107,7 @@ public class ApiConnector {
             Log.d(LOG_TAG, "HTTP Part Done");
 
         } catch (ClientProtocolException e) {
-
-            // Signals error in http protocol
             Log.e(LOG_TAG, "Error in http connection 1 " + e.toString());
-
-            //Log Errors Here
-
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error in http connection 2 " + e.toString());
         }
@@ -146,7 +142,6 @@ public class ApiConnector {
         HttpPost httppost = new HttpPost("http://group13.comxa.com/getGraphDataSpeed.php");
 
         HttpEntity httpEntity = null;
-
         try
         {
             //ArrayList with post values for the graphtable
@@ -166,12 +161,7 @@ public class ApiConnector {
             Log.d(LOG_TAG, "HTTP Part Done");
 
         } catch (ClientProtocolException e) {
-
-            // Signals error in http protocol
             Log.e(LOG_TAG, "Error in http connection 1 " + e.toString());
-
-            //Log Errors Here
-
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error in http connection 2 " + e.toString());
         } catch (NetworkOnMainThreadException e){
@@ -290,7 +280,9 @@ public class ApiConnector {
 
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error in http connection 2 " + e.toString());
-        }
+        } catch (NetworkOnMainThreadException e){
+        Log.e(LOG_TAG, "Error in http connection 3 " + e.toString());
+    }
 
 
         // Convert HttpEntity into JSON Array
@@ -335,6 +327,7 @@ public class ApiConnector {
             HttpResponse httpResponse = httpclient.execute(httppost);
 
             httpEntity = httpResponse.getEntity();
+
             Log.d(LOG_TAG, "HTTP Part Done");
 
         } catch (ClientProtocolException e) {
@@ -372,4 +365,66 @@ public class ApiConnector {
 
     }
 
+    public int GetMaxTid() {
+        // URL for getting all customers
+        String url = "http://group13.comxa.com/getMaxTid.php";
+        int value = -1;
+
+        // Get HttpResponse Object from url.
+        // Get HttpEntity from Http Response Object
+
+        HttpEntity httpEntity = null;
+
+        try
+        {
+
+            DefaultHttpClient httpClient = new DefaultHttpClient();  // Default HttpClient
+            HttpGet httpGet = new HttpGet(url);
+
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+
+            httpEntity = httpResponse.getEntity();
+
+            Log.d(LOG_TAG, "HTTP Part Done");
+
+        } catch (ClientProtocolException e) {
+            Log.e(LOG_TAG, "Error in http connection 1 " + e.toString());
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Error in http connection 2 " + e.toString());
+        }
+
+        // Convert HttpEntity into JSON Array
+        JSONArray jsonArray = null;
+
+        if (httpEntity != null) {
+            try {
+                String entityResponse = EntityUtils.toString(httpEntity);
+
+                Log.d(LOG_TAG, "Entity Response  : " + entityResponse);
+
+                jsonArray = new JSONArray(entityResponse);
+                Log.d(LOG_TAG,  jsonArray.toString());
+
+                //Convert JSONarray to JSONObject to int
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject json = null;
+                    try {
+                        json = jsonArray.getJSONObject(i);
+                        value = json.getInt("MAX(tid)");
+                        Log.d(LOG_TAG, "MAX(tid)" + value);
+                    } catch (JSONException e) {
+                        Log.e("LOG_TAG", "Error converting to JSONObject " + e.toString());
+                    }
+                }
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 1 " + e.toString());
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 2 " + e.toString());
+            }
+        }
+
+        return value;
+
+
+    }
 }

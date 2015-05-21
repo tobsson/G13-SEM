@@ -137,10 +137,9 @@ public class StatisticsSimple extends ActionBarActivity {
                         tripList.add(s);
                         Log.d(LOG_TAG, jsonArray.get(i).toString());
                     } catch (JSONException e) {
-                        Log.e("LOG_TAG", "Error converting to ArrayList " + e.toString());
+                        Log.e("LOG_TAG", "Error converting to JSONObject " + e.toString());
                     }
                 }
-
             }
             return tripList;
         }
