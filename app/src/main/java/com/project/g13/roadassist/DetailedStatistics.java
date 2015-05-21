@@ -31,7 +31,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import custom.MyValueFormatter;
 
 import static java.lang.Integer.parseInt;
 
@@ -139,12 +138,10 @@ public class DetailedStatistics extends ActionBarActivity {
             xAxis.setDrawGridLines(false);
             xAxis.setSpaceBetweenLabels(2);
 
-            //ValueFormatter custom = new MyValueFormatter();
 
             YAxis leftAxis = distChart.getAxisLeft();
             leftAxis.setTypeface(mTf);
             leftAxis.setLabelCount(7);
-            //leftAxis.setValueFormatter(custom);
             leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
             leftAxis.setSpaceTop(15f);
 
@@ -152,7 +149,6 @@ public class DetailedStatistics extends ActionBarActivity {
             rightAxis.setDrawGridLines(false);
             rightAxis.setTypeface(mTf);
             rightAxis.setLabelCount(8);
-            //rightAxis.setValueFormatter(custom);
             rightAxis.setSpaceTop(15f);
 
 

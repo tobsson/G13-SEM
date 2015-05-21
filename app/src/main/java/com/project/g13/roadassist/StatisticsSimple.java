@@ -43,6 +43,7 @@ import com.swedspot.vil.policy.AutomotiveCertificate;
 
 import java.util.ArrayList;
 
+import static java.lang.Integer.parseInt;
 
 
 /**
@@ -128,6 +129,39 @@ public class StatisticsSimple extends ActionBarActivity {
             listView.setAdapter(adapter);
 
 
+        }
+    }
+
+    private class getDataOverspeedCount extends AsyncTask<String, Long, ArrayList> {
+
+        @Override
+        protected ArrayList doInBackground(String... params) {
+            ArrayList<String> overspdCount = new ArrayList<String>();
+            // Put values in a JSONArray
+            ApiConnector connector = new ApiConnector();
+            JSONArray jsonArray = connector.GetTripDataOverspeed(params[0]);
+
+            if (jsonArray != null) {
+                String s = "";
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject json = null;
+                    try {
+                        json = jsonArray.getJSONObject(i);
+                        s = json.getString("OverSpeed");
+                        overspdCount.add(s);
+                        Log.d(LOG_TAG, jsonArray.get(i).toString());
+                    } catch (JSONException e) {
+                        Log.e("LOG_TAG", "Error converting to ArrayList " + e.toString());
+                    }
+                }
+
+            }
+            return overspdCount;
+        }
+        @Override
+        protected void onPostExecute(ArrayList overspdCount) {
+            //overspeedCount = parseInt(overspdCount.toString());
+            Log.d(LOG_TAG, overspdCount.toString());
         }
     }
 
