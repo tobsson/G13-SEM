@@ -153,6 +153,9 @@ public class Plan_Route extends ActionBarActivity implements
                     }
                 }).start();
                 destination = destText.getText().toString();
+                //Sets current route to the class CurrentRoute
+                CurrentRoute.setCurrentRoute(destination);
+
                 Toast.makeText(Plan_Route.this,destination, Toast.LENGTH_LONG).show();
                 if(destination!=null){
                     Uri gmmIntentUri = Uri.parse("google.navigation:q="+destination+"&mode=w");
