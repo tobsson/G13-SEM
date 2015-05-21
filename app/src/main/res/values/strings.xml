@@ -9,6 +9,7 @@
     <string name="title_activity_listviewloader">List View Loader</string>
     <string name="hello_world">Hello world!</string>
     <string name="google_maps_api_key">AIzaSyD2ZMRZqhQtMtqvIZS37-BlkYIk_U-8bBU</string>
+    <string name="google_maps_api_key_browser">AIzaSyDP44XNtbKmVlSxIKLpNqW5HO0PGqsydHI</string>
     // Per's Key that worked AIzaSyDmyRa6BHGsxhlraBZikucctYEAt_7yioY
     <string name="SKMaps_API_Key">8d2d10e08df1f0f199fe3090f418f7298a25629722b1b5d15093880b1e35abc1</string>
     <string name="title_activity_sk">SKMAPS</string>

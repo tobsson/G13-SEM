@@ -56,11 +56,7 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
         setContentView(R.layout.menunav_layout);
 
 
-        restStop = (Button) findViewById(R.id.restStopBtn);
-        endRoute = (Button) findViewById(R.id.endRouteBtn);
-        restaurant = (Button)findViewById(R.id.restaurantBtn);
-        gas = (Button)findViewById(R.id.gasBtn);
-        exit = (Button)findViewById(R.id.returnBtn);
+
 
         // First we need to check availability of play services
         if (checkPlayServices()) {
@@ -149,8 +145,7 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
 
     /**
      * Method to display the location on UI
-     **/
-
+     * */
     private String displayLocation() {
 
 
@@ -174,7 +169,7 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
     public void onConnected(Bundle arg0) {
 
         // Once connected with google api, get the location
-       // displayLocation();
+        displayLocation();
     }
 
     @Override

@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion '21.1.1'
+    buildToolsVersion '21.1.2'
 
     defaultConfig {
         applicationId "com.project.g13.roadassist"
@@ -10,29 +10,41 @@ android {
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
+
+
+
     }
     buildTypes {
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-}
 
+
+
+
+}
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.google.android.gms:play-services:7.0.0'
+    compile 'com.android.support:appcompat-v7:22.1.1'
+    compile 'com.google.android.gms:play-services:7.3.0'
     compile 'com.google.maps.android:android-maps-utils:0.3+'
     compile project(':HoloGraphLibrary')
     compile files('libs/lib.jar')
+    compile files('libs/Automotive-API-1.1.jar')
     compile files('libs/SDP-1.1.jar')
     compile files('libs/VIL-1.1.jar')
     compile 'org.slf4j:slf4j-android:1.7.12'
-    compile 'com.android.support:appcompat-v7:21.0.0'
     compile files('libs/Automotive-API-1.2-javadoc.jar')
     compile files('libs/mpandroidchartlibrary-2-0-7.jar')
+    compile 'com.facebook.rebound:rebound:0.3.7'
+
 }
+
+
+
 
 repositories {
     mavenCentral()
@@ -42,18 +54,12 @@ repositories {
 
 
 
-repositories {
-    maven {
-        url "http://developer.skobbler.com/maven/"
-    }
-}
+
 
 configurations {
     drivers
 }
 
 
-def assetsPath = "$projectDir/src/main/assets"
-def libsPath = "$projectDir/libs"
-def jniLibsPath = "$projectDir/src/main/jniLibs"
+
 
