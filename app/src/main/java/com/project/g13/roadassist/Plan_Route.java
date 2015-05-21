@@ -139,12 +139,9 @@ public class Plan_Route extends ActionBarActivity implements
 
             @Override
             public void onClick(View v) {
+
                 new Thread(new Runnable() {
                     public void run() {
-                        //Start task that runs every 5 seconds
-                        SaveValues values = new SaveValues();
-                        values.myTask();
-
                         //Get the calendar and save the time and date when the route starts
                         Calendar calendar = Calendar.getInstance();
                         String date = calendar.getTime().toString();

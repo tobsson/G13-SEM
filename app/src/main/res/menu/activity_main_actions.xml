@@ -10,12 +10,6 @@
         android:title="@string/action_search"
         app:showAsAction="ifRoom"/>
 
-    <!-- View Map -->
-    <item android:id="@+id/action_map"
-        android:icon="@drawable/ic_action_map"
-        android:title="@string/action_map"
-        app:showAsAction="ifRoom"/>
-
     <!-- Help -->
     <item android:id="@+id/action_help"
         android:icon="@drawable/ic_action_help"

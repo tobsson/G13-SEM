@@ -55,7 +55,7 @@
         <activity
             android:name=".menuNav"
             android:label="@string/title_menuNav"
-            android:parentActivityName="com.project.g13.roadassist.menuNav">
+            android:parentActivityName="com.project.g13.roadassist.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

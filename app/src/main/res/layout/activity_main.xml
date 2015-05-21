@@ -15,7 +15,6 @@
         android:layout_centerHorizontal="true"
         android:src="@drawable/logo" />
 
-
     <GridLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
@@ -26,7 +25,9 @@
             android:text="Statistics"
             android:id="@+id/statsBtn"
             android:layout_row="12"
-            android:layout_column="0" />
+            android:layout_column="0"
+            android:nextFocusDown="@+id/plnRtBtn"
+            android:nextFocusRight="@+id/vwRtBtn" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -37,7 +38,9 @@
             android:id="@+id/plnRtBtn"
             android:onClick="click"
             android:layout_row="13"
-            android:layout_column="0" />
+            android:layout_column="0"
+            android:nextFocusUp="@+id/statsBtn"
+            android:nextFocusRight="@+id/vwRtBtn" />
 
         <Button
             android:layout_width="wrap_content"
@@ -46,7 +49,10 @@
             android:drawableLeft="@drawable/view_route"
             android:id="@+id/vwRtBtn"
             android:layout_row="13"
-            android:layout_column="12" />
+            android:layout_column="12"
+            android:nextFocusUp="@+id/statsBtn"
+            android:nextFocusLeft="@+id/plnRtBtn"
+            android:nextFocusDown="@+id/action_search"/>
     </GridLayout>
 
 </RelativeLayout>

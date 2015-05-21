@@ -96,11 +96,11 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
     private static int UPDATE_INTERVAL = 10000; // 10 sec
     private static int FATEST_INTERVAL = 5000; // 5 sec
     private static int DISPLACEMENT = 10; // 10 meters
-    private Button parking;
-    private Button endRoute;
-    private Button restaurant;
-    private Button gas;
-    private Button closeMenu;
+    private Button ButtonParking;
+    private Button ButtonEndRoute;
+    private Button ButtonRestaurant;
+    private Button ButtonGas;
+    private Button ButtonClose;
 
     private String lat;
     private String lng;
@@ -122,14 +122,20 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
         parkingText = (TextView)findViewById(R.id.parkingTextView);
         restText = (TextView)findViewById(R.id.parkingTextView);
         endRouteText = (TextView) findViewById(R.id.endRouteTextView);
-
+/**
         gasBtnRb = (ImageView) findViewById(R.id.gasBtnRb);
         restaurantBtnRb = (ImageView) findViewById(R.id.restaurantBtnRb);
         parkingBtnRb = (ImageView) findViewById(R.id.parkingBtnRb);
         closeMenuBtnRb = (ImageView) findViewById(R.id.closeMenuBtnRb);
         endRouteBtnRb = (ImageView) findViewById(R.id.endRouteBtnRb);
+**/
+        ButtonRestaurant = (Button) findViewById(R.id.ButtonRestaurant);
+        ButtonClose = (Button) findViewById(R.id.ButtonClose);
+        ButtonParking = (Button) findViewById(R.id.ButtonParking);
+        ButtonEndRoute = (Button) findViewById(R.id.ButtonEndRoute);
+        ButtonGas = (Button) findViewById(R.id.ButtonGas);
 
-        endRouteBtnRb.setOnTouchListener(new View.OnTouchListener() {
+        ButtonEndRoute.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
@@ -149,7 +155,7 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
         });
 
 
-        gasBtnRb.setOnTouchListener(new View.OnTouchListener() {
+        ButtonGas.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
@@ -168,7 +174,7 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
             }
         });
 
-        restaurantBtnRb.setOnTouchListener(new View.OnTouchListener() {
+        ButtonRestaurant.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
@@ -187,7 +193,7 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
             }
         });
 
-        parkingBtnRb.setOnTouchListener(new View.OnTouchListener() {
+        ButtonParking.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
@@ -197,25 +203,6 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
                     case MotionEvent.ACTION_UP:
                         parkSpring.setEndValue(0f);
                         findParking();
-                        return true;
-
-
-                }
-
-                return false;
-            }
-        });
-
-        closeMenuBtnRb.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        gasSpring.setEndValue(1f);
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                        gasSpring.setEndValue(0f);
-                        closeOverLayMenu();
                         return true;
 
 
@@ -237,8 +224,8 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
             public void onSpringUpdate(Spring spring) {
                 float value = (float) spring.getCurrentValue();
                 float scale = 1f - (value * 0.5f);
-                gasBtnRb.setScaleX(scale);
-                gasBtnRb.setScaleY(scale);
+                ButtonGas.setScaleX(scale);
+                ButtonGas.setScaleY(scale);
 
             }
 
@@ -262,8 +249,8 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
             public void onSpringUpdate(Spring spring) {
                 float value = (float) spring.getCurrentValue();
                 float scale = 1f - (value * 0.5f);
-                parkingBtnRb.setScaleX(scale);
-                parkingBtnRb.setScaleY(scale);
+                ButtonParking.setScaleX(scale);
+                ButtonParking.setScaleY(scale);
 
             }
 
@@ -287,8 +274,8 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
             public void onSpringUpdate(Spring spring) {
                 float value = (float) spring.getCurrentValue();
                 float scale = 1f - (value * 0.5f);
-                restaurantBtnRb.setScaleX(scale);
-                restaurantBtnRb.setScaleY(scale);
+                ButtonRestaurant.setScaleX(scale);
+                ButtonRestaurant.setScaleY(scale);
 
             }
 
@@ -312,8 +299,8 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
             public void onSpringUpdate(Spring spring) {
                 float value = (float) spring.getCurrentValue();
                 float scale = 1f - (value * 0.5f);
-                endRouteBtnRb.setScaleX(scale);
-                endRouteBtnRb.setScaleY(scale);
+                ButtonEndRoute.setScaleX(scale);
+                ButtonEndRoute.setScaleY(scale);
             }
 
             @Override
@@ -345,318 +332,41 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
             buildGoogleApiClient();
         }
 
-
-/*
-        parking.setOnClickListener(new View.OnClickListener() {
+        ButtonClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread(new Runnable() {
-                    public void run() {
-                        //String request that can be sent to google places api
-                        String nearbyGas = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
-                                "location=" + displayLocation() + "&" +
-                                "rankby=distance" + "&" +
-                                "type=parking&" +
-                                "key=AIzaSyDP44XNtbKmVlSxIKLpNqW5HO0PGqsydHI";
+                closeOverLayMenu();
+                }
+            });
 
-
-                        StringBuilder placesBuilder = new StringBuilder();
-                        HttpClient placesClient = new DefaultHttpClient();
-                        try {
-                            //try to fetch the data
-                            HttpGet placesGet = new HttpGet(nearbyGas);
-                            HttpResponse placesResponse = placesClient.execute(placesGet);
-                            StatusLine placeSearchStatus = placesResponse.getStatusLine();
-
-                            if (placeSearchStatus.getStatusCode() == 200) {
-                                //we have an OK response
-                                HttpEntity placesEntity = placesResponse.getEntity();
-                                InputStream placesContent = placesEntity.getContent();
-                                InputStreamReader placesInput = new InputStreamReader(placesContent);
-                                BufferedReader placesReader = new BufferedReader(placesInput);
-                                String lineIn;
-                                while ((lineIn = placesReader.readLine()) != null) {
-                                    placesBuilder.append(lineIn);
-                                }
-                                Log.d(TAG, placesBuilder.toString());
-                                String resultsRestStop = placesBuilder.toString();
-                                try {
-                                    JSONObject jObject = new JSONObject(resultsRestStop);
-                                    JSONArray jResults = jObject.getJSONArray("results");
-                                    JSONObject jPlaceObj = jResults.getJSONObject(0);
-                                    JSONObject jGeometry = jPlaceObj.getJSONObject("geometry");
-                                    JSONObject jLocation = jGeometry.getJSONObject("location");
-
-                                    lat = jLocation.getString("lat");
-                                    lng = jLocation.getString("lng");
-                                    Log.d(TAG, lat + "," + lng);
-
-                                } catch (JSONException e) {
-                                    // TODO Auto-generated catch block
-                                    e.printStackTrace();
-                                }
-
-
-                                //Start navigation to nearest gas-station
-                                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + lat + "," + lng + "&mode=w");
-                                Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                intent.setPackage("com.google.android.apps.maps");
-
-
-                                intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
-                                try {
-                                    startActivity(intent);
-                                    startService(new Intent(getApplication(), NavOverlayService.class));
-                                } catch (ActivityNotFoundException ex) {
-                                    try {
-                                        Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                        startActivity(unrestrictedIntent);
-                                    } catch (ActivityNotFoundException innerEx) {
-                                        Toast.makeText(menuNav.this, "Please install a maps application", Toast.LENGTH_LONG).show();
-                                    }
-                                }
-
-
-                                Thread.interrupted();
-
-
-                            } else {
-                                Toast.makeText(menuNav.this, "Response failed", Toast.LENGTH_SHORT);
-                                Thread.interrupted();
-                            }
-
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-
-
+        ButtonRestaurant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findRestaurant();
             }
         });
 
-        endRoute.setOnClickListener(new View.OnClickListener() {
+        ButtonParking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(menuNav.this, MainActivity.class));
+                findParking();
             }
         });
 
-        restaurant.setOnClickListener(new View.OnClickListener() {
+        ButtonGas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                new Thread (new Runnable() {
-                    public void run() {
-                        //String request that can be sent to google places api
-                        String nearbyFood = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
-                                "location="+displayLocation()+"&" +
-                                "rankby=distance" + "&" +
-                                "type=restaurant&" +
-                                "key=AIzaSyDP44XNtbKmVlSxIKLpNqW5HO0PGqsydHI";
-
-
-                        StringBuilder placesBuilder = new StringBuilder();
-                        HttpClient placesClient = new DefaultHttpClient();
-                        try {
-                            //try to fetch the data
-                            HttpGet placesGet = new HttpGet(nearbyFood);
-                            HttpResponse placesResponse = placesClient.execute(placesGet);
-                            StatusLine placeSearchStatus = placesResponse.getStatusLine();
-
-                            if (placeSearchStatus.getStatusCode() == 200) {
-                                //we have an OK response
-                                HttpEntity placesEntity = placesResponse.getEntity();
-                                InputStream placesContent = placesEntity.getContent();
-                                InputStreamReader placesInput = new InputStreamReader(placesContent);
-                                BufferedReader placesReader = new BufferedReader(placesInput);
-                                String lineIn;
-                                while ((lineIn = placesReader.readLine()) != null) {
-                                    placesBuilder.append(lineIn);
-                                }
-                                Log.d(TAG, placesBuilder.toString());
-                                String resultsGas = placesBuilder.toString();
-                                try {
-                                    JSONObject jObject = new JSONObject(resultsGas);
-                                    JSONArray jResults = jObject.getJSONArray("results");
-                                    JSONObject jPlaceObj = jResults.getJSONObject(0);
-                                    JSONObject jGeometry =  jPlaceObj.getJSONObject("geometry");
-                                    JSONObject jLocation = jGeometry.getJSONObject("location");
-
-                                    lat = jLocation.getString("lat");
-                                    lng = jLocation.getString("lng");
-                                    Log.d(TAG, lat+","+lng);
-
-                                } catch (JSONException e) {
-                                    // TODO Auto-generated catch block
-                                    e.printStackTrace();
-                                }
-
-
-                                //Start navigation to nearest gas-station
-                                Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lng+"&mode=w");
-                                Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                intent.setPackage("com.google.android.apps.maps");
-
-
-                                intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
-                                try
-                                {
-                                    startActivity(intent);
-                                    startService(new Intent(getApplication(), NavOverlayService.class));
-                                }
-                                catch(ActivityNotFoundException ex)
-                                {
-                                    try
-                                    {
-                                        Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                        startActivity(unrestrictedIntent);
-                                    }
-                                    catch(ActivityNotFoundException innerEx)
-                                    {
-                                        Toast.makeText(menuNav.this, "Please install a maps application", Toast.LENGTH_LONG).show();
-                                    }
-                                }
-
-
-                                Thread.interrupted();
-
-
-                            }
-                            else {
-                                Toast.makeText(menuNav.this, "Response failed", Toast.LENGTH_SHORT);
-                                Thread.interrupted();
-                            }
-
-
-
-                        }
-                        catch(Exception e){
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-
+                findGasStn();
             }
         });
-
-        gas.setOnClickListener(new View.OnClickListener() {
+        ButtonEndRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                new Thread (new Runnable() {
-                    public void run() {
-                        //String request that can be sent to google places api
-                        String nearbyGas = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
-                                "location="+displayLocation()+"&" +
-                                "rankby=distance" + "&" +
-                                "keyword=bensinstation&" +
-                                "key=AIzaSyDP44XNtbKmVlSxIKLpNqW5HO0PGqsydHI";
-
-
-                        // do something
-                        StringBuilder placesBuilder = new StringBuilder();
-                        HttpClient placesClient = new DefaultHttpClient();
-                        try {
-                            //try to fetch the data
-                            HttpGet placesGet = new HttpGet(nearbyGas);
-                            HttpResponse placesResponse = placesClient.execute(placesGet);
-                            StatusLine placeSearchStatus = placesResponse.getStatusLine();
-
-                            if (placeSearchStatus.getStatusCode() == 200) {
-                            //we have an OK response
-                                HttpEntity placesEntity = placesResponse.getEntity();
-                                InputStream placesContent = placesEntity.getContent();
-                                InputStreamReader placesInput = new InputStreamReader(placesContent);
-                                BufferedReader placesReader = new BufferedReader(placesInput);
-                                String lineIn;
-                                while ((lineIn = placesReader.readLine()) != null) {
-                                    placesBuilder.append(lineIn);
-                                }
-                                Log.d(TAG, placesBuilder.toString());
-                                String resultsGas = placesBuilder.toString();
-                                try {
-                                    JSONObject jObject = new JSONObject(resultsGas);
-                                    JSONArray jResults = jObject.getJSONArray("results");
-                                    JSONObject jPlaceObj = jResults.getJSONObject(0);
-                                    JSONObject jGeometry =  jPlaceObj.getJSONObject("geometry");
-                                    JSONObject jLocation = jGeometry.getJSONObject("location");
-
-                                    lat = jLocation.getString("lat");
-                                    lng = jLocation.getString("lng");
-                                    Log.d(TAG, lat+","+lng);
-
-                                } catch (JSONException e) {
-                                    // TODO Auto-generated catch block
-                                    e.printStackTrace();
-                                }
-
-
-                                //Start navigation to nearest gas-station
-                                Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lng+"&mode=w");
-                                Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                intent.setPackage("com.google.android.apps.maps");
-
-
-                                intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
-                                try
-                                {
-                                    startActivity(intent);
-                                    startService(new Intent(getApplication(), NavOverlayService.class));
-                                }
-                                catch(ActivityNotFoundException ex)
-                                {
-                                    try
-                                    {
-                                        Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                        startActivity(unrestrictedIntent);
-                                    }
-                                    catch(ActivityNotFoundException innerEx)
-                                    {
-                                        Toast.makeText(menuNav.this, "Please install a maps application", Toast.LENGTH_LONG).show();
-                                    }
-                                }
-
-
-                                Thread.interrupted();
-
-
-                            }
-                            else {
-                                Toast.makeText(menuNav.this, "Response failed", Toast.LENGTH_SHORT);
-                                Thread.interrupted();
-                            }
-
-
-
-                        }
-                        catch(Exception e){
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
+                endRoute();
             }
         });
-
-
-        closeMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                startService(new Intent(getApplication(), NavOverlayService.class));
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.setComponent(new ComponentName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity"));
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-
-
-            }
-        });
-
-*/
     }
+
     // Method for finding gas-station coordinates and sendind intent to navigation app
     private void findGasStn() {
         new Thread (new Runnable() {

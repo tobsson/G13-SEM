@@ -80,8 +80,21 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        new Thread(new SaveValues()).start();
+        //new Thread(new SaveValues()).start();
+        new Thread(new Runnable() {
+            public void run() {
+                //Start task that runs every 5 seconds
+                SaveValues values = new SaveValues();
+                values.run();
+                values.myTask();
 
+                //Get the calendar and save the time and date when the route starts
+                Calendar calendar = Calendar.getInstance();
+                String date = calendar.getTime().toString();
+                Values.setRouteStart(date);
+                Log.d(LOG_TAG, "Date/Time Start: " + date);
+            }
+        }).start();
     }
 
 
@@ -100,9 +113,6 @@ public class MainActivity extends ActionBarActivity {
         switch (item.getItemId()) {
             case R.id.action_search:
                 openSearch();
-                return true;
-            case R.id.action_map:
-                //composeMessage();
                 return true;
             case R.id.action_help:
                 openHelp();
