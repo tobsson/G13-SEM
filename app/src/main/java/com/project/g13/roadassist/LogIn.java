@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 
 public class LogIn extends ActionBarActivity {
@@ -46,24 +48,36 @@ public class LogIn extends ActionBarActivity {
 
     String username;
     String password;
+    String dbpassword;
+    public static String name;
+    public static String surname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.login_activity);
+
+        Button loginBtn2 = (Button)findViewById(R.id.loginBtn2);
+        Button signupBtn = (Button)findViewById(R.id.signupBtn);
 
         editTextUsername = (EditText) findViewById(R.id.editTextUsername);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
-        new logInTask().execute("Nick");
+
+        loginBtn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new logInTask().execute(username = editTextUsername.getText().toString());
+            }
+        });
+        signupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LogIn.this, RegisterActivity.class));
+            }
+        });
     }
 
-    public void invokeLogin(View view){
-        username = editTextUsername.getText().toString();
-        password = editTextPassword.getText().toString();
 
-        //login(username, password);
-
-    }
 
 
 
@@ -81,11 +95,11 @@ public class LogIn extends ActionBarActivity {
                 try {
                     json = jsonArray.getJSONObject(0);
                     userInfo.add(json.getString("Dusername"));
-                    json = jsonArray.getJSONObject(1);
+                    json = jsonArray.getJSONObject(0);
                     userInfo.add(json.getString("Dpassword"));
-                    json = jsonArray.getJSONObject(2);
+                    json = jsonArray.getJSONObject(0);
                     userInfo.add(json.getString("Dname"));
-                    json = jsonArray.getJSONObject(3);
+                    json = jsonArray.getJSONObject(0);
                     userInfo.add(json.getString("Dsurname"));
                 } catch (JSONException e) {
                     Log.e("LOG_TAG", "Error converting to ArrayList " + e.toString());
@@ -98,7 +112,25 @@ public class LogIn extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(ArrayList userInfo) {
-            Log.e("LOG_TAG", "Error converting to ArrayList " + userInfo.toString());
+            Log.e("LOG_TAG", "credentials functional" + userInfo.toString());
+            //username=userInfo.get(1).toString();
+            dbpassword=userInfo.get(1).toString();
+            Log.e("LOG_TAG", "DBpassword on postexecute=" + dbpassword);
+            name= userInfo.get(2).toString();
+            surname= userInfo.get(3).toString();
+
+            password = editTextPassword.getText().toString();
+            Log.e("LOG_TAG", "input password=" + password);
+            if(password.equals(dbpassword)){
+                Toast.makeText(getApplicationContext(), "Welcome " + name,
+                        Toast.LENGTH_LONG).show();
+                MainActivity.setDusername(username);
+                startActivity(new Intent(LogIn.this, MainActivity.class));
+                Log.e("LOG_TAG", "this" + username + dbpassword + name + surname);
+            } else {
+                Toast.makeText(getApplicationContext(), "Username or Password is incorrect. Please try again.",
+                        Toast.LENGTH_LONG).show();
+            }
         }
 
 

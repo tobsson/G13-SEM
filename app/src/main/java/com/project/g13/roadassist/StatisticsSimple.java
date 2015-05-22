@@ -82,21 +82,22 @@ public class StatisticsSimple extends ActionBarActivity {
         });
 
         // Loading products in Background Thread
-        new getTripTask().execute(new ApiConnector());
+        new getTripTask().execute(MainActivity.getDusername());
         }
 
 
 
 
     //Async task for getting data from the mysql database
-    private class getTripTask extends AsyncTask<ApiConnector,Long,ArrayList>
+    private class getTripTask extends AsyncTask<String,Long,ArrayList>
     {
 
         @Override
-        protected ArrayList doInBackground(ApiConnector... params) {
+        protected ArrayList doInBackground(String... params) {
             ArrayList<String> tripList = new ArrayList<String>();
             // Put values in a JSONArray
-            JSONArray jsonArray = params[0].GetTripData("Nick");
+            ApiConnector connector = new ApiConnector();
+            JSONArray jsonArray = connector.GetTripData(params[0]);
 
             if (jsonArray != null) {
                 String s  = "";

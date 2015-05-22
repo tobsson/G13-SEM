@@ -14,6 +14,16 @@ import android.widget.Button;
 public class MainActivity extends ActionBarActivity {
 
 
+    private static String dusername;
+
+    public static String getDusername() {
+        return dusername;
+    }
+
+    public static void setDusername(String dusername) {
+        MainActivity.dusername = dusername;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +34,8 @@ public class MainActivity extends ActionBarActivity {
         Button statsBtn = (Button)findViewById(R.id.statsBtn);
         Button registerBtn = (Button)findViewById(R.id.registerBtn);
         Button loginBtn = (Button)findViewById(R.id.loginBtn);
+        registerBtn.setEnabled(false);
+        loginBtn.setEnabled(false);
 
         plnRtBtn.setOnClickListener(new View.OnClickListener() {
             @Override

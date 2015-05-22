@@ -21,10 +21,6 @@
             android:layout_height="match_parent"
             android:layout_weight="0.38" />
 
-        <com.echo.holographlibrary.LineGraph
-            android:layout_width="310dp"
-            android:layout_height="200dp"
-            android:id="@+id/graph" />
     </LinearLayout>
 
     <TextView
