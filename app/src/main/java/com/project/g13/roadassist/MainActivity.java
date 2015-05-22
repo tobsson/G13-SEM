@@ -42,7 +42,7 @@ public class MainActivity extends ActionBarActivity {
         Button vwRtBtn = (Button)findViewById(R.id.vwRtBtn);
         Button statsBtn = (Button)findViewById(R.id.statsBtn);
         Button exitBtn = (Button)findViewById(R.id.exitBtn);
-        //exitBtn.setVisibility(View.GONE);
+        exitBtn.setVisibility(View.GONE);
 
         plnRtBtn.setOnClickListener(new View.OnClickListener() {
             @Override

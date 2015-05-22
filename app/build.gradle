@@ -25,6 +25,7 @@ dependencies {
     compile 'com.google.android.gms:play-services:7.+'
     compile 'com.google.maps.android:android-maps-utils:0.3+'
     //compile project(':HoloGraphLibrary')
+    compile 'com.facebook.rebound:rebound:0.3.7'
     compile files('libs/lib.jar')
     compile files('libs/Automotive-API-1.1.jar')
     compile files('libs/SDP-1.1.jar')
