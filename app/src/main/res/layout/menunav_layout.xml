@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="match_parent"
+    android:columnCount="5"
+    android:rowCount="7"
+    android:useDefaultMargins="true"
+    android:background="@drawable/darkwoodbkgr"
+    android:animationCache="false"
+    android:backgroundTint="@color/wallet_dim_foreground_inverse_holo_dark"
+    android:backgroundTintMode="multiply">
+
+    <Button
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:background="@drawable/closeicon"
+        android:textColor="#FFFFFF"
+        android:id="@+id/ButtonClose"
+        android:layout_row="0"
+        android:layout_column="3"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="right|top"
+        android:text=""
+        android:nextFocusLeft="@+id/ButtonGas"
+        android:nextFocusDown="@+id/ButtonRestaurant"></Button>
+
+    <Button
+        android:layout_width="137dp"
+        android:layout_height="137dp"
+        android:background="@drawable/food"
+        android:textColor="#FFFFFF"
+        android:id="@+id/ButtonRestaurant"
+        android:layout_row="3"
+        android:layout_column="0"
+        android:layout_alignTop="@+id/ButtonParking"
+        android:layout_toStartOf="@+id/ButtonClose"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="100dp"
+        android:text=""
+        android:nextFocusUp="@+id/ButtonClose"
+        android:nextFocusLeft="@+id/ButtonGas"
+        android:nextFocusDown="@+id/ButtonEndRoute"></Button>
+
+    <Button
+        android:layout_width="137dp"
+        android:layout_height="137dp"
+        android:background="@drawable/park"
+        android:textColor="#FFFFFF"
+        android:id="@+id/ButtonParking"
+        android:layout_column="0"
+        android:adjustViewBounds="false"
+        android:layout_below="@+id/ButtonClose"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="left|bottom"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="30dp"
+        android:text=""
+        android:nextFocusUp="@+id/gButtonGas"
+        android:nextFocusRight="@+id/ButtonEndRoute"></Button>
+
+    <Button
+        android:layout_width="137dp"
+        android:layout_height="137dp"
+        android:background="@drawable/gas"
+        android:textColor="#FFFFFF"
+        android:id="@+id/ButtonGas"
+        android:layout_row="1"
+        android:layout_column="2"
+        android:layout_alignStart="@+id/ButtonParking"
+        android:layout_gravity="left|center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="100dp"
+        android:text=""
+        android:nextFocusUp="@+id/ButtonClose"
+        android:nextFocusRight="@+id/ButtonRestaurant"
+        android:nextFocusDown="@+id/ButtonParking"></Button>
+
+    <Button
+        android:layout_width="137dp"
+        android:layout_height="137dp"
+        android:background="@drawable/mainmenu"
+        android:textColor="#FFFFFF"
+        android:id="@+id/ButtonEndRoute"
+        android:layout_gravity="right|bottom"
+        android:hapticFeedbackEnabled="false"
+        android:src="@drawable/mainmenu"
+        android:layout_marginBottom="35dp"
+        android:layout_marginRight="15dp"
+        android:text=""
+        android:nextFocusLeft="@+id/ButtonParking"
+        android:nextFocusUp="@+id/ButtonRestaurant"></Button>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Quit Nav"
+        android:id="@+id/endRouteTextView"
+        android:layout_gravity="bottom|end|right"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="-9dp"
+        android:textColor="#00ffffff" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Gas-Station"
+        android:id="@+id/gasStnText"
+        android:layout_gravity="left|center_vertical"
+        android:layout_marginLeft="25dp"
+        android:layout_marginBottom="15dp"
+        android:textColor="#00ffffff" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Restaurant"
+        android:id="@+id/textView9"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="15dp"
+        android:textColor="#00ffffff" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Parking/Rest"
+        android:id="@+id/parkingTextView"
+        android:layout_gravity="left|bottom"
+        android:layout_marginLeft="15dp"
+        android:textColor="#00ffffff" />
+
+
+
+
+</FrameLayout>
