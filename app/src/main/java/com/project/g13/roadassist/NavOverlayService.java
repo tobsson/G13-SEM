@@ -38,7 +38,7 @@ package com.project.g13.roadassist;
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     PixelFormat.TRANSLUCENT);
 
-            params.gravity = Gravity.BOTTOM | Gravity.LEFT;
+            params.gravity = Gravity.BOTTOM | Gravity.RIGHT;
             params.x = 0;
             params.y = 0;
 
