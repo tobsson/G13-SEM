@@ -111,7 +111,12 @@ public class ApiConnector {
             Log.d(LOG_TAG, "HTTP Part Done");
 
         } catch (ClientProtocolException e) {
+
+            // Signals error in http protocol
             Log.e(LOG_TAG, "Error in http connection 1 " + e.toString());
+
+            //Log Errors Here
+
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error in http connection 2 " + e.toString());
         }
@@ -146,6 +151,7 @@ public class ApiConnector {
         HttpPost httppost = new HttpPost("http://group13.comxa.com/getGraphDataSpeed.php");
 
         HttpEntity httpEntity = null;
+
         try
         {
             //ArrayList with post values for the graphtable
@@ -165,7 +171,12 @@ public class ApiConnector {
             Log.d(LOG_TAG, "HTTP Part Done");
 
         } catch (ClientProtocolException e) {
+
+            // Signals error in http protocol
             Log.e(LOG_TAG, "Error in http connection 1 " + e.toString());
+
+            //Log Errors Here
+
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error in http connection 2 " + e.toString());
         } catch (NetworkOnMainThreadException e){
@@ -284,9 +295,7 @@ public class ApiConnector {
 
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error in http connection 2 " + e.toString());
-        } catch (NetworkOnMainThreadException e){
-        Log.e(LOG_TAG, "Error in http connection 3 " + e.toString());
-    }
+        }
 
 
         // Convert HttpEntity into JSON Array
@@ -331,7 +340,6 @@ public class ApiConnector {
             HttpResponse httpResponse = httpclient.execute(httppost);
 
             httpEntity = httpResponse.getEntity();
-
             Log.d(LOG_TAG, "HTTP Part Done");
 
         } catch (ClientProtocolException e) {
@@ -368,6 +376,42 @@ public class ApiConnector {
 
 
     }
+
+    public String insertNewUser(String[] credentials) {
+
+
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost("http://group13.comxa.com/insert-db.php");
+            try {
+
+                String usern = credentials[0];
+                String pass = credentials[1];
+                String name = credentials[0];
+                String surname = credentials[1];
+
+                Log.e(LOG_TAG, "usern pass" + usern + " " + pass);
+
+                ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+                nameValuePairs.add(new BasicNameValuePair("Dusername", usern));
+                nameValuePairs.add(new BasicNameValuePair("Dpassword", pass));
+                nameValuePairs.add(new BasicNameValuePair("Dname", name));
+                nameValuePairs.add(new BasicNameValuePair("Dsurname", surname));
+
+                Log.e(LOG_TAG, "value pair" + nameValuePairs.toString());
+                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+                HttpResponse response = httpClient.execute(httpPost);
+
+                HttpEntity entity = response.getEntity();
+
+
+            } catch (ClientProtocolException e) {
+
+            } catch (IOException e) {
+
+            }
+            return "success";
+        }
 
     public int GetMaxTid() {
         // URL for getting all customers
@@ -509,6 +553,220 @@ public class ApiConnector {
             //ArrayList with post values for the graphtable
             ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
             nameValuePairs.add(new BasicNameValuePair("Dusername", s));
+            nameValuePairs.add(new BasicNameValuePair("TID", t));
+            Log.e(LOG_TAG, "TripTableData Post " + nameValuePairs.toString());
+
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            HttpResponse httpResponse = httpclient.execute(httppost);
+
+            httpEntity = httpResponse.getEntity();
+            Log.d(LOG_TAG, "HTTP Part Done");
+
+        } catch (ClientProtocolException e) {
+            Log.e(LOG_TAG, "Error in http connection 1 " + e.toString());
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Error in http connection 2 " + e.toString());
+        }
+
+
+        // Convert HttpEntity into JSON Array
+        JSONArray jsonArray = null;
+
+        if (httpEntity != null) {
+            try {
+                String entityResponse = EntityUtils.toString(httpEntity);
+
+                Log.d(LOG_TAG, "Entity Response  : " + entityResponse);
+
+                jsonArray = new JSONArray(entityResponse);
+                Log.d(LOG_TAG,  jsonArray.toString());
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 1 " + e.toString());
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 2 " + e.toString());
+            }
+        }
+
+        return jsonArray;
+
+
+    }
+
+    public String getDateTime(){
+
+        Calendar calendar = Calendar.getInstance();
+        String date = calendar.getTime().toString();
+        Log.d(LOG_TAG,"getTime: " + date);
+
+        return date;
+
+    }
+
+    public JSONArray logIn(String username) {
+
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httppost = new HttpPost("http://group13.comxa.com/login.php");
+
+        HttpEntity httpEntity = null;
+
+        try {
+            //ArrayList with post values for the graphtable
+            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+            nameValuePairs.add(new BasicNameValuePair("username", username));
+            Log.e(LOG_TAG, "value pair " + nameValuePairs.toString());
+
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            HttpResponse httpResponse = httpclient.execute(httppost);
+
+            httpEntity = httpResponse.getEntity();
+            Log.d(LOG_TAG, "HTTP Part Done");
+
+        } catch (ClientProtocolException e) {
+
+            // Signals error in http protocol
+            Log.e(LOG_TAG, "Error in http connection 1 " + e.toString());
+
+            //Log Errors Here
+
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Error in http connection 2 " + e.toString());
+        }
+
+
+        // Convert HttpEntity into JSON Array
+        JSONArray jsonArray = null;
+
+        if (httpEntity != null) {
+            try {
+                String entityResponse = EntityUtils.toString(httpEntity);
+
+                Log.d(LOG_TAG, "Entity Response  : " + entityResponse);
+
+                jsonArray = new JSONArray(entityResponse);
+                Log.d(LOG_TAG, jsonArray.toString());
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 1 " + e.toString());
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 2 " + e.toString());
+            }
+        }
+        return jsonArray;
+    }
+
+    public JSONArray GetAverageSpeed(String s) {
+
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httppost = new HttpPost("http://group13.comxa.com/getTripDataAverageSpeed.php");
+
+        HttpEntity httpEntity = null;
+
+        try
+        {
+           //ArrayList with post values for the graphtable
+            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+            nameValuePairs.add(new BasicNameValuePair("TID", s));
+            Log.e(LOG_TAG, "Trip Data Post " + nameValuePairs.toString());
+
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            HttpResponse httpResponse = httpclient.execute(httppost);
+
+            httpEntity = httpResponse.getEntity();
+            Log.d(LOG_TAG, "HTTP Part Done");
+
+        } catch (ClientProtocolException e) {
+            Log.e(LOG_TAG, "Error in http connection 1 " + e.toString());
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Error in http connection 2 " + e.toString());
+        }
+
+
+        // Convert HttpEntity into JSON Array
+        JSONArray jsonArray = null;
+
+        if (httpEntity != null) {
+            try {
+                String entityResponse = EntityUtils.toString(httpEntity);
+
+                Log.d(LOG_TAG, "Entity Response  : " + entityResponse);
+
+                jsonArray = new JSONArray(entityResponse);
+                Log.d(LOG_TAG,  jsonArray.toString());
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 1 " + e.toString());
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 2 " + e.toString());
+            }
+        }
+        return jsonArray;
+
+
+    }
+
+    public JSONArray GetAverageDistraction(String s) {
+
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httppost = new HttpPost("http://group13.comxa.com/getGraphDataDistractionAvarage.php");
+
+        HttpEntity httpEntity = null;
+
+        try
+        {
+            //ArrayList with post values for the graphtable
+            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+            nameValuePairs.add(new BasicNameValuePair("TID", s));
+            Log.e(LOG_TAG, "Trip Data Post " + nameValuePairs.toString());
+
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            HttpResponse httpResponse = httpclient.execute(httppost);
+
+            httpEntity = httpResponse.getEntity();
+            Log.d(LOG_TAG, "HTTP Part Done");
+
+        } catch (ClientProtocolException e) {
+            Log.e(LOG_TAG, "Error in http connection 1 " + e.toString());
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Error in http connection 2 " + e.toString());
+        }
+
+
+        // Convert HttpEntity into JSON Array
+        JSONArray jsonArray = null;
+
+        if (httpEntity != null) {
+            try {
+                String entityResponse = EntityUtils.toString(httpEntity);
+
+                Log.d(LOG_TAG, "Entity Response  : " + entityResponse);
+
+                jsonArray = new JSONArray(entityResponse);
+                Log.d(LOG_TAG,  jsonArray.toString());
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 1 " + e.toString());
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 2 " + e.toString());
+            }
+        }
+        return jsonArray;
+
+
+    }
+
+    public JSONArray GetTripTableData2(String t) {
+
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httppost = new HttpPost("http://group13.comxa.com/getTripTable2.php");
+
+        HttpEntity httpEntity = null;
+
+        try
+        {
+
+            //ArrayList with post values for the graphtable
+            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
             nameValuePairs.add(new BasicNameValuePair("TID", t));
             Log.e(LOG_TAG, "TripTableData Post " + nameValuePairs.toString());
 

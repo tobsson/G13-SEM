@@ -23,6 +23,16 @@ public class MainActivity extends ActionBarActivity {
 
     private static final String LOG_TAG = "MainActivity";
 
+    private static String dusername;
+
+    public static String getDusername() {
+        return dusername;
+    }
+
+    public static void setDusername(String dusername) {
+        MainActivity.dusername = dusername;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +41,8 @@ public class MainActivity extends ActionBarActivity {
         Button plnRtBtn = (Button)findViewById(R.id.plnRtBtn);
         Button vwRtBtn = (Button)findViewById(R.id.vwRtBtn);
         Button statsBtn = (Button)findViewById(R.id.statsBtn);
-
+        Button exitBtn = (Button)findViewById(R.id.exitBtn);
+        exitBtn.setVisibility(View.GONE);
 
         plnRtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +90,13 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(new Intent(MainActivity.this, StatisticsSimple.class));
             }
         });
+        exitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.exit(0);
+            }
+        });
+
 
         SaveValues values = new SaveValues();
         values.run();
@@ -133,6 +151,9 @@ public class MainActivity extends ActionBarActivity {
             case R.id.action_about:
                 openAbout();
                 return true;
+            case R.id.action_logout:
+                logOut();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -155,6 +176,11 @@ public class MainActivity extends ActionBarActivity {
 
     private void openSettings() {
         Intent i = new Intent(MainActivity.this, Settings.class);
+        startActivity(i);
+    }
+    private void logOut() {
+        Intent i = new Intent(MainActivity.this, LogIn.class);
+        setDusername(null);
         startActivity(i);
     }
 
