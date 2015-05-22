@@ -22,7 +22,9 @@
         android:text="Search..."
         android:id="@+id/plnSrcbutton"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentEnd="true"
+        android:nextFocusUp="@+id/add_dest_btn"
+        android:nextFocusLeft="@+id/destination"/>
 
     <LinearLayout
         android:orientation="vertical"
@@ -55,6 +57,17 @@
         android:id="@+id/add_dest_btn"
         android:layout_gravity="right"
         android:layout_alignTop="@+id/linearLayoutPlan"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:nextFocusDown="@+id/plnSrcbutton"
+        android:nextFocusLeft="@+id/destination"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        android:src="@drawable/powered_by_google_light"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/linearLayoutPlan" />
 
 </RelativeLayout>

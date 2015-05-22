@@ -18,7 +18,8 @@
         android:theme="@style/Theme.AppCompat.Light"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name">
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -57,7 +58,7 @@
         <activity
             android:name=".menuNav"
             android:label="@string/title_menuNav"
-            android:parentActivityName="com.project.g13.roadassist.menuNav">
+            android:parentActivityName="com.project.g13.roadassist.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -37,6 +37,7 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
@@ -58,6 +59,8 @@ public class Plan_Route extends ActionBarActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks {
 
+
+    //Variable storing the current route when "Search.." is pressed, everytime search is pressed
 
     private Button startNav;
     private Button button;
@@ -133,12 +136,25 @@ public class Plan_Route extends ActionBarActivity implements
         });
 
         startNav.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+
+                new Thread(new Runnable() {
+                    public void run() {
+                        //Get the calendar and save the time and date when the route starts
+                        Calendar calendar = Calendar.getInstance();
+                        String date = calendar.getTime().toString();
+                        Values.setRouteStart(date);
+                        Log.d(LOG_TAG, "Date/Time Start: " + date);
+                    }
+                }).start();
                 destination = destText.getText().toString();
+                //Sets current route to the class CurrentRoute
+                CurrentRoute.setCurrentRoute(destination);
+
                 Toast.makeText(Plan_Route.this,destination, Toast.LENGTH_LONG).show();
                 if(destination!=null){
-
                     Uri gmmIntentUri = Uri.parse("google.navigation:q="+destination+"&mode=w");
                     Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                     intent.setPackage("com.google.android.apps.maps");
@@ -167,48 +183,6 @@ public class Plan_Route extends ActionBarActivity implements
                 }
             }
         });
-
-
-
-
-
-        startNav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                destination = destText.getText().toString();
-                Toast.makeText(Plan_Route.this,destination, Toast.LENGTH_LONG).show();
-                if(destination!=null){
-
-                    Uri gmmIntentUri = Uri.parse("google.navigation:q="+destination+"&mode=w");
-                    Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                    intent.setPackage("com.google.android.apps.maps");
-
-
-                    intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
-                    try
-                    {
-                        startActivity(intent);
-                        startService(new Intent(getApplication(), NavOverlayService.class));
-                    }
-                    catch(ActivityNotFoundException ex)
-                    {
-                        try
-                        {
-                            Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                            startActivity(unrestrictedIntent);
-                        }
-                        catch(ActivityNotFoundException innerEx)
-                        {
-                            Toast.makeText(Plan_Route.this, "Please install a maps application", Toast.LENGTH_LONG).show();
-                        }
-                    }}
-                else {
-                    Toast.makeText(Plan_Route.this, "Please input a destination...", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-
 
 
     }

@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/G13-SEM.iml" filepath="$PROJECT_DIR$/G13-SEM.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RoadAssist.iml" filepath="$PROJECT_DIR$/RoadAssist.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sdktools/sdktools.iml" filepath="$PROJECT_DIR$/sdktools/sdktools.iml" />
     </modules>
   </component>
 </project>
-

@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -31,7 +32,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-
 import static java.lang.Integer.parseInt;
 
 /**
@@ -54,35 +54,85 @@ public class DetailedStatistics extends ActionBarActivity {
         //t = (TextView) findViewById(R.id.passedTID);
 
 
+        
+
+
+
+        {
+            distChart = (BarChart) findViewById(R.id.distractionChart);
+
+            distChart.setDrawBarShadow(true);
+            distChart.setDrawValueAboveBar(true);
+
+            distChart.setDescription("");
+            // if more than 60 entries are displayed in the chart, no values will be
+            // drawn
+            distChart.setMaxVisibleValueCount(60);
+            // scaling can now only be done on x- and y-axis separately
+            distChart.setPinchZoom(false);
+            // draw shadows for each bar that show the maximum value
+            // distChart.setDrawBarShadow(true);
+            // distChart.setDrawXLabels(false);
+            distChart.setDrawGridBackground(false);
+            // distChart.setDrawYLabels(false);
+
+//
+//        XAxis xAxis = speedChart.getXAxis();
+//        xAxis.addLimitLine(llXAxis);
+
+            XAxis xAxis = distChart.getXAxis();
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setTypeface(mTf);
+            xAxis.setDrawGridLines(false);
+            xAxis.setSpaceBetweenLabels(2);
+
+
+            YAxis leftAxis = distChart.getAxisLeft();
+            leftAxis.setTypeface(mTf);
+            leftAxis.setLabelCount(7);
+            leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+            leftAxis.setSpaceTop(15f);
+
+            YAxis rightAxis = distChart.getAxisRight();
+            rightAxis.setDrawGridLines(false);
+            rightAxis.setTypeface(mTf);
+            rightAxis.setLabelCount(8);
+            rightAxis.setSpaceTop(15f);
+
+
+        }
+
+
+
         {speedChart = (LineChart) findViewById(R.id.speedChart);
-        speedChart.setDrawGridBackground(false);
+            speedChart.setDrawGridBackground(false);
 
-        // no description text
-        speedChart.setDescription("Speed History");
-        speedChart.setNoDataTextDescription("You need to provide data for the chart.");
-        // enable value highlighting
-        speedChart.setHighlightEnabled(true);
-        // enable touch gestures
-        speedChart.setTouchEnabled(true);
-        // enable scaling and dragging
-        speedChart.setDragEnabled(true);
-        speedChart.setScaleEnabled(true);
-        // speedChart.setScaleXEnabled(true);
-        // speedChart.setScaleYEnabled(true);
-        // if disabled, scaling can be done on x- and y-axis separately
-        speedChart.setPinchZoom(true);
-        // set an alternative background color
-        // speedChart.setBackgroundColor(Color.GRAY);
-        // create a custom MarkerView (extend MarkerView) and specify the layout
-        // to use for it
-        //MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
+            // no description text
+            speedChart.setDescription("Speed History");
+            speedChart.setNoDataTextDescription("You need to provide data for the chart.");
+            // enable value highlighting
+            speedChart.setHighlightEnabled(true);
+            // enable touch gestures
+            speedChart.setTouchEnabled(true);
+            // enable scaling and dragging
+            speedChart.setDragEnabled(true);
+            speedChart.setScaleEnabled(true);
+            // speedChart.setScaleXEnabled(true);
+            // speedChart.setScaleYEnabled(true);
+            // if disabled, scaling can be done on x- and y-axis separately
+            speedChart.setPinchZoom(true);
+            // set an alternative background color
+            // speedChart.setBackgroundColor(Color.GRAY);
+            // create a custom MarkerView (extend MarkerView) and specify the layout
+            // to use for it
+            //MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
 
-        // set the marker to the chart
-        //speedChart.setMarkerView(mv);
-        // enable/disable highlight indicators (the lines that indicate the
-        // highlighted Entry)
-        speedChart.setHighlightIndicatorEnabled(false);
-        // x-axis limit line
+            // set the marker to the chart
+            //speedChart.setMarkerView(mv);
+            // enable/disable highlight indicators (the lines that indicate the
+            // highlighted Entry)
+            speedChart.setHighlightIndicatorEnabled(false);
+            // x-axis limit line
             YAxis leftAxis = speedChart.getAxisLeft();
             LimitLine ll1 = new LimitLine(90f, "Vehicle Speed Limit");
             ll1.setLineWidth(1f);
@@ -96,14 +146,14 @@ public class DetailedStatistics extends ActionBarActivity {
             leftAxis.setStartAtZero(false);
             // reset all limit lines to avoid overlapping lines
 
-        leftAxis.setAxisMaxValue(160f);
-        leftAxis.setAxisMinValue(0f);
-        leftAxis.setStartAtZero(false);
-        //leftAxis.enableGridDashedLine(10f, 10f, 0f);
-        // limit lines are drawn behind data (and not on top)
-        //leftAxis.setDrawLimitLinesBehindData(true);
-        speedChart.getAxisRight().setEnabled(false);
-        // get the legend (only possible after setting data)
+            leftAxis.setAxisMaxValue(160f);
+            leftAxis.setAxisMinValue(0f);
+            leftAxis.setStartAtZero(false);
+            //leftAxis.enableGridDashedLine(10f, 10f, 0f);
+            // limit lines are drawn behind data (and not on top)
+            //leftAxis.setDrawLimitLinesBehindData(true);
+            speedChart.getAxisRight().setEnabled(false);
+            // get the legend (only possible after setting data)
 
 
         }
@@ -167,11 +217,6 @@ public class DetailedStatistics extends ActionBarActivity {
             //Log.d(LOG_TAG, jsonArray.toString());
             new getGraphDataSpeedTask().execute(value);
             new getGraphDataDistractionTask().execute(value);
-            //Log.e("LOG_TAG", "Bar Entry Array" + entries.toString());
-            //Log.e("LOG_TAG", "Bar Entry Array" + speedGraphlist.toString());
-
-
-            //setData(speedGraphlist);
             //brakeCount = parseInt(connector.GetTripDataBrakeswitch(value).toString());
             Log.d(LOG_TAG, "Brake count" + brakeCount);
             //overspeedCount = parseInt(connector.GetTripDataOverspeed(value).toString());
