@@ -45,7 +45,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="View Route"
+            android:text="Resume Route"
             android:drawableLeft="@drawable/view_route"
             android:id="@+id/vwRtBtn"
             android:layout_row="13"
