@@ -114,6 +114,8 @@ public class SaveValues implements Runnable {
                         @Override
                         public void levelChanged(final DriverDistractionLevel driverDistractionLevel) {
                             dLevel = driverDistractionLevel.getLevel();
+                            int temp = driverDistractionLevel.getLevel();
+                            DistLvlMethod.setCurrentDist(temp);
                             Log.i(LOG_TAG, "Distraction Value: " + dLevel);
                         }
 

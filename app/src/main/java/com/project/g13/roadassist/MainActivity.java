@@ -84,11 +84,8 @@ public class MainActivity extends ActionBarActivity {
         values.run();
         values.myTask();
 
-        //Get the calendar and save the time and date when the route starts
-        Calendar calendar = Calendar.getInstance();
-        String date = calendar.getTime().toString();
-        Values.setRouteStart(date);
-        Log.d(LOG_TAG, "Date/Time Start: " + date);
+
+
 
 /**
         //new Thread(new SaveValues()).start();
