@@ -18,50 +18,46 @@
 
     <GridLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Log In"
-            android:id="@+id/loginBtn"
-            android:layout_row="13"
-            android:layout_column="12" />
+        android:layout_height="fill_parent"
+        android:id="@+id/gridLayout">
 
         <Button
             style="?android:attr/buttonStyleSmall"
-            android:layout_width="183dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Plan Route"
             android:drawableLeft="@drawable/plan_route"
             android:id="@+id/plnRtBtn"
             android:onClick="click"
-            android:layout_row="14"
+            android:layout_row="11"
             android:layout_column="0" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="View Route"
             android:drawableLeft="@drawable/view_route"
             android:id="@+id/vwRtBtn"
-            android:layout_row="14"
-            android:layout_column="12" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Register"
-            android:id="@+id/registerBtn"
             android:layout_row="12"
             android:layout_column="0" />
 
         <Button
-            android:layout_width="152dp"
+            android:layout_width="match_parent"
             android:layout_height="72dp"
             android:text="Statistics"
+            android:drawableLeft="@drawable/view_route"
             android:id="@+id/statsBtn"
             android:layout_row="13"
+            android:layout_column="0" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Exit"
+            android:id="@+id/exitBtn"
+            android:layout_below="@+id/gridLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_row="14"
             android:layout_column="0" />
 
     </GridLayout>

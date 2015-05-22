@@ -57,7 +57,7 @@ package com.project.g13.roadassist;
                             //Removes the overLayMenu-button by stopping the service
                             stopService(new Intent(getApplication(), NavOverlayService.class));
                             Intent intent = new Intent(Intent.ACTION_MAIN);
-                            intent.setComponent(new ComponentName("com.project.g13.roadassist", "com.project.g13.roadassist.menuNav"));
+                            //intent.setComponent(new ComponentName("com.project.g13.roadassist", "com.project.g13.roadassist.menuNav"));
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
 

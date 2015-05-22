@@ -41,11 +41,8 @@ public class MainActivity extends ActionBarActivity {
         Button plnRtBtn = (Button)findViewById(R.id.plnRtBtn);
         Button vwRtBtn = (Button)findViewById(R.id.vwRtBtn);
         Button statsBtn = (Button)findViewById(R.id.statsBtn);
-        Button registerBtn = (Button)findViewById(R.id.registerBtn);
-        Button loginBtn = (Button)findViewById(R.id.loginBtn);
-        registerBtn.setEnabled(false);
-        loginBtn.setEnabled(false);
-
+        Button exitBtn = (Button)findViewById(R.id.exitBtn);
+        //exitBtn.setVisibility(View.GONE);
 
         plnRtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,16 +90,10 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(new Intent(MainActivity.this, StatisticsSimple.class));
             }
         });
-        registerBtn.setOnClickListener(new View.OnClickListener() {
+        exitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, RegisterActivity.class));
-            }
-        });
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, LogIn.class));
+                System.exit(0);
             }
         });
 
@@ -163,6 +154,9 @@ public class MainActivity extends ActionBarActivity {
             case R.id.action_about:
                 openAbout();
                 return true;
+            case R.id.action_logout:
+                logOut();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -185,6 +179,11 @@ public class MainActivity extends ActionBarActivity {
 
     private void openSettings() {
         Intent i = new Intent(MainActivity.this, Settings.class);
+        startActivity(i);
+    }
+    private void logOut() {
+        Intent i = new Intent(MainActivity.this, LogIn.class);
+        setDusername(null);
         startActivity(i);
     }
 

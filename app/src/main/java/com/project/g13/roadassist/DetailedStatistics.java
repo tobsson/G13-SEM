@@ -39,7 +39,7 @@ import static java.lang.Integer.parseInt;
  */
 public class DetailedStatistics extends ActionBarActivity {
     private TextView t;
-
+    private TextView statsText;
     private int brakeCount = 0;
     private int overspeedCount = 0;
     private LineChart speedChart;
@@ -52,9 +52,9 @@ public class DetailedStatistics extends ActionBarActivity {
         setContentView(R.layout.activity_statisticsdetailed);
         ApiConnector connector = new ApiConnector();
         //t = (TextView) findViewById(R.id.passedTID);
+        statsText = (TextView)findViewById(R.id.detailedStatsText);
 
 
-        
 
 
 
@@ -217,6 +217,9 @@ public class DetailedStatistics extends ActionBarActivity {
             //Log.d(LOG_TAG, jsonArray.toString());
             new getGraphDataSpeedTask().execute(value);
             new getGraphDataDistractionTask().execute(value);
+            new getTripTableTask().execute(value);
+
+
             //brakeCount = parseInt(connector.GetTripDataBrakeswitch(value).toString());
             Log.d(LOG_TAG, "Brake count" + brakeCount);
             //overspeedCount = parseInt(connector.GetTripDataOverspeed(value).toString());
@@ -299,36 +302,49 @@ public class DetailedStatistics extends ActionBarActivity {
         }
     }
 
-    private class getDataOverspeedCount extends AsyncTask<String, Long, ArrayList> {
+    private class getTripTableTask extends AsyncTask<String,Long,ArrayList>
+    {
 
         @Override
         protected ArrayList doInBackground(String... params) {
-            ArrayList<String> overspdCount = new ArrayList<String>();
+            ArrayList<String> result = new ArrayList<String>();
             // Put values in a JSONArray
             ApiConnector connector = new ApiConnector();
-            JSONArray jsonArray = connector.GetTripDataOverspeed(params[0]);
+            JSONArray jsonArray = connector.GetTripTableData2(params[0]);
+
 
             if (jsonArray != null) {
-                String s = "";
+                String s  = "";
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject json = null;
                     try {
                         json = jsonArray.getJSONObject(i);
-                        s = json.getString("OverSpeed");
-                        overspdCount.add(s);
-                        Log.d(LOG_TAG, jsonArray.get(i).toString());
+                        result.add(json.getString("Dusername"));
+                        result.add(json.getString("BrakeSwitch"));
+                        result.add(json.getString("OverSpeed"));
+                        result.add(json.getString("StartRoute"));
+                        result.add(json.getString("EndRoute"));
+                        Log.d(LOG_TAG, result.toString());
                     } catch (JSONException e) {
-                        Log.e("LOG_TAG", "Error converting to ArrayList " + e.toString());
+                        Log.e("LOG_TAG", "Error converting to JSONObject " + e.toString());
                     }
                 }
-
             }
-            return overspdCount;
+            return result;
         }
         @Override
-        protected void onPostExecute(ArrayList overspdCount) {
-            overspeedCount = parseInt(overspdCount.toString());
-            Log.d(LOG_TAG, overspdCount.toString());
+        protected void onPostExecute(ArrayList result) {
+
+            String name = result.get(0).toString();
+            String brake = result.get(1).toString();
+            String ospeed = result.get(2).toString();
+            String start = result.get(3).toString();
+            String end = result.get(4).toString();
+
+            String a = "This trip started at " + start + " and ended at " + end +". " +
+                    "\nYou went over your vehicles speed limit a total of " + ospeed + " times and used the brakes " + brake + " times. " ;
+
+            statsText.setText(a);
         }
     }
 
@@ -401,7 +417,7 @@ public class DetailedStatistics extends ActionBarActivity {
 //        data.setValueFormatter(new MyValueFormatter());
         data.setValueTextSize(10f);
         data.setValueTypeface(mTf);
-            set1.setColors(ColorTemplate.COLORFUL_COLORS);
+        set1.setColors(ColorTemplate.COLORFUL_COLORS);
 
         chart.setData(data);
         chart.animateY(1000);
