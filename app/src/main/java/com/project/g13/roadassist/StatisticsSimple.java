@@ -9,10 +9,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -23,6 +25,7 @@ import java.util.ArrayList;
  */
 public class StatisticsSimple extends ActionBarActivity {
     private ListView listView;
+    private TextView statsText;
 
     private static final String LOG_TAG = "StatisticsSimple";
 
@@ -55,8 +58,12 @@ public class StatisticsSimple extends ActionBarActivity {
 
         });
 
+        statsText = (TextView) findViewById(R.id.statsText);
+
         // Loading products in Background Thread
         new getTripTask().execute(new ApiConnector());
+
+        new getTripTableTask().execute(new ApiConnector());
         }
 
 
@@ -99,6 +106,53 @@ public class StatisticsSimple extends ActionBarActivity {
             listView.setAdapter(adapter);
 
 
+        }
+    }
+
+    private class getTripTableTask extends AsyncTask<ApiConnector,Long,ArrayList>
+    {
+
+        @Override
+        protected ArrayList doInBackground(ApiConnector... params) {
+            ArrayList<String> result = new ArrayList<String>();
+            // Put values in a JSONArray
+            JSONArray jsonArray = params[0].GetTripTableData("Nick");
+
+            if (jsonArray != null) {
+                String s  = "";
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject json = null;
+                    try {
+                        json = jsonArray.getJSONObject(i);
+                        result.add(json.getString("Dusername"));
+                        result.add(json.getString("BrakeSwitch"));
+                        result.add(json.getString("OverSpeed"));
+                        result.add(json.getString("StartRoute"));
+                        result.add(json.getString("EndRoute"));
+                        Log.d(LOG_TAG, result.toString());
+                    } catch (JSONException e) {
+                        Log.e("LOG_TAG", "Error converting to JSONObject " + e.toString());
+                    }
+                }
+            }
+            return result;
+        }
+        @Override
+        protected void onPostExecute(ArrayList result) {
+
+            String name = result.get(0).toString();
+            String brake = result.get(1).toString();
+            String ospeed = result.get(2).toString();
+            String start = result.get(3).toString();
+            String end = result.get(4).toString();
+
+            String a = "Welcome " + name + ", " +
+                    "\nyour last trip started at " + start + " and ended at " + end +". " +
+                    "\nYou went over your vehicles speed limit a total of " + ospeed + " times and used the brakes " + brake + " times. " +
+                    "\n\nTo see more statistics and chars over your previous trips select " +
+                    "which one you want to see from the list below.";
+
+            statsText.setText(a);
         }
     }
 

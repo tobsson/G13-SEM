@@ -93,6 +93,9 @@ public class ApiConnector {
 
         HttpEntity httpEntity = null;
 
+        //Get the TID of the latest trip
+        int tid = GetMaxTid();
+
         try
         {
             //ArrayList with post values for the graphtable
@@ -426,13 +429,123 @@ public class ApiConnector {
         return value;
     }
 
-    public String getDateTime(){
+    public int GetMaxTidUser(String user) {
+        // URL for getting all customers
+        HttpPost httppost = new HttpPost("http://group13.comxa.com/getMaxTidUser.php");
+        int value = -1;
 
-        Calendar calendar = Calendar.getInstance();
-        String date = calendar.getTime().toString();
-        Log.d(LOG_TAG,"getTime: " + date);
+        // Get HttpResponse Object from url.
+        // Get HttpEntity from Http Response Object
 
-        return date;
+        HttpEntity httpEntity = null;
+
+        try
+        {
+
+            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+            nameValuePairs.add(new BasicNameValuePair("User", user));
+
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+
+            DefaultHttpClient httpClient = new DefaultHttpClient();  // Default HttpClient
+
+            HttpResponse httpResponse = httpClient.execute(httppost);
+
+            httpEntity = httpResponse.getEntity();
+
+            Log.d(LOG_TAG, "HTTP Part Done MAX(tid) User");
+
+        } catch (ClientProtocolException e) {
+            Log.e(LOG_TAG, "Error in http connection 1 " + e.toString());
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Error in http connection 2 " + e.toString());
+        }
+
+        // Convert HttpEntity into JSON Array
+        JSONArray jsonArray = null;
+
+        if (httpEntity != null) {
+            try {
+                String entityResponse = EntityUtils.toString(httpEntity);
+
+                Log.d(LOG_TAG, "Entity Response  : " + entityResponse);
+
+                jsonArray = new JSONArray(entityResponse);
+                Log.d(LOG_TAG,  jsonArray.toString());
+
+                //Convert JSONarray to JSONObject to int
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject json = null;
+                    try {
+                        json = jsonArray.getJSONObject(i);
+                        value = json.getInt("MAX(tid)");
+                    } catch (JSONException e) {
+                        Log.e("LOG_TAG", "Error converting to JSONObject " + e.toString());
+                    }
+                }
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 1 " + e.toString());
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 2 " + e.toString());
+            }
+        }
+
+        return value;
+    }
+
+    public JSONArray GetTripTableData(String s) {
+
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httppost = new HttpPost("http://group13.comxa.com/getTripTable.php");
+
+        HttpEntity httpEntity = null;
+
+        try
+        {
+            int tid = GetMaxTidUser(s);
+            String t = Integer.toString(tid);
+
+            //ArrayList with post values for the graphtable
+            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            nameValuePairs.add(new BasicNameValuePair("Dusername", s));
+            nameValuePairs.add(new BasicNameValuePair("TID", t));
+            Log.e(LOG_TAG, "TripTableData Post " + nameValuePairs.toString());
+
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            HttpResponse httpResponse = httpclient.execute(httppost);
+
+            httpEntity = httpResponse.getEntity();
+            Log.d(LOG_TAG, "HTTP Part Done");
+
+        } catch (ClientProtocolException e) {
+            Log.e(LOG_TAG, "Error in http connection 1 " + e.toString());
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Error in http connection 2 " + e.toString());
+        }
+
+
+        // Convert HttpEntity into JSON Array
+        JSONArray jsonArray = null;
+
+        if (httpEntity != null) {
+            try {
+                String entityResponse = EntityUtils.toString(httpEntity);
+
+                Log.d(LOG_TAG, "Entity Response  : " + entityResponse);
+
+                jsonArray = new JSONArray(entityResponse);
+                Log.d(LOG_TAG,  jsonArray.toString());
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 1 " + e.toString());
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "Error in converting string to jsonArray 2 " + e.toString());
+            }
+        }
+
+        return jsonArray;
+
 
     }
 }
