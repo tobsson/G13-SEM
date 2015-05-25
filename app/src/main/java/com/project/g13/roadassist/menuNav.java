@@ -146,7 +146,7 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
                             return true;
                         case MotionEvent.ACTION_UP:
                             endRouteSpring.setEndValue(0f);
-                            if (DistLvlMethod.getCurrentDist()<3&&CurrentSpeed.getCurrentSpeed()!=5) {
+                            if (DistLvlMethod.getCurrentDist()<3) {
                             endRoute();
                             }
 

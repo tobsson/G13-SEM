@@ -69,7 +69,7 @@ public class SaveValues implements Runnable {
                             if (automotiveSignal.getSignalId() == 320) {
                                 float tmpSpeed = ((SCSFloat) automotiveSignal.getData()).getFloatValue();
                                 speed = (int) tmpSpeed;
-                                CurrentSpeed.setCurrentSpeed(speed);
+                                //CurrentSpeed.setCurrentSpeed(speed);
                             }
                             if (automotiveSignal.getSignalId() == 325) {
                                 float tmpFuel = ((SCSFloat) automotiveSignal.getData()).getFloatValue();
