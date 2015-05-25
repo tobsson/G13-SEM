@@ -47,6 +47,7 @@ public class MainActivity extends ActionBarActivity {
         plnRtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 startActivity(new Intent(MainActivity.this, Plan_Route.class));
             }
         });
@@ -61,6 +62,12 @@ public class MainActivity extends ActionBarActivity {
 
 
                     intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+
+                    /*
+                     * Changing the boolean in the timer class to start running again
+                     */
+                    Timer timer = new Timer();
+                    timer.resumeThread();
                     try
                     {
                         startActivity(intent);
@@ -87,8 +94,18 @@ public class MainActivity extends ActionBarActivity {
         statsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                startActivity(new Intent(MainActivity.this, StatisticsSimple.class));
+                 /*
+                Checks the Distraction level of the driver  and the Speed of the vehicle.
+                If true the user will enter the imple statistics view. If false a toast
+                saying that the user needs to stop the vehicle to look at statistics
+                will appear.
+                */
+                if (Values.getdLevel() < 3 && Values.getSpeed() < 5) {
+                    startActivity(new Intent(MainActivity.this, StatisticsSimple.class));
+                }
+                else{
+                        Toast.makeText(MainActivity.this, "Stop the vehicle to use this function.", Toast.LENGTH_LONG).show();
+                    }
             }
         });
         exitBtn.setOnClickListener(new View.OnClickListener() {
@@ -98,37 +115,21 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-
+        /*
+        Start a new thread that listens for AGA-signals
+         */
         SaveValues values = new SaveValues();
-        values.run();
-        values.myTask();
+        Thread valuesThread = new Thread(values);
+        valuesThread.start();
 
-
-
-
-/**
-        //new Thread(new SaveValues()).start();
-        new Thread(new Runnable() {
-            public void run() {
-                //Start task that runs every 5 seconds
-                SaveValues values = new SaveValues();
-                values.run();
-                values.myTask();
-
-                //Get the calendar and save the time and date when the route starts
-                Calendar calendar = Calendar.getInstance();
-                String date = calendar.getTime().toString();
-                Values.setRouteStart(date);
-                Log.d(LOG_TAG, "Date/Time Start: " + date);
-            }
-        }).start();
- **/
     }
 
 
 
 
-
+    /*
+    Adds buttons to the ActionBar
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -137,6 +138,9 @@ public class MainActivity extends ActionBarActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    /*
+    Depending on what the user presses in the actionbar different methods are called
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
@@ -160,25 +164,41 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    /*
+    Opens the Plan_Route activity
+     */
     private void openSearch() {
         Intent i = new Intent(MainActivity.this, Plan_Route.class);
         startActivity(i);
     }
 
+    /*
+    Opens the Help activity
+     */
     private void openHelp() {
         Intent i = new Intent(MainActivity.this, Help.class);
         startActivity(i);
     }
 
+    /*
+    Opens the About activity
+     */
     private void openAbout() {
         Intent i = new Intent(MainActivity.this, About.class);
         startActivity(i);
     }
 
+    /*
+    Opens the Settings activity
+     */
     private void openSettings() {
         Intent i = new Intent(MainActivity.this, Settings.class);
         startActivity(i);
     }
+
+    /*
+    Logs out the user
+     */
     private void logOut() {
         Intent i = new Intent(MainActivity.this, LogIn.class);
         setDusername(null);

@@ -30,61 +30,6 @@ public class ApiConnector {
     @SuppressWarnings("unused")
     private static final String LOG_TAG = "ApiConnector";
 
-    public JSONArray GetAllDrivers() {
-        // URL for getting all customers
-        String url = "http://group13.comxa.com/all_drivers2.php";
-
-        // Get HttpResponse Object from url.
-        // Get HttpEntity from Http Response Object
-
-        HttpEntity httpEntity = null;
-
-        try
-        {
-
-            DefaultHttpClient httpClient = new DefaultHttpClient();  // Default HttpClient
-            HttpGet httpGet = new HttpGet(url);
-
-            HttpResponse httpResponse = httpClient.execute(httpGet);
-
-            httpEntity = httpResponse.getEntity();
-
-            Log.d(LOG_TAG, "HTTP Part Done");
-
-        } catch (ClientProtocolException e) {
-
-            // Signals error in http protocol
-            Log.e(LOG_TAG, "Error in http connection 1 " + e.toString());
-
-            //Log Errors Here
-
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Error in http connection 2 " + e.toString());
-        }
-
-
-        // Convert HttpEntity into JSON Array
-        JSONArray jsonArray = null;
-
-        if (httpEntity != null) {
-            try {
-                String entityResponse = EntityUtils.toString(httpEntity);
-
-                Log.d(LOG_TAG, "Entity Response  : " + entityResponse);
-
-                jsonArray = new JSONArray(entityResponse);
-                Log.d(LOG_TAG,  jsonArray.toString());
-            } catch (JSONException e) {
-                Log.e(LOG_TAG, "Error in converting string to jsonArray 1 " + e.toString());
-            } catch (IOException e) {
-                Log.e(LOG_TAG, "Error in converting string to jsonArray 2 " + e.toString());
-            }
-        }
-
-        return jsonArray;
-
-
-    }
     
     public JSONArray GetTripData(String s) {
 
@@ -92,9 +37,6 @@ public class ApiConnector {
         HttpPost httppost = new HttpPost("http://group13.comxa.com/getTripData.php");
 
         HttpEntity httpEntity = null;
-
-        //Get the TID of the latest trip
-        int tid = GetMaxTid();
 
         try
         {
@@ -593,16 +535,6 @@ public class ApiConnector {
 
     }
 
-    public String getDateTime(){
-
-        Calendar calendar = Calendar.getInstance();
-        String date = calendar.getTime().toString();
-        Log.d(LOG_TAG,"getTime: " + date);
-
-        return date;
-
-    }
-
     public JSONArray logIn(String username) {
 
         HttpClient httpclient = new DefaultHttpClient();
@@ -805,5 +737,88 @@ public class ApiConnector {
         return jsonArray;
 
 
+    }
+
+    //Method for posting data to the database with values for the trip table
+    public void postDataTrip(){
+
+        HttpClient httpclient = new DefaultHttpClient();
+
+        HttpPost httppost = new HttpPost("http://group13.comxa.com/postToTrip.php");
+
+        //Getting the highest value of TripID (TID)
+        int tid = GetMaxTid() + 1;
+        Log.d(LOG_TAG, "Sent TID to Graph: " + tid);
+
+
+        try {
+            //Create strings from the integer values so they can be used in the arraylist
+            String tmpTid = Integer.toString(tid);
+            String tmpBrakeSwitch = Integer.toString(Values.getBrakeSwitchTimes());
+            String tmpOverSpeed = Integer.toString(Values.getOverSpeedTimes());
+            String dUserName = "Nick";
+            String start = Values.getRouteStart();
+            String end = Values.getRouteEnd();
+
+
+            //ArrayList with post values for the graphtable
+            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(6);
+            nameValuePairs.add(new BasicNameValuePair("TID", tmpTid));
+            nameValuePairs.add(new BasicNameValuePair("BrakeSwitch", tmpBrakeSwitch));
+            nameValuePairs.add(new BasicNameValuePair("OverSpeed", tmpOverSpeed));
+            nameValuePairs.add(new BasicNameValuePair("Dusername", dUserName));
+            nameValuePairs.add(new BasicNameValuePair("StartRoute", start));
+            nameValuePairs.add(new BasicNameValuePair("EndRoute", end));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            //Send data to the website and php code
+            httpclient.execute(httppost);
+            //Print the values that are sent to the log
+            Log.d(LOG_TAG, "postDataTrip run" + ", TID: " + tmpTid + ", BrakeSwitch: " + tmpBrakeSwitch
+                    + ", OverSpeed: " + tmpOverSpeed + ", Username: " + dUserName
+                    + ", StartRoute: " + start + ", EndRoute:" + end);
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "postDataTrip Error:  " + e.toString());
+        }
+
+    }
+
+    //Method for posting data to the database with values for the graph table
+    public void postDataGraph(int time){
+
+        HttpClient httpclient = new DefaultHttpClient();
+
+        HttpPost httppost = new HttpPost("http://group13.comxa.com/postToGraph.php");
+
+        //Getting the highest value of TripID (TID)
+        ApiConnector ac = new ApiConnector();
+        int tid = ac.GetMaxTid() + 1;
+        //Log.d(LOG_TAG, "Sent TID to Graph: " + tid);
+
+        try {
+            //Create strings from the integer values so they can be used in the arraylist
+            String tmpTime = Integer.toString(time);
+            String tmpSpeed = Integer.toString(Values.getSpeed());
+            String tmpdLevel = Integer.toString(Values.getdLevel());
+            String tmpTid = Integer.toString(tid);
+
+            //ArrayList with post values for the graphtable
+            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
+            nameValuePairs.add(new BasicNameValuePair("Time", tmpTime));
+            nameValuePairs.add(new BasicNameValuePair("CSpeed", tmpSpeed));
+            nameValuePairs.add(new BasicNameValuePair("distLevel", tmpdLevel));
+            nameValuePairs.add(new BasicNameValuePair("TID", tmpTid));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            //Send data to the website and php code
+            httpclient.execute(httppost);
+            //Print the values that are sent to the log
+            Log.d(LOG_TAG, "postDatagraph run" + ", time: " + tmpTime + ", CSpeed: " + tmpSpeed + ", TID: " + tmpTid);
+            time += 5;
+        }
+        catch(Exception e)
+        {
+            Log.e(LOG_TAG, "postDataGraph Error:  "+e.toString());
+        }
     }
 }

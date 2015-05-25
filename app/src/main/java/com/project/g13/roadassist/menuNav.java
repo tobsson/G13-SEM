@@ -146,8 +146,17 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
                             return true;
                         case MotionEvent.ACTION_UP:
                             endRouteSpring.setEndValue(0f);
-                            if (DistLvlMethod.getCurrentDist()<3&&CurrentSpeed.getCurrentSpeed()!=5) {
-                            endRoute();
+
+                            /*
+                            Checks the Distraction level of the driver  and the Speed of the vehicle.
+                            If true the user will return to the main menu. If false a toast saying that
+                            the user needs to stop the vehicle to exit navigation will be shown.
+                             */
+                            if (Values.getdLevel() < 3 && Values.getSpeed() < 5) {
+                                endRoute();
+                            }
+                            else{
+                                Toast.makeText(menuNav.this, "Stop the vehicle to use this function.", Toast.LENGTH_LONG).show();
                             }
 
                             return true;
@@ -339,6 +348,9 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
             buildGoogleApiClient();
         }
 
+        /*
+        Click listeners are created to make navigation by steeringwheel buttons an option
+         */
         ButtonClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -369,7 +381,18 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
         ButtonEndRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                endRoute();
+
+                /*
+                Checks the Distraction level of the driver  and the Speed of the vehicle.
+                If true the user will return to the main menu. If false a toast saying that
+                the user needs to stop the vehicle to exit navigation will be shown.
+                 */
+                if (Values.getdLevel() < 3 && Values.getSpeed() < 5) {
+                    endRoute();
+                }
+                else{
+                    Toast.makeText(menuNav.this, "Stop the vehicle to use this function.", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -653,16 +676,39 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
 
     private void endRoute(){
         Log.d("endRoute", "Outside Thread");
+        /*
+         * Starting a new thread that will run when the user press the go back to main menu button
+         */
         new Thread(new Runnable() {
             public void run() {
                 Log.d("endRoute", "Inside Thread");
+                /*
+                Starting a calendar instance that gets the current time and saves that value
+                as a string in the class Values
+                 */
                 Calendar calendar = Calendar.getInstance();
                 String date = calendar.getTime().toString();
                 Values.setRouteEnd(date);
                 Log.d(LOG_TAG, "Date/Time End: " + date);
 
-                SaveValues sv = new SaveValues();
-                sv.postDataTrip();
+                /*
+                Instantiate ApiConnector and send the values that have been stored for the
+                current trip to the online database
+                 */
+                ApiConnector apiConnector = new ApiConnector();
+                apiConnector.postDataTrip();
+
+                /*
+                Instantiating Timer and calling the PauseThread method to pause the timer
+                so that no more values are sent to the database
+                 */
+                Timer timer = new Timer();
+                try {
+                    timer.pauseThread();
+                } catch (InterruptedException e) {
+                    Log.e(LOG_TAG, "Pause Thread" + e);
+                }
+
             }
         }).start();
         startActivity(new Intent(menuNav.this, MainActivity.class));

@@ -140,13 +140,26 @@ public class Plan_Route extends ActionBarActivity implements
             @Override
             public void onClick(View v) {
 
+                /*
+                Create a new thread
+                 */
                 new Thread(new Runnable() {
                     public void run() {
-                        //Get the calendar and save the time and date when the route starts
+
+                        /*
+                        Get the calendar and save the time and date when the route starts
+                         */
                         Calendar calendar = Calendar.getInstance();
                         String date = calendar.getTime().toString();
                         Values.setRouteStart(date);
                         Log.d(LOG_TAG, "Date/Time Start: " + date);
+
+                        /*
+                        Start the timer in a new thread
+                         */
+                        Timer timer = new Timer();
+                        Thread timerThread = new Thread(timer);
+                        timerThread.start();
                     }
                 }).start();
                 destination = destText.getText().toString();

@@ -11,6 +11,7 @@ import android.widget.Spinner;
 
 /**
  * Created by tobs on 2015-05-11.
+ * Only placeholder values inside this class for now
  */
 public class Settings extends ActionBarActivity{
 
