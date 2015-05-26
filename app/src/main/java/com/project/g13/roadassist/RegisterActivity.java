@@ -39,6 +39,7 @@ public class RegisterActivity extends ActionBarActivity {
     private static final String LOG_TAG = "Main Activity";
     private EditText editTextUser;
     private EditText editTextPass;
+    private EditText editTextPass2;
     private EditText editName;
     private EditText editSurname;
 
@@ -53,6 +54,7 @@ public class RegisterActivity extends ActionBarActivity {
 
         editTextUser = (EditText) findViewById(R.id.editTextUser);
         editTextPass = (EditText) findViewById(R.id.editTextPassword);
+        editTextPass2 = (EditText) findViewById(R.id.editTextPassword2);
         editName = (EditText) findViewById(R.id.editName);
         editSurname = (EditText) findViewById(R.id.editSurname);
 
@@ -60,15 +62,8 @@ public class RegisterActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 String usern = editTextUser.getText().toString();
-                String pass = editTextPass.getText().toString();
-                String name = editName.getText().toString();
-                String surname = editSurname.getText().toString();
-                String[] credentials = new String[4];
-                credentials[0] = usern;
-                credentials[1] = pass;
-                credentials[2] = name;
-                credentials[3] = surname;
-                new insertToDatabase().execute(credentials);
+
+                new checkUsername().execute(usern);
 
             }
         });
@@ -90,10 +85,62 @@ public class RegisterActivity extends ActionBarActivity {
         protected void onPostExecute(ArrayList overspdCount) {
             Toast.makeText(getApplicationContext(), "Registeration was successful",
                     Toast.LENGTH_LONG).show();
-            startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+            startActivity(new Intent(RegisterActivity.this, LogIn.class));
         }
     }
 
+    private class checkUsername extends AsyncTask<String,Long,ArrayList>
+    {
 
+        @Override
+        protected ArrayList doInBackground(String... params) {
+            ArrayList<String> result = new ArrayList<String>();
+            // Put values in a JSONArray
+            ApiConnector connector = new ApiConnector();
+            JSONArray jsonArray = connector.GetTripData(params[0]);
+
+
+            if (jsonArray != null) {
+                String s  = "";
+                JSONObject json = null;
+                try {
+                    json = jsonArray.getJSONObject(0);
+                    result.add(json.getString("total"));
+                    Log.d(LOG_TAG, result.toString());
+                } catch (JSONException e) {
+                    Log.e("LOG_TAG", "Error converting to JSONObject " + e.toString());
+                }
+
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList result) {
+            Log.e("LOG_TAG", "total is " + result.toString());
+            if(editTextUser.getText().toString().equals(null)||editTextPass.getText().toString().equals(null)|| editName.getText().toString().equals(null)||editSurname.getText().toString().equals(null)||editTextPass2.getText().toString().equals(null) ){
+                if(result.toString().equals("[0]")){
+                    String[] credentials = new String[4];
+                    credentials[0] = editTextUser.getText().toString();
+                    credentials[1] = editTextPass.getText().toString();
+                    credentials[2] = editName.getText().toString();
+                    credentials[3] = editSurname.getText().toString();
+                    if(credentials[1].equals(editTextPass2.getText().toString())) {
+                        new insertToDatabase().execute(credentials);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Passwords do not match. Please try again.",
+                                Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Username exists already. Please enter a different Username",
+                            Toast.LENGTH_LONG).show();
+                }} else {
+                Toast.makeText(getApplicationContext(), "Please fill all the fields and try again.",
+                        Toast.LENGTH_LONG).show();
+            }
+
+
+        }
+    }
 
 }

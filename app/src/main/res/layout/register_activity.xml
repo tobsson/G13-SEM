@@ -28,7 +28,21 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
         android:id="@+id/editTextPassword" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm Password"
+        android:id="@+id/textView4" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/editTextPassword2" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -62,4 +76,6 @@
         android:layout_height="wrap_content"
         android:text="Sign Up"
         android:id="@+id/insertBtn" />
+
+
 </LinearLayout>
