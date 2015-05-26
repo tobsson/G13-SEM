@@ -14,6 +14,8 @@ public class Values {
     public static int overSpeed;
     public static int dLevel;
     public static int time = 0;
+    public static int timeDriven = 0;
+    public static int stopTime = 0;
 
     public Values() {
     /*
@@ -82,5 +84,17 @@ public class Values {
 
     public static void setTime(int time) {
         Values.time = time;
+    }
+
+    public static void setTimeDriven() {
+        Values.timeDriven += 5;
+    }
+
+    public static void setStopTime() {
+        Values.stopTime += 5;
+    }
+
+    public static void resetStopTime() {
+        Values.stopTime = 0;
     }
 }
