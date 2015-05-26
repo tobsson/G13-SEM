@@ -97,7 +97,7 @@ public class RegisterActivity extends ActionBarActivity {
             ArrayList<String> result = new ArrayList<String>();
             // Put values in a JSONArray
             ApiConnector connector = new ApiConnector();
-            JSONArray jsonArray = connector.GetTripData(params[0]);
+            JSONArray jsonArray = connector.checkIfUserExists(params[0]);
 
 
             if (jsonArray != null) {

@@ -13,6 +13,7 @@ public class Timer implements Runnable {
     Creating a boolean that is checked to see if the code shall run or not
      */
     private static volatile boolean running = true;
+    private int stopTime = 0;
 
     private static final String LOG_TAG = "Timer Class";
 
@@ -25,7 +26,7 @@ public class Timer implements Runnable {
         java.util.Timer timer = new java.util.Timer();
 
         /*
-        Creating the task with the code that shall run every time the timer tells it to
+        Creating the task with the code that will run every time the timer tells it to
          */
         TimerTask doTask = new TimerTask() {
             @Override
@@ -38,22 +39,19 @@ public class Timer implements Runnable {
                     try {
 
                         /*
-                        Checking the speed and if it is 5 or higher send values to the online
-                        database
+                        Sending values to the database as long as the timer is running
                          */
-                        if (Values.speed >= 5) {
-                            int time = Values.getTime();
-                            ApiConnector apiConnector = new ApiConnector();
-                            apiConnector.postDataGraph(time);
-                            Log.d("Timer", "postDataGraph executed");
+                        int time = Values.getTime();
+                        ApiConnector apiConnector = new ApiConnector();
+                        apiConnector.postDataGraph(time);
+                        Log.d("Timer", "postDataGraph executed");
 
-                            /*
-                            Increase the "time" values that is saved and used to know where
-                            in the trip the user is
-                             */
-                            time += 5;
-                            Values.setTime(time);
-                        }
+                        /*
+                        Increase the "time" values that is saved and used to know where
+                        in the trip the user is
+                         */
+                        time += 5;
+                        Values.setTime(time);
                         Log.d("Timer", "Running");
                     } catch (Exception e) {
                         Log.e(LOG_TAG, "myTask" + e);
