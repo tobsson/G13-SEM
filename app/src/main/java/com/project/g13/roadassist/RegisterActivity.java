@@ -118,7 +118,10 @@ public class RegisterActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(ArrayList result) {
             Log.e("LOG_TAG", "total is " + result.toString());
-            if(editTextUser.getText().toString().equals(null)||editTextPass.getText().toString().equals(null)|| editName.getText().toString().equals(null)||editSurname.getText().toString().equals(null)||editTextPass2.getText().toString().equals(null) ){
+            if(editTextUser.getText().toString().equals("")||editTextPass.getText().toString().equals("")|| editName.getText().toString().equals("")||editSurname.getText().toString().equals("")||editTextPass2.getText().toString().equals("") ){
+                Toast.makeText(getApplicationContext(), "Please fill all the fields and try again.",
+                        Toast.LENGTH_LONG).show();
+                } else {
                 if(result.toString().equals("[0]")){
                     String[] credentials = new String[4];
                     credentials[0] = editTextUser.getText().toString();
@@ -134,9 +137,7 @@ public class RegisterActivity extends ActionBarActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "Username exists already. Please enter a different Username",
                             Toast.LENGTH_LONG).show();
-                }} else {
-                Toast.makeText(getApplicationContext(), "Please fill all the fields and try again.",
-                        Toast.LENGTH_LONG).show();
+                }
             }
 
 
