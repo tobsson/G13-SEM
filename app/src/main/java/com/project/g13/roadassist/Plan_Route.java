@@ -77,6 +77,7 @@ public class Plan_Route extends ActionBarActivity implements
 
     private GoogleApiClient mGoogleApiClient;
     private AutoCompleteAdapter mPlaceArrayAdapter;
+    //Coordinate-boundaries from which the autocomplete-textfield for destination bases the suggestions from
     private static final LatLngBounds BOUNDS_LINDHOLMEN = new LatLngBounds(
             new LatLng(57.705793, 11.936084), new LatLng(57.707389, 11.937680));
 
