@@ -86,7 +86,7 @@ public class MainActivity extends ActionBarActivity {
                         }
                     }}
                 else {
-                    Toast.makeText(MainActivity.this, "No previous destination stored", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "No current destination stored...", Toast.LENGTH_LONG).show();
                 }
             }
         });
