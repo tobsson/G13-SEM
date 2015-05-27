@@ -77,8 +77,8 @@ public class Plan_Route extends ActionBarActivity implements
 
     private GoogleApiClient mGoogleApiClient;
     private AutoCompleteAdapter mPlaceArrayAdapter;
-    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
-            new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
+    private static final LatLngBounds BOUNDS_LINDHOLMEN = new LatLngBounds(
+            new LatLng(57.705793, 11.936084), new LatLng(57.707389, 11.937680));
 
     public Plan_Route() {
     }
@@ -106,7 +106,7 @@ public class Plan_Route extends ActionBarActivity implements
         destText.setThreshold(3);
         destText.setOnItemClickListener(mAutocompleteClickListener);
         mPlaceArrayAdapter = new AutoCompleteAdapter(this, android.R.layout.simple_list_item_1,
-                BOUNDS_MOUNTAIN_VIEW, null);
+                BOUNDS_LINDHOLMEN, null);
         destText.setAdapter(mPlaceArrayAdapter);
 
         add_dest = (Button)findViewById(R.id.add_dest_btn);
