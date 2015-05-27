@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="72dp"
             android:text="Statistics"
-            android:drawableLeft="@drawable/view_route"
+            android:drawableLeft="@drawable/statistics"
             android:id="@+id/statsBtn"
             android:layout_row="13"
             android:layout_column="0" />
