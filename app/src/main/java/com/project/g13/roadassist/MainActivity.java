@@ -150,9 +150,6 @@ public class MainActivity extends ActionBarActivity {
             case R.id.action_help:
                 openHelp();
                 return true;
-            case R.id.action_settings:
-                openSettings();
-                return true;
             case R.id.action_about:
                 openAbout();
                 return true;
@@ -185,14 +182,6 @@ public class MainActivity extends ActionBarActivity {
      */
     private void openAbout() {
         Intent i = new Intent(MainActivity.this, About.class);
-        startActivity(i);
-    }
-
-    /*
-    Opens the Settings activity
-     */
-    private void openSettings() {
-        Intent i = new Intent(MainActivity.this, Settings.class);
         startActivity(i);
     }
 
