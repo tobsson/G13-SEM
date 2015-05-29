@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -31,7 +32,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-
 import static java.lang.Integer.parseInt;
 
 /**
@@ -39,7 +39,7 @@ import static java.lang.Integer.parseInt;
  */
 public class DetailedStatistics extends ActionBarActivity {
     private TextView t;
-
+    private TextView statsText;
     private int brakeCount = 0;
     private int overspeedCount = 0;
     private LineChart speedChart;
@@ -52,6 +52,56 @@ public class DetailedStatistics extends ActionBarActivity {
         setContentView(R.layout.activity_statisticsdetailed);
         ApiConnector connector = new ApiConnector();
         //t = (TextView) findViewById(R.id.passedTID);
+        statsText = (TextView)findViewById(R.id.detailedStatsText);
+
+
+
+
+
+        {
+            distChart = (BarChart) findViewById(R.id.distractionChart);
+
+            distChart.setDrawBarShadow(true);
+            distChart.setDrawValueAboveBar(true);
+
+            distChart.setDescription("");
+            // if more than 60 entries are displayed in the chart, no values will be
+            // drawn
+            distChart.setMaxVisibleValueCount(60);
+            // scaling can now only be done on x- and y-axis separately
+            distChart.setPinchZoom(false);
+            // draw shadows for each bar that show the maximum value
+            // distChart.setDrawBarShadow(true);
+            // distChart.setDrawXLabels(false);
+            distChart.setDrawGridBackground(false);
+            // distChart.setDrawYLabels(false);
+
+//
+//        XAxis xAxis = speedChart.getXAxis();
+//        xAxis.addLimitLine(llXAxis);
+
+            XAxis xAxis = distChart.getXAxis();
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setTypeface(mTf);
+            xAxis.setDrawGridLines(false);
+            xAxis.setSpaceBetweenLabels(2);
+
+
+            YAxis leftAxis = distChart.getAxisLeft();
+            leftAxis.setTypeface(mTf);
+            leftAxis.setLabelCount(7);
+            leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+            leftAxis.setSpaceTop(15f);
+
+            YAxis rightAxis = distChart.getAxisRight();
+            rightAxis.setDrawGridLines(false);
+            rightAxis.setTypeface(mTf);
+            rightAxis.setLabelCount(8);
+            rightAxis.setSpaceTop(15f);
+
+
+        }
+
 
 
         {speedChart = (LineChart) findViewById(R.id.speedChart);
@@ -167,11 +217,9 @@ public class DetailedStatistics extends ActionBarActivity {
             //Log.d(LOG_TAG, jsonArray.toString());
             new getGraphDataSpeedTask().execute(value);
             new getGraphDataDistractionTask().execute(value);
-            //Log.e("LOG_TAG", "Bar Entry Array" + entries.toString());
-            //Log.e("LOG_TAG", "Bar Entry Array" + speedGraphlist.toString());
+            new getTripTableTask().execute(value);
 
 
-            //setData(speedGraphlist);
             //brakeCount = parseInt(connector.GetTripDataBrakeswitch(value).toString());
             Log.d(LOG_TAG, "Brake count" + brakeCount);
             //overspeedCount = parseInt(connector.GetTripDataOverspeed(value).toString());
@@ -254,36 +302,49 @@ public class DetailedStatistics extends ActionBarActivity {
         }
     }
 
-    private class getDataOverspeedCount extends AsyncTask<String, Long, ArrayList> {
+    private class getTripTableTask extends AsyncTask<String,Long,ArrayList>
+    {
 
         @Override
         protected ArrayList doInBackground(String... params) {
-            ArrayList<String> overspdCount = new ArrayList<String>();
+            ArrayList<String> result = new ArrayList<String>();
             // Put values in a JSONArray
             ApiConnector connector = new ApiConnector();
-            JSONArray jsonArray = connector.GetTripDataOverspeed(params[0]);
+            JSONArray jsonArray = connector.GetTripTableData2(params[0]);
+
 
             if (jsonArray != null) {
-                String s = "";
+                String s  = "";
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject json = null;
                     try {
                         json = jsonArray.getJSONObject(i);
-                        s = json.getString("OverSpeed");
-                        overspdCount.add(s);
-                        Log.d(LOG_TAG, jsonArray.get(i).toString());
+                        result.add(json.getString("Dusername"));
+                        result.add(json.getString("BrakeSwitch"));
+                        result.add(json.getString("OverSpeed"));
+                        result.add(json.getString("StartRoute"));
+                        result.add(json.getString("EndRoute"));
+                        Log.d(LOG_TAG, result.toString());
                     } catch (JSONException e) {
-                        Log.e("LOG_TAG", "Error converting to ArrayList " + e.toString());
+                        Log.e("LOG_TAG", "Error converting to JSONObject " + e.toString());
                     }
                 }
-
             }
-            return overspdCount;
+            return result;
         }
         @Override
-        protected void onPostExecute(ArrayList overspdCount) {
-            overspeedCount = parseInt(overspdCount.toString());
-            Log.d(LOG_TAG, overspdCount.toString());
+        protected void onPostExecute(ArrayList result) {
+
+            String name = result.get(0).toString();
+            String brake = result.get(1).toString();
+            String ospeed = result.get(2).toString();
+            String start = result.get(3).toString();
+            String end = result.get(4).toString();
+
+            String a = "This trip started at " + start + " and ended at " + end +". " +
+                    "\nYou went over your vehicles speed limit a total of " + ospeed + " times and used the brakes " + brake + " times. " ;
+
+            statsText.setText(a);
         }
     }
 

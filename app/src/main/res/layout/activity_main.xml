@@ -1,58 +1,79 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:layout_height="wrap_content" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:background="@drawable/background_road"
+    android:background="@drawable/darkwoodbkgr"
     tools:context="com.example.per.ras_test.MainActivity">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/logo" />
+        android:src="@drawable/roadassistlogo"
+        android:contentDescription="logo"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/gridLayout"
+        android:layout_marginBottom="262dp"
+        android:layout_alignParentStart="false"
+        android:layout_marginTop="-100dp" />
+
 
     <GridLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:id="@+id/gridLayout"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <Button
-            android:layout_width="152dp"
-            android:layout_height="72dp"
-            android:text="Statistics"
-            android:id="@+id/statsBtn"
-            android:layout_row="12"
-            android:layout_column="0"
-            android:nextFocusDown="@+id/plnRtBtn"
-            android:nextFocusRight="@+id/vwRtBtn" />
+            android:layout_width="127dp"
+            android:layout_height="127dp"
+            android:gravity="bottom|center"
+            android:text="@string/endTripButton"
+            android:id="@+id/ButtonEndTripMain"
+            android:layout_row="13"
+            android:layout_column="3"
+            android:background="@drawable/stoproute"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="center_vertical" />
 
         <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Plan Route"
-            android:drawableLeft="@drawable/plan_route"
+            android:layout_width="127dp"
+            android:layout_height="127dp"
+            android:background="@drawable/searchmap"
             android:id="@+id/plnRtBtn"
             android:onClick="click"
-            android:layout_row="13"
+            android:gravity="bottom|center"
+            android:text="@string/planRoute"
+            android:layout_row="12"
             android:layout_column="0"
-            android:nextFocusUp="@+id/statsBtn"
-            android:nextFocusRight="@+id/vwRtBtn" />
+            android:textColor="#FFFFFF" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Resume Route"
-            android:drawableLeft="@drawable/view_route"
+            android:layout_width="127dp"
+            android:layout_height="127dp"
+            android:gravity="bottom|center"
+            android:text="@string/resumeRoute"
+            android:background="@drawable/resumeroute"
             android:id="@+id/vwRtBtn"
+            android:layout_row="12"
+            android:layout_column="3"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:layout_width="127dp"
+            android:layout_height="127dp"
+            android:gravity="bottom|center"
+            android:text="@string/statistics"
+            android:background="@drawable/diagrambtn"
+            android:id="@+id/statsBtn"
             android:layout_row="13"
-            android:layout_column="12"
-            android:nextFocusUp="@+id/statsBtn"
-            android:nextFocusLeft="@+id/plnRtBtn"
-            android:nextFocusDown="@+id/action_search"/>
+            android:layout_column="0"
+            android:textColor="#FFFFFF" />
+
     </GridLayout>
 
 </RelativeLayout>

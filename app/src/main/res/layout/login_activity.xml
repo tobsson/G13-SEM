@@ -1,0 +1,62 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:orientation="vertical"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".LogIn" >
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/logo"
+        android:src="@drawable/roadassistlogo"
+        android:layout_marginBottom="-60dp"
+        android:layout_marginTop="-60dp" />
+
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextUsername"
+            android:hint="@string/hintUsername"
+            android:layout_column="0"
+            android:layout_row="2"
+            android:layout_gravity="top"
+            android:layout_columnSpan="3" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="@string/hintPassword"
+            android:ems="10"
+            android:id="@+id/editTextPassword"
+            android:layout_row="4"
+            android:layout_column="0" />
+
+    <Button
+            android:layout_width="114dp"
+            android:layout_height="wrap_content"
+            android:text="@string/Login"
+            android:onClick="invokeLogin"
+            android:id="@+id/loginBtn2"
+            android:layout_row="5"
+            android:layout_column="1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Not a User yet?"
+        android:id="@+id/textView9" />
+
+    <Button
+        android:layout_width="114dp"
+        android:layout_height="wrap_content"
+        android:text="@string/signUp"
+        android:id="@+id/signupBtn"
+        android:layout_row="5"
+        android:layout_column="0" />
+
+
+</LinearLayout>

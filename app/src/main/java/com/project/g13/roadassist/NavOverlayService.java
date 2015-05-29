@@ -29,7 +29,7 @@ package com.project.g13.roadassist;
             windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
             overLayMenu = new ImageView(this);
-            overLayMenu.setImageResource(R.drawable.overlaymenu_new);
+            overLayMenu.setImageResource(R.drawable.overlaymenu_newer);
             //overLayMenu.setAlpha(0);
             params= new WindowManager.LayoutParams(
                     WindowManager.LayoutParams.WRAP_CONTENT,
