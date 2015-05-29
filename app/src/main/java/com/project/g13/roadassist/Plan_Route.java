@@ -147,9 +147,6 @@ public class Plan_Route extends ActionBarActivity implements
                         Thread timerThread = new Thread(timer);
                         timerThread.start();
 
-                        TimeDriven timerRest = new TimeDriven();
-                        Thread timerRestThread = new Thread(timerRest);
-                        timerRestThread.start();
                     }
                 }).start();
                 destination = destText.getText().toString();

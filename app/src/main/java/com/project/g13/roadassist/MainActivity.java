@@ -35,8 +35,6 @@ public class MainActivity extends ActionBarActivity {
         Button plnRtBtn = (Button)findViewById(R.id.plnRtBtn);
         Button vwRtBtn = (Button)findViewById(R.id.vwRtBtn);
         Button statsBtn = (Button)findViewById(R.id.statsBtn);
-        Button exitBtn = (Button)findViewById(R.id.exitBtn);
-        exitBtn.setVisibility(View.GONE);
 
         plnRtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,12 +100,6 @@ public class MainActivity extends ActionBarActivity {
                     }
             }
         });
-        exitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.exit(0);
-            }
-        });
 
         /*
         Start a new thread that listens for AGA-signals
@@ -117,9 +109,6 @@ public class MainActivity extends ActionBarActivity {
         valuesThread.start();
 
     }
-
-
-
 
     /*
     Adds buttons to the ActionBar
