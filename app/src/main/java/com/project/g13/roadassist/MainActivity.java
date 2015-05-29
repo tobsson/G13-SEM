@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.util.Calendar;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -35,7 +38,7 @@ public class MainActivity extends ActionBarActivity {
         Button plnRtBtn = (Button)findViewById(R.id.plnRtBtn);
         Button vwRtBtn = (Button)findViewById(R.id.vwRtBtn);
         Button statsBtn = (Button)findViewById(R.id.statsBtn);
-
+        Button endRouteMain = (Button) findViewById(R.id.ButtonEndTripMain);
         plnRtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,6 +46,51 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(new Intent(MainActivity.this, Plan_Route.class));
             }
         });
+
+        endRouteMain.setOnClickListener(new View.OnClickListener(){
+                                            @Override
+                                            public void onClick(View v) {
+
+                                                new Thread(new Runnable() {
+                                                    public void run() {
+
+                /*
+                Starting a calendar instance that gets the current time and saves that value
+                as a string in the class Values
+                 */
+                                                        Calendar calendar = Calendar.getInstance();
+                                                        String date = calendar.getTime().toString();
+                                                        Values.setRouteEnd(date);
+                                                        Log.d(LOG_TAG, "Date/Time End: " + date);
+
+                /*
+                Instantiate ApiConnector and send the values that have been stored for the
+                current trip to the online database
+                 */
+                                                        ApiConnector apiConnector = new ApiConnector();
+                                                        apiConnector.postDataTrip();
+
+                /*
+                Instantiating Timer and calling the PauseThread method to pause the timer
+                so that no more values are sent to the database
+                 */
+                                                        Timer timer = new Timer();
+                                                        try {
+                                                            timer.pauseThread();
+                                                        } catch (InterruptedException e) {
+                                                            Log.e(LOG_TAG, "Pause Thread" + e);
+                                                        }
+
+                                                    }
+                                                }).start();
+                                                CurrentRoute.setCurrentRoute(null);
+                                                Toast.makeText(MainActivity.this, "Current Trip has ended.", Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+
+        );
+
+
         vwRtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

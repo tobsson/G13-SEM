@@ -5,7 +5,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:background="@drawable/background_road"
+    android:background="@drawable/darkwoodbkgr"
     tools:context="com.example.per.ras_test.MainActivity">
 
     <ImageView
@@ -31,13 +31,37 @@
         <Button
             android:layout_width="127dp"
             android:layout_height="127dp"
+            android:gravity="bottom|center"
+            android:text="@string/endTripButton"
+            android:id="@+id/ButtonEndTripMain"
+            android:layout_row="13"
+            android:layout_column="3"
+            android:background="@drawable/stoproute"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="center_vertical" />
+
+        <Button
+            android:layout_width="127dp"
+            android:layout_height="127dp"
             android:background="@drawable/searchmap"
             android:id="@+id/plnRtBtn"
             android:onClick="click"
             android:gravity="bottom|center"
             android:text="@string/planRoute"
             android:layout_row="12"
-            android:layout_column="0" />
+            android:layout_column="0"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:layout_width="127dp"
+            android:layout_height="127dp"
+            android:gravity="bottom|center"
+            android:text="@string/resumeRoute"
+            android:background="@drawable/resumeroute"
+            android:id="@+id/vwRtBtn"
+            android:layout_row="12"
+            android:layout_column="3"
+            android:textColor="#FFFFFF" />
 
         <Button
             android:layout_width="127dp"
@@ -47,17 +71,8 @@
             android:background="@drawable/diagrambtn"
             android:id="@+id/statsBtn"
             android:layout_row="13"
-            android:layout_column="0" />
-
-        <Button
-            android:layout_width="127dp"
-            android:layout_height="127dp"
-            android:gravity="bottom|center"
-            android:text="@string/resumeRoute"
-            android:background="@drawable/resumeroute"
-            android:id="@+id/vwRtBtn"
-            android:layout_row="13"
-            android:layout_column="3" />
+            android:layout_column="0"
+            android:textColor="#FFFFFF" />
 
     </GridLayout>
 

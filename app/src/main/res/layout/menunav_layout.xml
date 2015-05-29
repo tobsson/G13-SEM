@@ -39,7 +39,7 @@
         android:text="@string/restaurantButton"
         android:nextFocusUp="@+id/ButtonClose"
         android:nextFocusLeft="@+id/ButtonGas"
-        android:nextFocusDown="@+id/ButtonEndRoute"></Button>
+        android:nextFocusDown="@+id/ButtonMainMenu"></Button>
 
     <Button
         android:layout_width="137dp"
@@ -64,7 +64,7 @@
         android:layout_height="137dp"
         android:background="@drawable/mainmenu"
         android:textColor="#FFFFFF"
-        android:id="@+id/ButtonEndRoute"
+        android:id="@+id/ButtonMainMenu"
         android:layout_gravity="right|bottom"
         android:hapticFeedbackEnabled="false"
         android:src="@drawable/mainmenu"
@@ -90,7 +90,7 @@
         android:gravity="bottom|center"
         android:text="@string/parkButton"
         android:nextFocusUp="@+id/gButtonGas"
-        android:nextFocusRight="@+id/ButtonEndRoute"
+        android:nextFocusRight="@+id/ButtonMainMenu"
         android:layout_marginRight="10dp"></Button>
 
     <Button

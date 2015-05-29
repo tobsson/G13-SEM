@@ -4,6 +4,9 @@ import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.location.Location;
+
+import com.google.android.gms.location.FusedLocationProviderApi;
+import com.google.android.gms.location.LocationListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -40,8 +43,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Calendar;
 
-import static com.google.android.gms.location.LocationServices.FusedLocationApi;
-
 
 /**
  * Created by Per on 2015-05-04.
@@ -49,6 +50,8 @@ import static com.google.android.gms.location.LocationServices.FusedLocationApi;
 public class menuNav extends ActionBarActivity implements ConnectionCallbacks, OnConnectionFailedListener {
 
     @SuppressWarnings("unused")
+
+    Location loc;
 
     private static final String LOG_TAG = "menuNav";
     // LogCat tag
@@ -71,7 +74,8 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
     private static double DAMPER = 20; //friction
 
     private SpringSystem mSpringSystem;
-    private Spring gasSpring, parkSpring, restaurantSpring, endRouteSpring;
+    private Spring gasSpring, parkSpring, restaurantSpring, mainMenuSpring, endTripSpring;
+    private Spring resumeRouteSpring;
 
     // JSON Node names
     private static final String TAG_LOCATION = "location";
@@ -83,10 +87,12 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
     private static int FATEST_INTERVAL = 5000; // 5 sec
     private static int DISPLACEMENT = 10; // 10 meters
     private Button ButtonParking;
-    private Button ButtonEndRoute;
+    private Button ButtonMainMenu;
     private Button ButtonRestaurant;
     private Button ButtonGas;
     private Button ButtonClose;
+    private Button ButtonEndTrip;
+    private Button ButtonResumeRoute;
 
     private String lat;
     private String lng;
@@ -100,43 +106,133 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
         ButtonRestaurant = (Button) findViewById(R.id.ButtonRestaurant);
         ButtonClose = (Button) findViewById(R.id.ButtonClose);
         ButtonParking = (Button) findViewById(R.id.ButtonParking);
-        ButtonEndRoute = (Button) findViewById(R.id.ButtonEndRoute);
+        ButtonMainMenu = (Button) findViewById(R.id.ButtonMainMenu);
         ButtonGas = (Button) findViewById(R.id.ButtonGas);
+        ButtonEndTrip = (Button) findViewById(R.id.ButtonEndTrip);
+        ButtonResumeRoute = (Button) findViewById(R.id.ButtonMenuResRoute);
 
-        ButtonEndRoute.setOnTouchListener(new View.OnTouchListener() {
+        ButtonMainMenu.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            endRouteSpring.setEndValue(1f);
-                            return true;
-                        case MotionEvent.ACTION_UP:
-                            endRouteSpring.setEndValue(0f);
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        mainMenuSpring.setEndValue(1f);
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        mainMenuSpring.setEndValue(0f);
 
                             /*
                             Checks the Distraction level of the driver  and the Speed of the vehicle.
                             If true the user will return to the main menu. If false a toast saying that
                             the user needs to stop the vehicle to exit navigation will be shown.
                              */
-                            if (Values.getdLevel() < 3 && Values.getSpeed() < 5) {
-                                endRoute();
-                            }
-                            else{
-                                Toast.makeText(menuNav.this, "Stop the vehicle to use this function.", Toast.LENGTH_LONG).show();
-                            }
+                        if (Values.getdLevel() < 3 && Values.getSpeed() < 5) {
+                            endRoute();
+                        } else {
+                            Toast.makeText(menuNav.this, "Stop the vehicle to use this function.", Toast.LENGTH_LONG).show();
+                        }
 
-                            return true;
+                        return true;
 
 
-                    }
+                }
 
-                    return false;
+                return false;
 
 
             }
         });
 
+
+        ButtonResumeRoute.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        resumeRouteSpring.setEndValue(1f);
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        resumeRouteSpring.setEndValue(0f);
+
+
+                        if(CurrentRoute.getCurrentRoute() !=null){
+                            String destination = CurrentRoute.getCurrentRoute();
+                            Uri gmmIntentUri = Uri.parse("google.navigation:q=" + destination + "&mode=d");
+                            Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                            intent.setPackage("com.google.android.apps.maps");
+
+
+                            intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+
+                    /*
+                     * Changing the boolean in the timer class to start running again
+                     */
+                            Timer timer = new Timer();
+                            timer.resumeThread();
+                            try
+                            {
+                                startActivity(intent);
+                                startService(new Intent(getApplication(), NavOverlayService.class));
+                            }
+                            catch(ActivityNotFoundException ex)
+                            {
+                                try
+                                {
+                                    Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                    startActivity(unrestrictedIntent);
+                                }
+                                catch(ActivityNotFoundException innerEx)
+                                {
+                                    Toast.makeText(menuNav.this, "Please install a maps application", Toast.LENGTH_LONG).show();
+                                }
+                            }}
+                        else {
+                            Toast.makeText(menuNav.this, "No current destination stored...", Toast.LENGTH_LONG).show();
+                        }
+
+                        return true;
+
+
+                }
+
+                return false;
+
+
+            }
+        });
+
+
+        ButtonEndTrip.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        endTripSpring.setEndValue(1f);
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        endTripSpring.setEndValue(0f);
+
+                        if (Values.getSpeed() < 2) {
+                            endTrip();
+                            Toast.makeText(menuNav.this, "Route: finished.", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(menuNav.this, "Stop the vehicle before ending current route.", Toast.LENGTH_LONG).show();
+                        }
+
+
+                        return true;
+
+
+                }
+
+                return false;
+
+
+            }
+        });
 
         ButtonGas.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -147,6 +243,7 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
                         return true;
                     case MotionEvent.ACTION_UP:
                         gasSpring.setEndValue(0f);
+                        Toast.makeText(menuNav.this, "Finding Gas-Station - resume previous route later with 'RESUME ROUTE'-button", Toast.LENGTH_LONG).show();
                         findGasStn();
                         return true;
 
@@ -166,6 +263,7 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
                         return true;
                     case MotionEvent.ACTION_UP:
                         restaurantSpring.setEndValue(0f);
+                        Toast.makeText(menuNav.this, "Finding Restaurant - resume previous route later with 'RESUME ROUTE'-button", Toast.LENGTH_LONG).show();
                         findRestaurant();
                         return true;
 
@@ -185,6 +283,7 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
                         return true;
                     case MotionEvent.ACTION_UP:
                         parkSpring.setEndValue(0f);
+                        Toast.makeText(menuNav.this, "Finding Parking - resume previous route later with 'RESUME ROUTE'-button", Toast.LENGTH_LONG).show();
                         findParking();
                         return true;
 
@@ -196,11 +295,37 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
         });
 
         mSpringSystem = SpringSystem.create();
-
+        endTripSpring = mSpringSystem.createSpring();
         gasSpring = mSpringSystem.createSpring();
         restaurantSpring = mSpringSystem.createSpring();
         parkSpring = mSpringSystem.createSpring();
-        endRouteSpring = mSpringSystem.createSpring();
+        mainMenuSpring = mSpringSystem.createSpring();
+        resumeRouteSpring = mSpringSystem.createSpring();
+
+        endTripSpring.addListener(new SpringListener() {
+            @Override
+            public void onSpringUpdate(Spring spring) {
+                float value = (float) spring.getCurrentValue();
+                float scale = 1f - (value * 0.5f);
+                ButtonEndTrip.setScaleX(scale);
+                ButtonEndTrip.setScaleY(scale);
+            }
+
+            @Override
+            public void onSpringAtRest(Spring spring) {
+
+            }
+
+            @Override
+            public void onSpringActivate(Spring spring) {
+
+            }
+
+            @Override
+            public void onSpringEndStateChange(Spring spring) {
+
+            }
+        });
 
         gasSpring.addListener(new SpringListener() {
             @Override
@@ -277,13 +402,37 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
 
             }
         });
-        endRouteSpring.addListener(new SpringListener() {
+        mainMenuSpring.addListener(new SpringListener() {
             @Override
             public void onSpringUpdate(Spring spring) {
                 float value = (float) spring.getCurrentValue();
                 float scale = 1f - (value * 0.5f);
-                ButtonEndRoute.setScaleX(scale);
-                ButtonEndRoute.setScaleY(scale);
+                ButtonMainMenu.setScaleX(scale);
+                ButtonMainMenu.setScaleY(scale);
+            }
+
+            @Override
+            public void onSpringAtRest(Spring spring) {
+
+            }
+
+            @Override
+            public void onSpringActivate(Spring spring) {
+
+            }
+
+            @Override
+            public void onSpringEndStateChange(Spring spring) {
+
+            }
+        });
+        resumeRouteSpring.addListener(new SpringListener() {
+            @Override
+            public void onSpringUpdate(Spring spring) {
+                float value = (float) spring.getCurrentValue();
+                float scale = 1f - (value * 0.5f);
+                ButtonResumeRoute.setScaleX(scale);
+                ButtonResumeRoute.setScaleY(scale);
             }
 
             @Override
@@ -306,7 +455,9 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
         gasSpring.setSpringConfig(config);
         parkSpring.setSpringConfig(config);
         restaurantSpring.setSpringConfig(config);
-        endRouteSpring.setSpringConfig(config);
+        mainMenuSpring.setSpringConfig(config);
+        endTripSpring.setSpringConfig(config);
+        resumeRouteSpring.setSpringConfig(config);
 
         // First we need to check availability of play services
         if (checkPlayServices()) {
@@ -345,7 +496,64 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
                 findGasStn();
             }
         });
-        ButtonEndRoute.setOnClickListener(new View.OnClickListener() {
+
+        ButtonResumeRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(CurrentRoute.getCurrentRoute() !=null){
+                    String destination = CurrentRoute.getCurrentRoute();
+                    Uri gmmIntentUri = Uri.parse("google.navigation:q=" + destination + "&mode=d");
+                    Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    intent.setPackage("com.google.android.apps.maps");
+
+
+                    intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+
+                    /*
+                     * Changing the boolean in the timer class to start running again
+                     */
+                    Timer timer = new Timer();
+                    timer.resumeThread();
+                    try
+                    {
+                        startActivity(intent);
+                        startService(new Intent(getApplication(), NavOverlayService.class));
+                    }
+                    catch(ActivityNotFoundException ex)
+                    {
+                        try
+                        {
+                            Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                            startActivity(unrestrictedIntent);
+                        }
+                        catch(ActivityNotFoundException innerEx)
+                        {
+                            Toast.makeText(menuNav.this, "Please install a maps application", Toast.LENGTH_LONG).show();
+                        }
+                    }}
+                else {
+                    Toast.makeText(menuNav.this, "No current destination stored...", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+
+        ButtonEndTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Values.getSpeed() < 2) {
+                    endTrip();
+                    Toast.makeText(menuNav.this, "Route: finished.", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(menuNav.this, "Stop the vehicle before ending current route.", Toast.LENGTH_LONG).show();
+                }
+
+
+
+            }
+        });
+
+        ButtonMainMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -356,8 +564,7 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
                  */
                 if (Values.getdLevel() < 3 && Values.getSpeed() < 5) {
                     endRoute();
-                }
-                else{
+                } else {
                     Toast.makeText(menuNav.this, "Stop the vehicle to use this function.", Toast.LENGTH_LONG).show();
                 }
             }
@@ -511,7 +718,6 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
                             e.printStackTrace();
                         }
 
-
                         //Start navigation to nearest gas-station
                         Uri gmmIntentUri = Uri.parse("google.navigation:q="+lat+","+lng+"&mode=w");
                         Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
@@ -640,7 +846,7 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
            }
        }).start();
    }
-
+    //Actually returns user to main menu (so this is a bad name for method)
     private void endRoute(){
         Log.d("endRoute", "Outside Thread");
         /*
@@ -667,7 +873,7 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
     }
 
 
-    private void endTrip(){
+    public void endTrip(){
 
         /*
          * Starting a new thread that will run when the user press the go back to main menu button
@@ -704,6 +910,7 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
 
             }
         }).start();
+        CurrentRoute.setCurrentRoute(null);
         startActivity(new Intent(menuNav.this, MainActivity.class));
     }
 
@@ -726,15 +933,14 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
 
 
         String currLoc;
-        /*Location loc = FusedLocationApi
-                .getLastLocation(mGoogleApiClient);
+        loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             double lat = loc.getLatitude();
             double lng = loc.getLongitude();
-        */
-        double lat = 57.706872;
-        double lng = 11.936661;
-            currLoc = Double.toString(lat) + "," + Double.toString(lng);
 
+        //double lat = 57.706872;
+        // double lng = 11.936661;
+            currLoc = Double.toString(lat) + "," + Double.toString(lng);
+            Log.d("displayLocation()", currLoc);
             return currLoc;
 
     }
