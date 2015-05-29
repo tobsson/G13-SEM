@@ -20,10 +20,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Created by tobs on 2015-05-07.
+ * This class contains methods for communicating with the database
  */
 public class ApiConnector {
 
@@ -41,7 +41,7 @@ public class ApiConnector {
         try
         {
             //ArrayList with post values for the graphtable
-            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+            ArrayList<NameValuePair> nameValuePairs = new ArrayList<>(1);
             nameValuePairs.add(new BasicNameValuePair("Dname", s));
             Log.e(LOG_TAG, "value pair " + nameValuePairs.toString());
 
@@ -348,9 +348,10 @@ public class ApiConnector {
 
 
             } catch (ClientProtocolException e) {
+                Log.d(LOG_TAG, "insertnewuser 1: " + e);
 
             } catch (IOException e) {
-
+                Log.d(LOG_TAG, "insertnewuser 2: " + e);
             }
             return "success";
         }
