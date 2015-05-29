@@ -649,6 +649,32 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
         new Thread(new Runnable() {
             public void run() {
                 Log.d("endRoute", "Inside Thread");
+
+                /*
+                Instantiating Timer and calling the PauseThread method to pause the timer
+                so that no more values are sent to the database
+                 */
+                Timer timer = new Timer();
+                try {
+                    timer.pauseThread();
+                } catch (InterruptedException e) {
+                    Log.e(LOG_TAG, "Pause Thread" + e);
+                }
+
+            }
+        }).start();
+        startActivity(new Intent(menuNav.this, MainActivity.class));
+    }
+
+
+    private void endTrip(){
+
+        /*
+         * Starting a new thread that will run when the user press the go back to main menu button
+         */
+        new Thread(new Runnable() {
+            public void run() {
+
                 /*
                 Starting a calendar instance that gets the current time and saves that value
                 as a string in the class Values
@@ -680,6 +706,11 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
         }).start();
         startActivity(new Intent(menuNav.this, MainActivity.class));
     }
+
+
+
+
+
     private void closeOverLayMenu(){
         startService(new Intent(getApplication(), NavOverlayService.class));
         Intent intent = new Intent(Intent.ACTION_MAIN);

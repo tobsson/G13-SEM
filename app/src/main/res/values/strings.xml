@@ -41,6 +41,7 @@
     <string name="parkButton">Find Parking</string>
     <string name="gasButton">Find Gas Station</string>
     <string name="mainmenuButton">Exit to Main Menu</string>
+    <string name="endTripButton">End the Route</string>
 
     <!-- login_activity -->
     <string name="hintUsername">Username</string>
