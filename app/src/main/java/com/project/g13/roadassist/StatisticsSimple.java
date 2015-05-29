@@ -1,58 +1,32 @@
 package com.project.g13.roadassist;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.app.ListActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.swedspot.automotiveapi.AutomotiveSignal;
-import android.swedspot.automotiveapi.AutomotiveSignalId;
-import android.swedspot.scs.data.SCSFloat;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import com.swedspot.automotiveapi.AutomotiveFactory;
-import com.swedspot.automotiveapi.AutomotiveListener;
-import com.swedspot.automotiveapi.AutomotiveManager;
-import com.swedspot.vil.distraction.DriverDistractionLevel;
-import com.swedspot.vil.distraction.DriverDistractionListener;
-import com.swedspot.vil.distraction.LightMode;
-import com.swedspot.vil.distraction.StealthMode;
-import com.swedspot.vil.policy.AutomotiveCertificate;
-
 import java.util.ArrayList;
 
 
 
 /**
  * Created by tobs on 2015-04-20.
+ * This class shows some of the statistics of the latest trip and a list of all previous trips
  */
 public class StatisticsSimple extends ActionBarActivity {
+
     private ListView listView;
     private TextView statsText;
     private TextView statsText2, statsText3;
-
-    private String brakeswitch, overspeed, avgSpeed, avgDistraction, startTime, endTime;
-
 
     private static final String LOG_TAG = "StatisticsSimple";
 
@@ -100,16 +74,23 @@ public class StatisticsSimple extends ActionBarActivity {
 
 
     //Async task for getting data from the mysql database
-    private class getTripTask extends AsyncTask<String,Long,ArrayList>
-    {
+    private class getTripTask extends AsyncTask<String,Long,ArrayList> {
+
+
 
         @Override
         protected ArrayList doInBackground(String... params) {
-            ArrayList<String> tripList = new ArrayList<String>();
-            // Put values in a JSONArray
-            ApiConnector connector = new ApiConnector();
-            JSONArray jsonArray = connector.GetTripData(params[0]);
 
+            JSONArray jsonArray = null;
+            ArrayList<String> tripList = new ArrayList<String>();
+
+            try {
+                // Put values in a JSONArray
+                ApiConnector connector = new ApiConnector();
+                jsonArray = connector.GetTripData(params[0]);
+            } catch(Exception e) {
+                Log.d(LOG_TAG, "getTripTask 1: " + e);
+            }
             if (jsonArray != null) {
                 String s  = "";
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -127,15 +108,20 @@ public class StatisticsSimple extends ActionBarActivity {
             return tripList;
         }
         @Override
-        protected void onPostExecute(ArrayList tripsList) {;
-            new getAverageSpeed().execute(tripsList.get(0).toString());
-            new getAverageDistraction().execute(tripsList.get(0).toString());
-            //Updates the adapter with the values from the arraylist
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(StatisticsSimple.this,
-                    android.R.layout.simple_list_item_1, android.R.id.text1, tripsList);
+        protected void onPostExecute(ArrayList tripsList) {
+            try {
+                new getAverageSpeed().execute(tripsList.get(0).toString());
+                new getAverageDistraction().execute(tripsList.get(0).toString());
 
-            // Assign adapter to ListView, updates the listview with this info
-            listView.setAdapter(adapter);
+                //Updates the adapter with the values from the arraylist
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(StatisticsSimple.this,
+                        android.R.layout.simple_list_item_1, android.R.id.text1, tripsList);
+
+                // Assign adapter to ListView, updates the listview with this info
+                listView.setAdapter(adapter);
+            } catch(Exception e) {
+                Log.d(LOG_TAG, "getTripTask onPostExecute: " + e);
+            }
 
 
         }
@@ -147,15 +133,21 @@ public class StatisticsSimple extends ActionBarActivity {
         @Override
         protected ArrayList doInBackground(String... params) {
             ArrayList<String> result = new ArrayList<String>();
-            // Put values in a JSONArray
-            ApiConnector connector = new ApiConnector();
-            JSONArray jsonArray = connector.GetTripTableData(params[0]);
+            JSONArray jsonArray = null;
+
+            try {
+                // Put values in a JSONArray
+                ApiConnector connector = new ApiConnector();
+                jsonArray = connector.GetTripTableData(params[0]);
+            } catch(Exception e){
+                Log.d(LOG_TAG, "getTripTableTask 1: " + e);
+            }
 
 
             if (jsonArray != null) {
                 String s  = "";
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject json = null;
+                    JSONObject json;
                     try {
                         json = jsonArray.getJSONObject(i);
                         result.add(json.getString("Dusername"));
@@ -171,65 +163,42 @@ public class StatisticsSimple extends ActionBarActivity {
             }
             return result;
         }
+
         @Override
         protected void onPostExecute(ArrayList result) {
 
-            String name = result.get(0).toString();
-            String brake = result.get(1).toString();
-            String ospeed = result.get(2).toString();
-            String start = result.get(3).toString();
-            String end = result.get(4).toString();
+            try {
+                String name = result.get(0).toString();
+                String brake = result.get(1).toString();
+                String ospeed = result.get(2).toString();
+                String start = result.get(3).toString();
+                String end = result.get(4).toString();
 
-            String a = "Welcome " + name + ", " +
-                    "\nyour last trip started at " + start + " and ended at " + end +". " +
-                    "\nYou went over your vehicles speed limit a total of " + ospeed + " times and used the brakes " + brake + " times. " ;
+                String a = "Welcome " + name + ", " +
+                        "\nyour last trip started at " + start + " and ended at " + end + ". " +
+                        "\nYou went over your vehicles speed limit a total of " + ospeed + " times and used the brakes " + brake + " times. ";
 
-            statsText.setText(a);
-        }
-    }
-
-    private class getDataOverspeedCount extends AsyncTask<String, Long, ArrayList> {
-
-        @Override
-        protected ArrayList doInBackground(String... params) {
-            ArrayList<String> overspdCount = new ArrayList<String>();
-            // Put values in a JSONArray
-            ApiConnector connector = new ApiConnector();
-            JSONArray jsonArray = connector.GetTripDataOverspeed(params[0]);
-
-            if (jsonArray != null) {
-                String s = "";
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject json = null;
-                    try {
-                        json = jsonArray.getJSONObject(i);
-                        s = json.getString("OverSpeed");
-                        overspdCount.add(s);
-                        Log.d(LOG_TAG, jsonArray.get(i).toString());
-                    } catch (JSONException e) {
-                        Log.e("LOG_TAG", "Error converting to ArrayList " + e.toString());
-                    }
-                }
-
+                statsText.setText(a);
+            } catch(Exception e) {
+                Log.d(LOG_TAG, "getTripTableTask onPostExecute: " + e);
             }
-            return overspdCount;
-        }
-        @Override
-        protected void onPostExecute(ArrayList overspdCount) {
-            //overspeedCount = parseInt(overspdCount.toString());
-            Log.d(LOG_TAG, overspdCount.toString());
         }
     }
-
 
      class getAverageSpeed extends AsyncTask<String, Long, ArrayList> {
 
         @Override
         protected ArrayList doInBackground(String... params) {
             ArrayList<String> avgSpeed = new ArrayList<String>();
-            // Put values in a JSONArray
-            ApiConnector connector = new ApiConnector();
-            JSONArray jsonArray = connector.GetAverageSpeed(params[0]);
+            JSONArray jsonArray = null;
+
+            try {
+                // Put values in a JSONArray
+                ApiConnector connector = new ApiConnector();
+                jsonArray = connector.GetAverageSpeed(params[0]);
+            } catch(Exception e) {
+                Log.d(LOG_TAG, "getAvarageSpeed 1:  + e");
+            }
 
             if (jsonArray != null) {
                 String s = "";
@@ -250,8 +219,12 @@ public class StatisticsSimple extends ActionBarActivity {
         }
         @Override
         protected void onPostExecute(ArrayList avgSpeed) {
-            //overspeedCount = parseInt(overspdCount.toString());
-            statsText2.setText("Your average speed was " + avgSpeed.get(0).toString() + "km/h");
+            try {
+                //overspeedCount = parseInt(overspdCount.toString());
+                statsText2.setText("Your average speed was " + avgSpeed.get(0).toString() + "km/h");
+            } catch(Exception e) {
+                Log.d(LOG_TAG, "getAvarageSpeed onPostExecute" + e);
+            }
 
 
         }
@@ -262,9 +235,15 @@ public class StatisticsSimple extends ActionBarActivity {
         @Override
         protected ArrayList doInBackground(String... params) {
             ArrayList<String> avgDist = new ArrayList<String>();
-            // Put values in a JSONArray
-            ApiConnector connector = new ApiConnector();
-            JSONArray jsonArray = connector.GetAverageDistraction(params[0]);
+            JSONArray jsonArray = null;
+
+            try {
+                // Put values in a JSONArray
+                ApiConnector connector = new ApiConnector();
+                jsonArray = connector.GetAverageDistraction(params[0]);
+            } catch(Exception e){
+                Log.d(LOG_TAG, "getAvarageDistraction 1: " + e);
+            }
 
             if (jsonArray != null) {
                 String s = "";
@@ -285,10 +264,13 @@ public class StatisticsSimple extends ActionBarActivity {
         }
         @Override
         protected void onPostExecute(ArrayList avgDist) {
-            //overspeedCount = parseInt(overspdCount.toString());
-            statsText3.setText("Your average Distraction Level was " + avgDist.get(0).toString() + "\n\nTo see more statistics and charts over your previous trips select " +
-                    "the one you want to view from the list below.");
-            Log.e(LOG_TAG, "average Dist " + avgDist.toString());
+            try {
+                statsText3.setText("Your average Distraction Level was " + avgDist.get(0).toString() + "\n\nTo see more statistics and charts over your previous trips select " +
+                        "the one you want to view from the list below.");
+                Log.e(LOG_TAG, "average Dist " + avgDist.toString());
+            } catch(Exception e){
+                Log.d(LOG_TAG, "getAvarageSpeed onPostExecute: " + e);
+            }
 
         }
     }

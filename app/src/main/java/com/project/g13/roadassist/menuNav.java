@@ -1,6 +1,5 @@
 package com.project.g13.roadassist;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -12,8 +11,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.rebound.Spring;
@@ -73,18 +70,6 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
     private static double TENSION = 800;
     private static double DAMPER = 20; //friction
 
-    private TextView gasStationText;
-    private TextView parkingText;
-    private TextView restText;
-    private TextView endRouteText;
-
-
-
-    private ImageView gasBtnRb;
-    private ImageView restaurantBtnRb;
-    private ImageView parkingBtnRb;
-    private ImageView closeMenuBtnRb;
-    private ImageView endRouteBtnRb;
     private SpringSystem mSpringSystem;
     private Spring gasSpring, parkSpring, restaurantSpring, endRouteSpring;
 
@@ -112,24 +97,6 @@ public class menuNav extends ActionBarActivity implements ConnectionCallbacks, O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menunav_layout);
 
-/*
-        parking = (Button) findViewById(R.id.restStopBtn);
-        endRoute = (Button) findViewById(R.id.endRouteBtn);
-        restaurant = (Button)findViewById(R.id.restaurantBtn);
-        gas = (Button)findViewById(R.id.gasBtn);
-        closeMenu = (Button)findViewById(R.id.returnBtn);
-        */
-        gasStationText = (TextView)findViewById(R.id.gasStnText);
-        parkingText = (TextView)findViewById(R.id.parkingTextView);
-        restText = (TextView)findViewById(R.id.parkingTextView);
-        endRouteText = (TextView) findViewById(R.id.endRouteTextView);
-/**
-        gasBtnRb = (ImageView) findViewById(R.id.gasBtnRb);
-        restaurantBtnRb = (ImageView) findViewById(R.id.restaurantBtnRb);
-        parkingBtnRb = (ImageView) findViewById(R.id.parkingBtnRb);
-        closeMenuBtnRb = (ImageView) findViewById(R.id.closeMenuBtnRb);
-        endRouteBtnRb = (ImageView) findViewById(R.id.endRouteBtnRb);
-**/
         ButtonRestaurant = (Button) findViewById(R.id.ButtonRestaurant);
         ButtonClose = (Button) findViewById(R.id.ButtonClose);
         ButtonParking = (Button) findViewById(R.id.ButtonParking);

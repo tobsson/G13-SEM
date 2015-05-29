@@ -12,14 +12,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/logo" />
+        android:src="@drawable/roadassistlogo"
+        android:contentDescription="logo"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/gridLayout"
+        android:layout_marginBottom="262dp"
+        android:layout_alignParentStart="false"
+        android:layout_marginTop="-100dp" />
 
 
     <GridLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/gridLayout">
+        android:id="@+id/gridLayout"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -45,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="72dp"
             android:text="Statistics"
-            android:drawableLeft="@drawable/view_route"
+            android:drawableLeft="@drawable/statistics"
             android:id="@+id/statsBtn"
             android:layout_row="13"
             android:layout_column="0" />
