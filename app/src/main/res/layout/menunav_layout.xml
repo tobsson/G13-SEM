@@ -4,6 +4,7 @@
     android:columnCount="5"
     android:rowCount="7"
     android:useDefaultMargins="true"
+    android:background="@drawable/darkwoodbkgr"
     android:animationCache="false">
 
     <Button
