@@ -113,22 +113,7 @@ public class Plan_Route extends ActionBarActivity implements
         add_dest = (Button)findViewById(R.id.add_dest_btn);
         startNav = (Button)findViewById(R.id.plnSrcbutton);
 
-        // destText.setAdapter(new AutoCompleteAdapter(this));
-
-
-
-        /*
-        destText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String description = (String) parent.getItemAtPosition(position);
-                Toast.makeText(getApplicationContext(), description, Toast.LENGTH_SHORT).show();
-               // Toast.makeText(getApplicationContext(), "Position clicked: " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        */
-
-        add_dest.setOnClickListener(new View.OnClickListener() {
+                add_dest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mLayout.addView(createNewAutoCompleteTextView());
@@ -161,6 +146,10 @@ public class Plan_Route extends ActionBarActivity implements
                         Timer timer = new Timer();
                         Thread timerThread = new Thread(timer);
                         timerThread.start();
+
+                        TimeDriven timerRest = new TimeDriven();
+                        Thread timerRestThread = new Thread(timerRest);
+                        timerRestThread.start();
                     }
                 }).start();
                 destination = destText.getText().toString();

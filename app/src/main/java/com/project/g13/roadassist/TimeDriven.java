@@ -1,9 +1,12 @@
 package com.project.g13.roadassist;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Looper;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
 import java.util.TimerTask;
@@ -11,7 +14,7 @@ import java.util.TimerTask;
 /**
  * Created by tobs on 2015-05-26.
  */
-public class TimeDriven implements Runnable{
+public class TimeDriven extends Activity implements Runnable{
 
     /*
     Creating a boolean that is checked to see if the code shall run or not
@@ -31,23 +34,32 @@ public class TimeDriven implements Runnable{
         /*
         Creating the task with the code that will run every time the timer tells it to
          */
-        TimerTask doTask = new TimerTask() {
+        TimerTask doTask2 = new TimerTask() {
             @Override
             public void run() {
 
                 /*
                 Checks how long the driver has been driving and displays a warning at
                 4 hours, 4.25 hours and 4.5 hours
-                 */
+                 *//*
                 if (Values.timeDriven >= 16200) {
                     //Call alert service final warning
                 } else if (Values.timeDriven >= 15300) {
                     //Call alert service 15 minute warning
                 } else if (Values.timeDriven >= 14400) {
+*/
 
+                /*Test values for testing the notification feature, 20 seconds before suggesting rest
+                 */
+                    if (Values.timeDriven >= 16200) {
+                        //Call alert service final warning
+                    } else if (Values.timeDriven >= 15300) {
+                        //Call alert service 15 minute warning
+                    } else if (Values.timeDriven >= 20) {
+                   /*
                     Intent intent = new Intent("com.project.g13.roadassist.android.Alert30");
                     this.startService(intent);
-
+*/
 
                     startService(new Intent(getApplication(), Alert30.class));
                 }
@@ -77,7 +89,7 @@ public class TimeDriven implements Runnable{
                 }
             }
         };
-        timer2.schedule(doTask, 0, 5000); //Time between runs in milliseconds. 1000 is 1 second.
+        timer2.schedule(doTask2, 0, 5000); //Time between runs in milliseconds. 1000 is 1 second.
     }
 
 
