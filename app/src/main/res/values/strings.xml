@@ -42,5 +42,11 @@
     <string name="gasButton">Find Gas Station</string>
     <string name="mainmenuButton">Exit to Main Menu</string>
 
+    <!-- login_activity -->
+    <string name="hintUsername">Username</string>
+    <string name="hintPassword">Password</string>
+    <string name="Login">Login</string>
+    <string name="signUp">Sign Up</string>
+
 
 </resources>

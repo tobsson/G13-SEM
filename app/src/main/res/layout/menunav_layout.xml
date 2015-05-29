@@ -4,10 +4,7 @@
     android:columnCount="5"
     android:rowCount="7"
     android:useDefaultMargins="true"
-    android:background="@drawable/darkwoodbkgr"
-    android:animationCache="false"
-    android:backgroundTint="@color/wallet_dim_foreground_inverse_holo_dark"
-    android:backgroundTintMode="multiply">
+    android:animationCache="false">
 
     <Button
         android:layout_width="57dp"
