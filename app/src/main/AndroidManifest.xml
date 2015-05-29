@@ -46,9 +46,8 @@
         <service android:name=".NavOverlayService" >
         </service>
 
-        <service android:name=".Alert30"
-            android:enabled="true">
-        </service>
+
+
 
         <activity
             android:name=".MainActivity"
@@ -128,7 +127,7 @@
 
         <activity
             android:name=".LogIn"
-            android:label="Log In"
+            android:label="RoadAssist"
             android:parentActivityName="com.project.g13.roadassist.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
